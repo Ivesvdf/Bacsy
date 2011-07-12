@@ -29,7 +29,12 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 
 			sectionMap[currentSection] = Section();
 		}
-		// No section => key, val!
+		// Comments
+		else if(line[0] == ';' || line[0] == '#')
+		{
+			// Comment... ignore
+		}
+		// No section, no comment => key, val!
 		else
 		{
 			if(currentSection.empty())

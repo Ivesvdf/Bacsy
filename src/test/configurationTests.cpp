@@ -94,3 +94,15 @@ TEST( ConfigurationTest, TestSections )
 	iterator++;
 	ASSERT_TRUE(sections.end() == iterator); 
 }
+
+
+TEST( ConfigurationTest, TestComments )
+{
+	std::stringstream ss;
+
+	ss << "[someSection]\n; some comments\n# more comments \na=1\nb=10\n";
+	ConfigurationFile file(ss);
+
+	ASSERT_EQ("10", file.get<std::string>("someSection", "b"));
+	ASSERT_EQ("1", file.get<std::string>("someSection", "a"));
+}
