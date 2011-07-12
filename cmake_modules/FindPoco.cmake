@@ -1,0 +1,31 @@
+set( SEARCHPATH /usr /usr/local /opt /opt/local $ENV{HOME}/opt ${CMAKE_SOURCE_DIR}/external/ )
+#			
+find_path( POCO_INCLUDE_DIRS 	Poco/ 
+				PATHS ${SEARCHPATH} 	
+				PATH_SUFFIXES include 
+)		
+
+SET(POCO_COMPONENTS
+	PocoFoundation
+	PocoNet
+	PocoUtil
+	)
+
+SET(POCO_LIBRARIES "")
+
+foreach( COMPONENT ${POCO_COMPONENTS} )
+
+	find_library( ${COMPONENT}_LIB ${COMPONENT}
+					PATHS ${SEARCHPATH} 	
+					PATH_SUFFIXES lib 
+	)
+
+	LIST(APPEND POCO_LIBRARIES ${${COMPONENT}_LIB})
+	LIST(REMOVE_DUPLICATES POCO_LIBRARIES)
+	
+endforeach( COMPONENT )
+
+unset( SEARCHPATH )
+
+include( FindPackageHandleStandardArgs )
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(Poco DEFAULT_MSG POCO_LIBRARIES POCO_INCLUDE_DIRS)
