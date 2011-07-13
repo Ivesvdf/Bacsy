@@ -1,6 +1,7 @@
 #include "woodcutter/woodcutter.h"
 #include "bacsyConnection.h"
 #include "stringUtils.h"
+#include "info.h"
 
 
 BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket) : Poco::Net::TCPServerConnection(socket)
@@ -17,7 +18,7 @@ void BacsyConnection::run()
 	std::string magicString;
 	ds.receiveMessage(magicString);
 
-	if(magicString != "BACSY 0.1")
+	if(magicString != "BACSY " + bacsyVersion)
 	{
 		LOGE("Invalid magic string; do protocol versions match? -- stopping connection");
 		return;
@@ -37,7 +38,6 @@ void BacsyConnection::run()
 	}
 	LOGI("Naturally stopping connection with client");
 }
-
 
 
 void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds)

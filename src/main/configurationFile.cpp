@@ -11,7 +11,7 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 	while(std::getline(fromSource, line))
 	{
 		line = StringUtils::strip(line, " \t");
-
+ 
 		const size_t len = line.length();
 
 		// Ignore empty lines
