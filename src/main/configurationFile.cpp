@@ -79,12 +79,14 @@ void Section::put(const string& inputKey, const string& val)
 	}
 }
 
-string Section::get(const string& key)
+string Section::get(const string& key) const 
 {
-	if(kvMap.count(key) == 0)
+	KeyValMap::const_iterator it = kvMap.find(key);
+
+	if(it == kvMap.end())
 		throw NoSuchKeyException(key);
 
-	return kvMap[key];
+	return it->second;
 }
 
 list<string> ConfigurationFile::sections() const

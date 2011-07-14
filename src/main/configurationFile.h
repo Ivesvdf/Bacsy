@@ -44,7 +44,7 @@ private:
 
 public:
 	void put(const string& key, const string& val);
-	string get(const string& key);
+	string get(const string& key) const;
 };
 
 template<typename S>
@@ -90,20 +90,20 @@ public:
 	list<string> sections() const;
 
 	template<typename T>
-	T get(string section, string key)
+	T get(string section, string key) const 
 	{
-		if(sectionMap.count(section) == 0)
+		SectionMap::const_iterator it = sectionMap.find(section);
+		if(it == sectionMap.end())
 			throw NoSuchSectionException(section);
 
-		const string val = sectionMap[section].get(StringUtils::rstrip(key, "[]"));
-
+		const string val = it->second.get(StringUtils::rstrip(key, "[]"));
 
 		Converter<T> c;
 		return c.convert(val);
 	}
 
 	template<typename T>
-	T get(string section, string key, const T& defaultVal)
+	T get(string section, string key, const T& defaultVal) const
 	{
 		try 
 		{
