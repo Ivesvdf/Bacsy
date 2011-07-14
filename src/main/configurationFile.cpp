@@ -21,7 +21,7 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 		// Section found
 		if((line[0] == '[') && (line[len-1] == ']') && (len > 2))
 		{
-			currentSection = line.substr(1, len - 2);
+			currentSection = StringUtils::strip(line.substr(1, len - 2), " \t");
 			LOGI("Section found: " + currentSection);
 
 			if(sectionMap.count(currentSection) != 0)
@@ -51,6 +51,7 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 			if(val.empty())
 				throw SyntaxError("No empty values allowed: " + line);
 
+			LOGI("Key-val found: " + key + ":" + val);
 			sectionMap[currentSection].put(key,val);
 		}
 	}

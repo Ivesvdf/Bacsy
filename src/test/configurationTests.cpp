@@ -118,4 +118,10 @@ TEST( ConfigurationTest, TestWhitespaceInsensitive )
 	ASSERT_EQ("1", file.get<std::string>("someSection", "a"));
 	ASSERT_EQ("11", file.get<std::string>("someSection", "c"));
 	ASSERT_EQ("12", file.get<std::string>("someSection", "d"));
+
+	ss << "[ someSection ]\na=1\nb=10\nc=11\nd=12";
+	std::list<std::string> sections = file.sections();
+	std::list<std::string>::iterator iterator = sections.begin();
+	ASSERT_EQ("someSection", *iterator);
+	ASSERT_EQ(1u, sections.size());
 }
