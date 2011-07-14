@@ -1,4 +1,8 @@
 #include <limits>
+#include "Poco/File.h"
+#include "Poco/Glob.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeFormat.h"
 #include "woodcutter/woodcutter.h"
 #include "target.h"
 
@@ -37,9 +41,95 @@ Target::Target(std::string section, const ConfigurationFile& config):
 	distribution(getCascadingValue<std::string>(
 				globalSection, config, section, "Distribution", "focus"))
 {
+	for(std::vector<string>::const_iterator it = excludes.begin();
+			it != excludes.end();
+			it++)
+	{
+		const std::string& subject = *it;
+
+		if(subject.find('/') != std::string::npos || 
+				subject.find('\\') != std::string::npos)
+		{
+			// Not a glob
+			pathExcludes.insert(StringUtils::rstrip(subject, "/\\"));
+		}
+		else
+		{
+			// glob
+			globExcludes.push_back(subject);
+		}
+	}
+}
+
+void Target::backupPath(const Poco::File& path) const
+{
+	std::string pathString = path.path();
+	LOGI("Filename = " + pathString);
+
+	if(pathExcludes.count(StringUtils::rstrip(pathString, "/\\")) == 1)
+	{
+		LOGI("Is in excludes -- not exploring!");
+		return;
+	}
+
+	if(!path.exists())
+	{
+		LOGE("Could not backup file " + pathString + 
+				" because it does not exist.");
+		return;
+	}
+
+	if(!path.canRead())
+	{
+		LOGE("Could not backup file " + pathString + 
+				" because this user does not have read permissions.");
+		return;
+	}
+
+	const std::string localFile = pathString.substr(pathString.find_last_of("/\\")+1);
+	for(std::vector<std::string>::const_iterator it = globExcludes.begin();
+			it != globExcludes.end();
+			it++)
+	{
+		Poco::Glob glob(*it);
+		if(glob.match(localFile))
+		{
+			LOGI("Not continuing; exclude glob " + *it + " matched.");
+			return;
+		}
+	}
+
+	if(path.isDirectory())
+	{
+		LOGI("Path is a directory -- expanding.");
+		std::vector<Poco::File> directoryContents;
+		path.list(directoryContents);
+
+		for(std::vector<Poco::File>::const_iterator it = directoryContents.begin();
+				it != directoryContents.end();
+				it++)
+		{
+			backupPath(*it);
+		}
+	}
+	else // Is file
+	{
+		LOGI("Path is a file -- not expanding.");
+		LOGI("Modified date = " + StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
+	}
+
 }
 
 void Target::start()
 {
 	LOGI("Starting target " + name);
+
+
+	for( std::vector<std::string>::const_iterator it = includes.begin();
+			it != includes.end();
+			it++)
+	{
+		backupPath(Poco::File(*it));
+	}
+
 }
