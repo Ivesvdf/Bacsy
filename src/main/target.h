@@ -36,10 +36,12 @@ private:
 	const std::string preferredOrder;
 	const std::string distribution;
 
-	std::vector<std::string> globExcludes;
+	std::vector<std::string> fileGlobExcludes;
+	std::vector<std::string> pathGlobExcludes;
 	std::set<std::string> pathExcludes;
 
 	void backupPath(const Poco::File& path) const;
+	bool isPath(std::string s) const;
 public:
 	Target(std::string sectionName, const ConfigurationFile& config);
 

@@ -36,6 +36,11 @@ T getCascadingValue(const std::string& globalSection,
 	return rv;
 }
 
+bool Target::isPath(std::string s) const
+{
+	return s.find_first_of("/\\") != std::string::npos;
+}
+
 Target::Target(std::string section, const ConfigurationFile& config):
 	name(section),
 	globalSection("global"),
@@ -64,16 +69,26 @@ Target::Target(std::string section, const ConfigurationFile& config):
 	{
 		const std::string& subject = *it;
 
-		if(subject.find('/') != std::string::npos || 
-				subject.find('\\') != std::string::npos)
+		if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
 		{
-			// Not a glob
-			pathExcludes.insert(StringUtils::rstrip(subject, "/\\"));
+			// Probable glob found ... (no problem if it turns
+			// out this wasn't a glob; except for the performance hit
+			// obviously)
+			
+			if(isPath(subject))
+			{
+				pathGlobExcludes.push_back(subject);
+			}
+			else
+			{
+				// If the glob is not a path glob, it's a file glob
+				fileGlobExcludes.push_back(subject);
+			}
 		}
 		else
 		{
-			// glob
-			globExcludes.push_back(subject);
+			// No signs this is a glob, interpret as path
+			pathExcludes.insert(StringUtils::rstrip(subject, "/\\"));
 		}
 	}
 }
@@ -103,15 +118,27 @@ void Target::backupPath(const Poco::File& path) const
 		return;
 	}
 
+	for(std::vector<std::string>::const_iterator it = pathGlobExcludes.begin();
+			it != pathGlobExcludes.end();
+			it++)
+	{
+		Poco::Glob glob(*it);
+		if(glob.match(pathString))
+		{
+			LOGI("Not continuing; exclude path glob " + *it + " matched.");
+			return;
+		}
+	}
+
 	const std::string localFile = pathString.substr(pathString.find_last_of("/\\")+1);
-	for(std::vector<std::string>::const_iterator it = globExcludes.begin();
-			it != globExcludes.end();
+	for(std::vector<std::string>::const_iterator it = fileGlobExcludes.begin();
+			it != fileGlobExcludes.end();
 			it++)
 	{
 		Poco::Glob glob(*it);
 		if(glob.match(localFile))
 		{
-			LOGI("Not continuing; exclude glob " + *it + " matched.");
+			LOGI("Not continuing; exclude file glob " + *it + " matched.");
 			return;
 		}
 	}
