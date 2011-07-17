@@ -24,9 +24,18 @@
 class TimerStringParser
 {
 private:
+	const std::string timeRegex;
 public:
-	static void parse(Poco::LocalDateTime now, std::string timerString);
+	TimerStringParser();
+	void parse(Poco::LocalDateTime now, std::string timerString);
 
+private:
+	void parseWeekly(const Poco::LocalDateTime& now, const std::string& timerString);
+	void parseDaily(const Poco::LocalDateTime& now, const std::string& timerString);
+	int extractDay(const std::string& input);
+	std::string extractTime(const std::string& input);
+	
+	
 
 };
 

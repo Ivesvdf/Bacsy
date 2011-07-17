@@ -29,5 +29,8 @@ TEST( TimerStringParserTest, TodayTest )
 			00);
 
 
-	TimerStringParser::parse(wednesday1400, "every week on Wednesday at 1320");
+	TimerStringParser parser;
+
+	parser.parse(wednesday1400, "every week on Wednesday at 1320");
+	parser.parse(wednesday1400, "every day at 14h10");
 }
