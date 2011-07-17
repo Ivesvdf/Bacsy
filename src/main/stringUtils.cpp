@@ -16,6 +16,9 @@
  */
 
 #include <sstream>
+#include <algorithm>
+#include <locale>
+#include <functional>
 #include "stringUtils.h"
 
 using std::string;
@@ -48,5 +51,12 @@ std::vector<std::string> StringUtils::split(const std::string& input, const char
 		elems.push_back(item);
 	}
 	return elems;
+}
+
+std::string StringUtils::toLower(const std::string& input)
+{
+	std::string copy(input.size(), ' ');
+	std::transform(input.begin(), input.end(), copy.begin(), static_cast<int(*)(int)>(std::tolower)) ;
+	return copy;
 }
 

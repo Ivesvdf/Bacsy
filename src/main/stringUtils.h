@@ -31,6 +31,8 @@ public:
 	
 	static std::vector<std::string> split(const std::string& input, const char delim);
 
+	static std::string toLower(const std::string& input);
+
 	template<typename T>
 	static std::string toString(const T& t)
 	{

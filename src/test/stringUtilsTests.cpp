@@ -63,3 +63,12 @@ TEST( StringUtilsTest, SplitTest )
 	ASSERT_EQ("life?", d[3]); 
 	ASSERT_EQ(4u, d.size());
 }
+
+TEST( StringUtilsTest, ToLowerTest)
+{
+	ASSERT_EQ("bla", StringUtils::toLower("bla"));
+	ASSERT_EQ("bla", StringUtils::toLower("Bla"));
+	ASSERT_EQ("bla", StringUtils::toLower("blA"));
+	ASSERT_EQ("bla", StringUtils::toLower("BLA"));
+	ASSERT_EQ("one two three", StringUtils::toLower("one Two three"));
+}
