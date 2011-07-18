@@ -19,24 +19,28 @@
 #define TIMERSTRINGPARSER_H
 
 #include <string>
+#include <list>
 #include "Poco/LocalDateTime.h"
+#include "timeSchedule.h"
 
 class TimerStringParser
 {
-private:
-	const std::string timeRegex;
 public:
 	TimerStringParser();
-	void parse(Poco::LocalDateTime now, std::string timerString);
+	std::list<TimeSchedule> parse(Poco::LocalDateTime now, std::string timerString);
 
 private:
-	void parseWeekly(const Poco::LocalDateTime& now, const std::string& timerString);
-	void parseDaily(const Poco::LocalDateTime& now, const std::string& timerString);
+	const std::string timeRegex;
+	std::list<TimeSchedule> parseWeekly(
+			const Poco::LocalDateTime& now,
+			const std::string& timerString);
+
+	std::list<TimeSchedule> parseDaily(
+			const Poco::LocalDateTime& now,
+			const std::string& timerString);
+
 	int extractDay(const std::string& input);
 	std::string extractTime(const std::string& input);
-	
-	
-
 };
 
 #endif

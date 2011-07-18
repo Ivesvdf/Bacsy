@@ -18,8 +18,6 @@
 #include <utility>
 #include "Poco/RegularExpression.h"
 #include "Poco/Timespan.h"
-#include "Poco/DateTimeFormatter.h"
-#include "Poco/DateTimeFormat.h"
 #include "woodcutter/woodcutter.h"
 #include "stringUtils.h"
 #include "timerStringParser.h"
@@ -78,7 +76,7 @@ std::pair<int, int> parseTime(const std::string& time)
 	return std::make_pair(hour, minutes);
 }
 
-void TimerStringParser::parse(Poco::LocalDateTime now, std::string timerString)
+std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::string timerString)
 {
 	timerString = StringUtils::toLower(timerString);
 	Poco::RegularExpression isWeekly("every week on [a-z]+day at " + timeRegex);
@@ -96,9 +94,12 @@ void TimerStringParser::parse(Poco::LocalDateTime now, std::string timerString)
 	{
 		LOGE("No match found for timerString " + timerString);
 	}
+
+	// No match... no timers.
+	return std::list<TimeSchedule>();
 }
 
-void TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const std::string& timerString)
+std::list<TimeSchedule> TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const std::string& timerString)
 {
 	std::pair<int, int> hourMinutes = parseTime(extractTime(timerString));
 	const int hour = hourMinutes.first;
@@ -130,12 +131,13 @@ void TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const std::st
 
 	const Poco::Timespan wait = target - now;
 
-	LOGE("Wait for " +  Poco::DateTimeFormatter::format(wait, "%d days, %H hours, %M minutes"));
-
+	std::list<TimeSchedule> rv;
+	rv.push_back(TimeSchedule(wait, Poco::Timespan(1*Poco::Timespan::DAYS)));
+	return rv;
 }
 
 
-void TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, const std::string& timerString)
+std::list<TimeSchedule> TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, const std::string& timerString)
 {
 	const int nowDay = now.dayOfWeek(); // 0 = Sunday, 6 = Saturday
 	int targetDay = extractDay(timerString); // 0 = Sunday, 6 = Saturday
@@ -193,5 +195,7 @@ void TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, const std::s
 
 	Poco::Timespan wait = correctEverything - now;
 
-	LOGE("Wait for " +  Poco::DateTimeFormatter::format(wait, "%d days, %H hours, %M minutes"));
+	std::list<TimeSchedule> rv;
+	rv.push_back(TimeSchedule(wait, Poco::Timespan(7*Poco::Timespan::DAYS)));
+	return rv;
 }

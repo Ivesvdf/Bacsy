@@ -16,8 +16,17 @@
  */
 
 #include <iostream>
+#include <string>
 #include <gtest/gtest.h>
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeFormat.h"
 #include "timerStringParser.h"
+
+std::string getDelay(Poco::LocalDateTime now, std::string timeString)
+{
+	static TimerStringParser parser;
+	return Poco::DateTimeFormatter::format((*(parser.parse(now, timeString).begin())).delay, "%dd%Hh%Mm");
+}
 
 TEST( TimerStringParserTest, TodayTest )
 {
@@ -29,8 +38,57 @@ TEST( TimerStringParserTest, TodayTest )
 			00);
 
 
-	TimerStringParser parser;
+	ASSERT_EQ("6d23h20m", getDelay(wednesday1400, "every week on Wednesday at 1320"));
+	ASSERT_EQ("6d23h29m", getDelay(wednesday1400, "every week on Wednesday at 1329"));
+	ASSERT_EQ("0d01h00m", getDelay(wednesday1400, "every week on Wednesday at 1500"));
+	ASSERT_EQ("1d06h00m", getDelay(wednesday1400, "every week on Thursday at 20h00"));
+	ASSERT_EQ("2d06h00m", getDelay(wednesday1400, "every week on Friday at 20h00"));
+	ASSERT_EQ("3d06h00m", getDelay(wednesday1400, "every week on Saturday at 20h00"));
+	ASSERT_EQ("4d06h00m", getDelay(wednesday1400, "every week on Sunday at 20h00"));
+	ASSERT_EQ("5d06h00m", getDelay(wednesday1400, "every week on Monday at 20h00"));
+	ASSERT_EQ("6d06h00m", getDelay(wednesday1400, "every week on Tuesday at 20h00"));
+}
 
-	parser.parse(wednesday1400, "every week on Wednesday at 1320");
-	parser.parse(wednesday1400, "every day at 14h10");
+TEST( TimerStringParserTest, SaturdayToSunday )
+{
+	Poco::LocalDateTime saturday1500(
+			2011,
+			07,
+			16,
+			15,
+			00);
+
+
+	ASSERT_EQ("1d00h00m", getDelay(saturday1500, "every week on Sunday at 1500"));
+	ASSERT_EQ("0d23h00m", getDelay(saturday1500, "every week on Sunday at 1400"));
+}
+
+TEST( TimerStringParserTest, SundayToSaturday )
+{
+	Poco::LocalDateTime sunday1500(
+			2011,
+			07,
+			17,
+			15,
+			00);
+
+
+	ASSERT_EQ("6d00h00m", getDelay(sunday1500, "every week on Saturday at 1500"));
+	ASSERT_EQ("5d23h00m", getDelay(sunday1500, "every week on Saturday at 1400"));
+}
+
+TEST( TimerStringParserTest, TestTimeStrings )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+
+	ASSERT_EQ("6d23h20m", getDelay(wednesday1400, "every week on Wednesday at 1320"));
+	ASSERT_EQ("6d23h20m", getDelay(wednesday1400, "every week on Wednesday at 1320h"));
+	ASSERT_EQ("6d23h20m", getDelay(wednesday1400, "every week on Wednesday at 13:20"));
+	ASSERT_EQ("6d23h20m", getDelay(wednesday1400, "every week on Wednesday at 13:20h"));
 }
