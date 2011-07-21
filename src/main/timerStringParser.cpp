@@ -81,6 +81,7 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 	timerString = StringUtils::toLower(timerString);
 	Poco::RegularExpression isWeekly("every week on [a-z]+day at " + timeRegex);
 	Poco::RegularExpression isDaily("every day at " + timeRegex);
+	Poco::RegularExpression isNMinutes("every [0-9]+ minutes");
 
 	if(isWeekly.match(timerString))
 	{
@@ -90,6 +91,10 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 	{
 		return parseDaily(now, timerString);
 	}
+	if(isNMinutes.match(timerString))
+	{
+		return parseNMinutes(now, timerString);
+	}
 	else
 	{
 		LOGE("No match found for timerString " + timerString);
@@ -97,6 +102,21 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 
 	// No match... no timers.
 	return std::list<TimeSchedule>();
+}
+
+std::list<TimeSchedule> TimerStringParser::parseNMinutes(const Poco::LocalDateTime& now, const std::string& timerString)
+{
+	std::string numberString;
+
+	Poco::RegularExpression extractNumber("[0-9]+");
+	extractNumber.extract(timerString, numberString);
+
+	const unsigned int minutes = StringUtils::fromString<unsigned int>(numberString);
+
+	std::list<TimeSchedule> rv;
+	// Run the first one after 0 sec, aka immediately
+	rv.push_back(TimeSchedule(Poco::Timespan(0), Poco::Timespan(minutes*Poco::Timespan::MINUTES)));
+	return rv;
 }
 
 std::list<TimeSchedule> TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const std::string& timerString)

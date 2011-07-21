@@ -39,6 +39,10 @@ private:
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);
 
+	std::list<TimeSchedule> parseNMinutes(
+			const Poco::LocalDateTime& now,
+			const std::string& timerString);
+
 	int extractDay(const std::string& input);
 	std::string extractTime(const std::string& input);
 };
