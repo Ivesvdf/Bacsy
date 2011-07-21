@@ -64,6 +64,27 @@ TEST( StringUtilsTest, SplitTest )
 	ASSERT_EQ(4u, d.size());
 }
 
+TEST( StringUtilsTest, StringSplitTest )
+{
+	typedef std::vector<std::string> VS;
+
+	VS a = StringUtils::split("abc", "b");
+	ASSERT_EQ(2u, a.size());
+	ASSERT_EQ("a", a[0]); 
+	ASSERT_EQ("c", a[1]); 
+
+	VS b = StringUtils::split("abc", "d");
+	ASSERT_EQ(1u, b.size());
+	ASSERT_EQ("abc", b[0]); 
+	
+	VS c = StringUtils::split("me and myself and I", " and ");
+	ASSERT_EQ(3u, c.size());
+	ASSERT_EQ("me", c[0]); 
+	ASSERT_EQ("myself", c[1]); 
+	ASSERT_EQ("I", c[2]); 
+}
+
+
 TEST( StringUtilsTest, ToLowerTest)
 {
 	ASSERT_EQ("bla", StringUtils::toLower("bla"));

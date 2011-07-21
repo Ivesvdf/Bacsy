@@ -30,6 +30,8 @@ public:
 	static std::string strip(const std::string& input, const std::string& stripChars = " ");
 	
 	static std::vector<std::string> split(const std::string& input, const char delim);
+	static std::vector<std::string> split(const std::string& input, const std::string& delim);
+	
 
 	static std::string toLower(const std::string& input);
 

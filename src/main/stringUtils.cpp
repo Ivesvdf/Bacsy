@@ -53,6 +53,24 @@ std::vector<std::string> StringUtils::split(const std::string& input, const char
 	return elems;
 }
 
+std::vector<std::string> StringUtils::split(const std::string& input, const std::string& delim)
+{
+	std::vector<std::string> elems;
+	size_t next = std::string::npos;
+	size_t firstNew = 0;
+
+	while(std::string::npos != (next = input.find(delim, firstNew)))
+	{
+		elems.push_back(input.substr(firstNew, next - firstNew));
+		firstNew = next + delim.length();
+	}
+
+	// Push last one
+	elems.push_back(input.substr(firstNew));
+
+	return elems;
+}
+
 std::string StringUtils::toLower(const std::string& input)
 {
 	std::string copy(input.size(), ' ');

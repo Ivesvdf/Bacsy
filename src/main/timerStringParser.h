@@ -31,15 +31,19 @@ public:
 
 private:
 	const std::string timeRegex;
-	std::list<TimeSchedule> parseWeekly(
+	TimeSchedule parseWeekly(
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);
 
-	std::list<TimeSchedule> parseDaily(
+	TimeSchedule parseDaily(
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);
 
-	std::list<TimeSchedule> parseNMinutes(
+	TimeSchedule parseNMinutes(
+			const Poco::LocalDateTime& now,
+			const std::string& timerString);
+
+	TimeSchedule parseOnStart(
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);
 
