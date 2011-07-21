@@ -22,16 +22,21 @@
 #include "Poco/DateTimeFormat.h"
 #include "timerStringParser.h"
 
+std::string format(const Poco::Timespan& timespan)
+{
+	return Poco::DateTimeFormatter::format(timespan, "%dd%Hh%Mm");
+}
+
 std::string getDelay(Poco::LocalDateTime now, std::string timeString)
 {
 	static TimerStringParser parser;
-	return Poco::DateTimeFormatter::format((*(parser.parse(now, timeString).begin())).delay, "%dd%Hh%Mm");
+	return format((*(parser.parse(now, timeString).begin())).delay);
 }
 
 std::string getRepeat(Poco::LocalDateTime now, std::string timeString)
 {
 	static TimerStringParser parser;
-	return Poco::DateTimeFormatter::format((*(parser.parse(now, timeString).begin())).repeat, "%dd%Hh%Mm");
+	return format((*(parser.parse(now, timeString).begin())).repeat);
 }
 
 TEST( TimerStringParserTest, BasicWeeklyTest )
@@ -137,5 +142,48 @@ TEST( TimerStringParserTest, BasicNMinutesTest )
 
 	ASSERT_EQ("0d00h05m", getRepeat(wednesday1400, "every 5 minutes"));
 	ASSERT_EQ("0d01h40m", getRepeat(wednesday1400, "every 100 minutes"));
+}
 
+TEST( TimerStringParserTest, OnStartTest )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+
+	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "on start"));
+	ASSERT_EQ("0d00h00m", getRepeat(wednesday1400, "on start"));
+}
+
+
+TEST (TimerStringParserTest, CompoundTest )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+	static TimerStringParser parser;
+	std::list<TimeSchedule> rv = parser.parse(wednesday1400, "on start and every 10 minutes and every week on monday at 2000");
+
+	ASSERT_EQ(3u, rv.size());
+	std::list<TimeSchedule>::iterator it = rv.begin();
+
+	ASSERT_EQ("0d00h00m", format((*it).delay));
+	ASSERT_EQ("0d00h00m", format((*it).repeat));
+
+	it++;
+
+	ASSERT_EQ("0d00h00m", format((*it).delay));
+	ASSERT_EQ("0d00h10m", format((*it).repeat));
+
+	it++;
+
+	ASSERT_EQ("5d06h00m", format((*it).delay));
+	ASSERT_EQ("7d00h00m", format((*it).repeat));
 }
