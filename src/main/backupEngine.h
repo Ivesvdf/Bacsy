@@ -15,22 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/Thread.h"
-#include "bacsyServer.h"
-#include "backupEngine.h"
+#ifndef BACKUP_ENGINE_H
+#define BACKUP_ENGINE_H
+
+#include <vector>
 #include "target.h"
-#include "configurationFile.h"
 
-
-
-int main()
+class BackupEngine
 {
-	BacsyServer server;
-	server.start();
+	private:
+		std::vector<Target*> targets;
 
-	BackupEngine backupEngine;
-	backupEngine.start();
-	
-	while(true)
-		Poco::Thread::sleep(10000);
-}
+	public: 
+		BackupEngine();
+		~BackupEngine();
+
+		void start();
+
+
+};
+
+#endif

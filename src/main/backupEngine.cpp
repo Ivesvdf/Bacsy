@@ -15,22 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/Thread.h"
-#include "bacsyServer.h"
+#include <list>
+#include <fstream>
 #include "backupEngine.h"
-#include "target.h"
-#include "configurationFile.h"
 
-
-
-int main()
+BackupEngine::BackupEngine()
 {
-	BacsyServer server;
-	server.start();
+	std::ifstream filestream(".bacsy/targets.config");
+	ConfigurationFile configFile(filestream);
 
-	BackupEngine backupEngine;
-	backupEngine.start();
-	
-	while(true)
-		Poco::Thread::sleep(10000);
+	std::list<std::string> targetNames = configFile.sections();
+	for(std::list<std::string>::const_iterator it = targetNames.begin();
+			it != targetNames.end();
+			it++)
+	{
+		if(*it != "global")
+			targets.push_back(new Target(*it, configFile));
+	}
+}
+
+BackupEngine::~BackupEngine()
+{
+	for(std::vector<Target*>::iterator it = targets.begin();
+			it != targets.end();
+			it++)
+	{
+		delete *it; 
+	}
+}
+
+void BackupEngine::start()
+{
+	for(std::vector<Target*>::iterator it = targets.begin();
+			it != targets.end();
+			it++)
+	{
+		(*it)->start();
+	}
 }
