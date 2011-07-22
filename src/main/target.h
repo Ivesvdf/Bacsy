@@ -21,6 +21,7 @@
 #include <string>
 #include <set>
 #include "Poco/File.h"
+#include "Poco/Timer.h"
 #include "configurationFile.h"
 
 class Target
@@ -35,17 +36,26 @@ private:
 	const unsigned int maxBackups;
 	const std::string preferredOrder;
 	const std::string distribution;
+	const std::string timerString;
 
 	std::vector<std::string> fileGlobExcludes;
 	std::vector<std::string> pathGlobExcludes;
 	std::set<std::string> pathExcludes;
+	std::list<Poco::Timer*> timers;
 
 	void backupPath(const Poco::File& path) const;
 	bool isPath(std::string s) const;
+
+	std::list<Poco::Timer*> createTimers(const std::string& timerString);
+	void startTimers();
+
 public:
 	Target(std::string sectionName, const ConfigurationFile& config);
+	~Target();
 
 	void start();
+
+	void run(Poco::Timer& timer);
 };
 
 #endif

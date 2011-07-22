@@ -22,8 +22,9 @@
 #include "Poco/DateTimeFormat.h"
 #include "woodcutter/woodcutter.h"
 #include "target.h"
+#include "timerStringParser.h"
 
-template<typename T>
+	template<typename T>
 T getCascadingValue(const std::string& globalSection, 
 		const ConfigurationFile& localConfig, const std::string& localSection,
 		const std::string& keyname, const T& defaultValue = T())
@@ -61,8 +62,11 @@ Target::Target(std::string section, const ConfigurationFile& config):
 	preferredOrder(getCascadingValue<std::string>(
 				globalSection, config, section, "PreferredOrder", "this, other")),
 	distribution(getCascadingValue<std::string>(
-				globalSection, config, section, "Distribution", "focus"))
+				globalSection, config, section, "Distribution", "focus")),
+	timers(createTimers(getCascadingValue<std::string>(
+					globalSection, config, section, "ExecuteAt", "at start")))
 {
+	// Handle excludes
 	for(std::vector<string>::const_iterator it = excludes.begin();
 			it != excludes.end();
 			it++)
@@ -74,7 +78,6 @@ Target::Target(std::string section, const ConfigurationFile& config):
 			// Probable glob found ... (no problem if it turns
 			// out this wasn't a glob; except for the performance hit
 			// obviously)
-			
 			if(isPath(subject))
 			{
 				pathGlobExcludes.push_back(subject);
@@ -93,6 +96,47 @@ Target::Target(std::string section, const ConfigurationFile& config):
 	}
 }
 
+void Target::startTimers()
+{
+	for(std::list<Poco::Timer*>::iterator it = timers.begin();
+			it != timers.end();
+			it++)
+	{
+		// Create a new callback that calls the classes run method
+		Poco::TimerCallback<Target> callback(*this, &Target::run);
+		// And run it on the the item that was added last (the one we just
+		// added)
+		(*it)->start(callback);
+	}
+}
+
+std::list<Poco::Timer*> Target::createTimers(const std::string& timerString)
+{
+	std::list<Poco::Timer*> theTimers;
+	TimerStringParser parser;
+	std::list<TimeSchedule> schedules = parser.parse(Poco::LocalDateTime(), timerString);
+	for(std::list<TimeSchedule>::const_iterator it = schedules.begin();
+			it != schedules.end();
+			it++)
+	{
+		// Execute all timers that normally fire immediately after 1 second
+		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0) ? 1000 : it->delay.totalMilliseconds();
+		Poco::Timer* const timer = new Poco::Timer(delayInMilliSeconds, it->repeat.totalMilliseconds());
+		theTimers.push_back(timer);
+	}
+	return theTimers;
+}
+
+Target::~Target()
+{
+	for(std::list<Poco::Timer*>::iterator it = timers.begin();
+			it != timers.end();
+			it++)
+	{
+		(*it)->stop();
+		delete (*it);
+	}
+}
 void Target::backupPath(const Poco::File& path) const
 {
 	std::string pathString = path.path();
@@ -166,8 +210,12 @@ void Target::backupPath(const Poco::File& path) const
 
 void Target::start()
 {
-	LOGI("Starting target " + name);
+	startTimers();
+}
 
+void Target::run(Poco::Timer& timer)
+{
+	LOGI("Starting target " + name);
 
 	for( std::vector<std::string>::const_iterator it = includes.begin();
 			it != includes.end();
