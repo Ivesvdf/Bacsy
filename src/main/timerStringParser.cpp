@@ -81,7 +81,7 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 	timerString = StringUtils::toLower(timerString);
 	Poco::RegularExpression isWeekly("every week on [a-z]+day at " + timeRegex);
 	Poco::RegularExpression isDaily("every day at " + timeRegex);
-	Poco::RegularExpression isNMinutes("every [0-9]+ minutes");
+	Poco::RegularExpression isNMinutes("every [0-9]+ minutes?");
 	Poco::RegularExpression isOnStart("on start"); // ok, no regex needed. Shut up :-p
 
 	const std::vector<std::string> splitString = StringUtils::split(timerString, " and ");
