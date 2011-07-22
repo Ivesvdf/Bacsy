@@ -172,6 +172,20 @@ TEST( TimerStringParserTest, OnStartTest )
 	ASSERT_EQ("0d00h00m", getRepeat(wednesday1400, "on start"));
 }
 
+TEST( TimerStringParserTest, AtStartTest )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+
+	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "at start"));
+	ASSERT_EQ("0d00h00m", getRepeat(wednesday1400, "at start"));
+}
+
 
 TEST (TimerStringParserTest, CompoundTest )
 {
