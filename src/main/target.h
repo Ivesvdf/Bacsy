@@ -21,6 +21,7 @@
 #include <string>
 #include <set>
 #include "Poco/File.h"
+#include "Poco/Mutex.h"
 #include "Poco/Timer.h"
 #include "configurationFile.h"
 

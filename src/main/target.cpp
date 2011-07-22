@@ -217,6 +217,16 @@ void Target::run(Poco::Timer& timer)
 {
 	LOGI("Starting target " + name);
 
+	static Poco::Mutex mutex;
+
+	if(!mutex.tryLock())
+	{
+		LOGW("Target is already running -- not executing again.");
+		return;
+	}
+
+	mutex.lock();
+
 	for( std::vector<std::string>::const_iterator it = includes.begin();
 			it != includes.end();
 			it++)
@@ -224,4 +234,5 @@ void Target::run(Poco::Timer& timer)
 		backupPath(Poco::File(*it));
 	}
 
+	mutex.unlock();
 }
