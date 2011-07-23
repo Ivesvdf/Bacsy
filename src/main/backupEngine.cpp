@@ -16,22 +16,48 @@
  */
 
 #include <list>
+#include <functional>
 #include <fstream>
+#include <algorithm>
 #include "backupEngine.h"
 
-BackupEngine::BackupEngine()
+class TargetNameToTargetter
 {
-	std::ifstream filestream(".bacsy/targets.config");
-	ConfigurationFile configFile(filestream);
-
-	std::list<std::string> targetNames = configFile.sections();
-	for(std::list<std::string>::const_iterator it = targetNames.begin();
-			it != targetNames.end();
-			it++)
+public:
+	TargetNameToTargetter(const CascadingFileConfiguration& configuration): configuration(configuration) {}
+	Target* operator()(const std::string& targetName)
 	{
-		if(*it != "global")
-			targets.push_back(new Target(*it, configFile));
+		return new Target(targetName, configuration);
 	}
+
+private:
+	const CascadingFileConfiguration& configuration;
+};
+
+std::vector<Target*> targetNamesToTargets(
+		const std::list<std::string>& targetStrings,
+		const CascadingFileConfiguration& configuration)
+{
+	std::vector<Target*> targets;
+	targets.resize(targetStrings.size());
+
+
+	TargetNameToTargetter targetNameToTarget(configuration); 
+
+	std::transform(
+			targetStrings.begin(),
+			targetStrings.end(),
+			targets.begin(),
+			targetNameToTarget);
+			
+
+	return targets;
+}
+
+BackupEngine::BackupEngine(const CascadingFileConfiguration& configuration):
+	configuration(configuration),
+	targets(targetNamesToTargets(configuration.getTargets(), configuration))
+{
 }
 
 BackupEngine::~BackupEngine()

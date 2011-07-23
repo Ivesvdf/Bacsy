@@ -18,6 +18,7 @@
 #include "Poco/Thread.h"
 #include "bacsyServer.h"
 #include "backupEngine.h"
+#include "cascadingFileConfiguration.h"
 #include "target.h"
 #include "configurationFile.h"
 
@@ -28,7 +29,8 @@ int main()
 	BacsyServer server;
 	server.start();
 
-	BackupEngine backupEngine;
+	CascadingFileConfiguration configuration(".bacsy");
+	BackupEngine backupEngine(configuration);
 	backupEngine.start();
 	
 	while(true)

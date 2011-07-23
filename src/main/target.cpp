@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <limits>
 #include "Poco/File.h"
 #include "Poco/Glob.h"
 #include "Poco/DateTimeFormatter.h"
@@ -24,47 +23,21 @@
 #include "target.h"
 #include "timerStringParser.h"
 
-	template<typename T>
-T getCascadingValue(const std::string& globalSection, 
-		const ConfigurationFile& localConfig, const std::string& localSection,
-		const std::string& keyname, const T& defaultValue = T())
-{
-	T rv = defaultValue;
-
-	rv = localConfig.get<T>(globalSection, keyname, rv);
-	rv = localConfig.get<T>(localSection, keyname, rv);
-
-	return rv;
-}
-
 bool Target::isPath(std::string s) const
 {
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Target::Target(std::string section, const ConfigurationFile& config):
+Target::Target(std::string section, const CascadingFileConfiguration& config):
 	name(section),
-	globalSection("global"),
-	includes(StringUtils::split(getCascadingValue<std::string>(
-					globalSection, config, section, "Include"), '\n')),
-	excludes(StringUtils::split(getCascadingValue<std::string>(
-					globalSection, config, section, "Exclude"), '\n')),
-	priority(getCascadingValue<unsigned int>(
-				globalSection, config, section, "Priority")),
-	minBackups(getCascadingValue<unsigned int>(
-				globalSection, config, section, "MinBackups", 1)),
-	maxBackups(getCascadingValue<unsigned int>(
-				globalSection,
-				config,
-				section,
-				"MaxBackups",
-				std::numeric_limits<unsigned int>::max())),
-	preferredOrder(getCascadingValue<std::string>(
-				globalSection, config, section, "PreferredOrder", "this, other")),
-	distribution(getCascadingValue<std::string>(
-				globalSection, config, section, "Distribution", "focus")),
-	timers(createTimers(getCascadingValue<std::string>(
-					globalSection, config, section, "ExecuteAt", "at start")))
+	includes(config.getIncludes(section)),
+	excludes(config.getExcludes(section)),
+	priority(config.getPriority(section)),
+	minBackups(config.getMinBackups(section)),
+	maxBackups(config.getMaxBackups(section)),
+	preferredOrder(config.getPreferredOrder(section)),
+	distribution(config.getDistribution(section)),
+	timers(createTimers(config.getTimerString(section)))
 {
 	// Handle excludes
 	for(std::vector<string>::const_iterator it = excludes.begin();
@@ -235,4 +208,6 @@ void Target::run(Poco::Timer& timer)
 	}
 
 	mutex.unlock();
+
+	LOGI("Target " + name + " is finished.");
 }

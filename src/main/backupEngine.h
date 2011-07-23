@@ -20,14 +20,16 @@
 
 #include <vector>
 #include "target.h"
+#include "cascadingFileConfiguration.h"
 
 class BackupEngine
 {
 	private:
+		const CascadingFileConfiguration& configuration;
 		std::vector<Target*> targets;
 
 	public: 
-		BackupEngine();
+		BackupEngine(const CascadingFileConfiguration& configuration);
 		~BackupEngine();
 
 		void start();

@@ -23,13 +23,12 @@
 #include "Poco/File.h"
 #include "Poco/Mutex.h"
 #include "Poco/Timer.h"
-#include "configurationFile.h"
+#include "cascadingFileConfiguration.h"
 
 class Target
 {
 private:
 	const std::string name;
-	const std::string globalSection;
 	const std::vector<std::string> includes;
 	const std::vector<std::string> excludes;
 	const unsigned int priority;
@@ -51,7 +50,7 @@ private:
 	void startTimers();
 
 public:
-	Target(std::string sectionName, const ConfigurationFile& config);
+	Target(std::string sectionName, const CascadingFileConfiguration& config);
 	~Target();
 
 	void start();
