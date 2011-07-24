@@ -40,6 +40,7 @@ class CascadingFileConfiguration
 		std::string getPreferredOrder(const std::string& target) const;
 		std::string getDistribution(const std::string& target) const;
 		std::string getTimerString(const std::string& target) const;
+		std::string getHostIdentification(const std::string& target) const;
 
 	private:
 		template<typename T>

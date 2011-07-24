@@ -18,7 +18,9 @@ include_directories("${PROJECT_BINARY_DIR}/src/main")
 
 add_library(common STATIC configurationFile stringUtils
 	bacsyConnection bacsyServer target timerStringParser 
-	timeSchedule backupEngine cascadingFileConfiguration)
+	timeSchedule backupEngine cascadingFileConfiguration
+	jsonStoreIndex)
 
 add_executable(bacsy main.cpp)
-target_link_libraries(bacsy gtest ${POCO_LIBRARIES} ${RSYNC_LIBRARIES} common)
+target_link_libraries(bacsy gtest ${POCO_LIBRARIES} 
+	${RSYNC_LIBRARIES} common json)

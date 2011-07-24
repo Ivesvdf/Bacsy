@@ -18,6 +18,7 @@
 #include <fstream>
 #include <functional>
 #include <algorithm>
+#include "Poco/Environment.h"
 #include "stringUtils.h"
 #include "cascadingFileConfiguration.h"
 
@@ -99,4 +100,13 @@ std::string CascadingFileConfiguration::getTimerString(const std::string& target
 			target,
 			"ExecuteAt",
 			"at start");
+}
+
+
+std::string CascadingFileConfiguration::getHostIdentification(const std::string& target) const
+{
+	return getCascadingValue<std::string>(
+			target,
+			"HostIdentification",
+			Poco::Environment::nodeName());
 }
