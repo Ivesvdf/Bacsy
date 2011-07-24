@@ -71,7 +71,6 @@ void JsonStoreIndex::addNewDeltaRun(
 
 std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& target, const std::string& dir) const
 {
-	
 	const Json::Value targetValue = root[target];
 
 	// Find last delta
@@ -85,6 +84,7 @@ std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& t
 	}
 	return "";
 }
+
 bool JsonStoreIndex::isDeltaRun(
 			const std::string& target,
 			const std::string& dir)

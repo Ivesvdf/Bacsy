@@ -26,7 +26,10 @@ class JsonStoreIndex
 public:
 	JsonStoreIndex(const std::string path);
 
-	void addNewFullRun(const std::string& target, const std::string& directory);
+	void addNewFullRun(
+			const std::string& target,
+			const std::string& directory);
+
 	void addNewDeltaRun(
 			const std::string& target,
 			const std::string& directory,
