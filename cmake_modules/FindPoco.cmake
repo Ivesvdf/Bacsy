@@ -1,4 +1,4 @@
-set( SEARCHPATH /usr /usr/local /opt /opt/local $ENV{HOME}/opt ${CMAKE_SOURCE_DIR}/external/ )
+set( SEARCHPATH ${CMAKE_SOURCE_DIR}/external/ /usr /usr/local /opt /opt/local $ENV{HOME}/opt  )
 #			
 find_path( POCO_INCLUDE_DIRS 	Poco/ 
 				PATHS ${SEARCHPATH} 	
