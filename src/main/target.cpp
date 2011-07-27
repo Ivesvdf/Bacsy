@@ -17,11 +17,20 @@
 
 #include "Poco/File.h"
 #include "Poco/Glob.h"
+#include "Poco/Exception.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
+#include "Poco/Net/DialogSocket.h"
+#include "Poco/Net/MulticastSocket.h"
+#include "Poco/Net/NetException.h"
+#include "Poco/Net/ServerSocket.h"
+#include "Poco/Net/SocketAddress.h"
 #include "woodcutter/woodcutter.h"
+#include "json/json.h"
 #include "target.h"
 #include "timerStringParser.h"
+#include "info.h"
+#include "multicastHelper.h"
 
 bool Target::isPath(std::string s) const
 {
@@ -95,6 +104,10 @@ std::list<Poco::Timer*> Target::createTimers(const std::string& timerString)
 		// Execute all timers that normally fire immediately after 1 second
 		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0) ? 1000 : it->delay.totalMilliseconds();
 		Poco::Timer* const timer = new Poco::Timer(delayInMilliSeconds, it->repeat.totalMilliseconds());
+		LOGI(std::string("Creating timer with delay of ")
+				+ StringUtils::toString(delayInMilliSeconds) 
+				+ std::string(" and repeat rate of ")
+				+ StringUtils::toString(it->repeat.totalMilliseconds()));
 		theTimers.push_back(timer);
 	}
 	return theTimers;
@@ -190,15 +203,16 @@ void Target::run(Poco::Timer& timer)
 {
 	LOGI("Starting target " + name);
 
-	static Poco::Mutex mutex;
-
 	if(!mutex.tryLock())
 	{
 		LOGW("Target is already running -- not executing again.");
 		return;
 	}
 
-	mutex.lock();
+	std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
+
+
+	/*
 
 	for( std::vector<std::string>::const_iterator it = includes.begin();
 			it != includes.end();
@@ -207,7 +221,95 @@ void Target::run(Poco::Timer& timer)
 		backupPath(Poco::File(*it));
 	}
 
+	*/
+
 	mutex.unlock();
 
 	LOGI("Target " + name + " is finished.");
 }
+
+void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
+{
+	Json::Value root;
+	root["type"] = "canStore";
+	root["target"] = name;
+	root["priority"] = priority;
+
+	Json::FastWriter writer;
+	const std::string msg = StringUtils::rstrip(bacsyProtocolString + "\n" + writer.write(root), "\n");
+
+	LOGI("Sending canStore message");
+	sendFrom.sendTo(msg.c_str(), msg.size(), to);
+}
+
+class CanStoreResponseAccepter
+{
+	public:
+		void operator()(Poco::Net::SocketAddress who, const std::string& what)
+		{
+			LOGI("Received Multicast message.");
+
+			std::vector<std::string> parts = StringUtils::split(what, "\n");
+
+			if(parts.size() != 2 || parts[0] != bacsyProtocolString)
+			{
+				LOGW( "Received packet with incorrect protocol string or invalid contents:"
+						+ what);
+				return;
+			}
+
+			std::stringstream stream;
+			stream << parts[1];
+			Json::Reader reader;
+			Json::Value root;
+			if (!reader.parse(stream, root))
+			{
+				LOGW("Could not parse " + what);
+				return;
+			}	
+
+			if(root["type"] != "readyToStore")
+			{
+				LOGI("Not the message we were looking for...");
+				return;
+			}
+
+			LOGI(std::string("Received valid MC message -- adding ") + who.toString());
+			peopleToContact.push_back(who);
+
+		}
+
+		std::vector<Poco::Net::SocketAddress> getPeopleToContact() const 
+		{ return peopleToContact; }
+
+
+	private:
+		std::vector<Poco::Net::SocketAddress> peopleToContact;
+};
+
+std::vector<Poco::Net::SocketAddress> Target::findOutWhoToContact()
+{
+	const unsigned int MULTICASTPORT = 2155;
+	const std::string MULTICASTGROUP = "239.255.255.249";
+	Poco::Net::SocketAddress address(MULTICASTGROUP, MULTICASTPORT);
+
+	Poco::Net::MulticastSocket mcSocket(
+			Poco::Net::SocketAddress(
+				Poco::Net::IPAddress(), address.port()),
+			true // reuse address
+			);
+
+	// to receive any data you must join
+	LOGI("Joining multicast group " + MULTICASTGROUP);
+	mcSocket.joinGroup(address.host());
+	LOGI("Joined multicast group.");
+	
+	sendCanStore(mcSocket, address);
+	
+	CanStoreResponseAccepter accepter;
+
+	MulticastHelper::receiveMessages<512>(mcSocket, 1000, accepter);
+
+	return accepter.getPeopleToContact();
+}
+

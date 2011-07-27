@@ -22,6 +22,8 @@
 #include <set>
 #include "Poco/File.h"
 #include "Poco/Mutex.h"
+#include "Poco/Net/SocketAddress.h"
+#include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
 #include "cascadingFileConfiguration.h"
 
@@ -43,11 +45,16 @@ private:
 	std::set<std::string> pathExcludes;
 	std::list<Poco::Timer*> timers;
 
+	Poco::Mutex mutex;
+
 	void backupPath(const Poco::File& path) const;
 	bool isPath(std::string s) const;
 
 	std::list<Poco::Timer*> createTimers(const std::string& timerString);
 	void startTimers();
+
+	std::vector<Poco::Net::SocketAddress> findOutWhoToContact();
+	void sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const;
 
 public:
 	Target(std::string sectionName, const CascadingFileConfiguration& config);
