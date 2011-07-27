@@ -32,6 +32,7 @@ class CascadingFileConfiguration
 		CascadingFileConfiguration(const std::string& directory);
 
 		std::list<std::string> getTargets() const;
+		std::list<std::string> getStores() const;
 		std::vector<std::string> getIncludes(const std::string& target) const;
 		std::vector<std::string> getExcludes(const std::string& target) const;
 		unsigned int getPriority(const std::string& target) const;
@@ -41,24 +42,59 @@ class CascadingFileConfiguration
 		std::string getDistribution(const std::string& target) const;
 		std::string getTimerString(const std::string& target) const;
 		std::string getHostIdentification(const std::string& target) const;
+		std::string getLocation(const std::string& store) const;
+		bool getAlwaysPresent(const std::string& store) const;
+		unsigned int getMinPriorityForStoring(const std::string& input) const;
 
 	private:
 		template<typename T>
+		T getCascadingStoreValue( 
+				const std::string& section,
+				const std::string& keyname, 
+				const T& defaultValue = T()) const
+		{
+			return getCascadingValue(
+					storeConfig,
+					section,
+					keyname,
+					defaultValue);
+		}
+		
+		template<typename T>
+		T getCascadingTargetValue( 
+				const std::string& section,
+				const std::string& keyname, 
+				const T& defaultValue = T()) const
+		{
+			return getCascadingValue(
+					targetConfig,
+					section,
+					keyname,
+					defaultValue);
+		}
+
+		template<typename T>
 		T getCascadingValue( 
+				const ConfigurationFile& config,
 				const std::string& section,
 				const std::string& keyname, 
 				const T& defaultValue = T()) const
 		{
 			T rv = defaultValue;
 
-			rv = targetConfig.get<T>(globalSectionName, keyname, rv);
-			rv = targetConfig.get<T>(section, keyname, rv);
+			rv = config.get<T>(globalSectionName, keyname, rv);
+			rv = config.get<T>(section, keyname, rv);
 
 			return rv;
 		}
 
+		static bool toBool(const std::string& input);
+
+
 		std::ifstream inputTargetStream;	
+		std::ifstream inputStoreStream;	
 		ConfigurationFile targetConfig;
+		ConfigurationFile storeConfig;
 		const std::string globalSectionName;
 };
 

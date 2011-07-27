@@ -19,12 +19,15 @@
 #include <functional>
 #include <algorithm>
 #include "Poco/Environment.h"
+#include <Poco/String.h>
 #include "stringUtils.h"
 #include "cascadingFileConfiguration.h"
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& directory):
 	inputTargetStream((StringUtils::rstrip(directory, "/") + std::string("/targets.config")).c_str()),
+	inputStoreStream((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str()),
 	targetConfig(inputTargetStream),
+	storeConfig(inputStoreStream),
 	globalSectionName("global")
 
 {
@@ -38,9 +41,16 @@ std::list<std::string> CascadingFileConfiguration::getTargets() const
 	return targetNames;
 }
 
+std::list<std::string> CascadingFileConfiguration::getStores() const
+{
+	std::list<std::string> storeNames = storeConfig.sections();
+	storeNames.remove_if(std::bind2nd(std::equal_to<std::string>(), "global"));
+	return storeNames;
+}
+
 std::vector<std::string> CascadingFileConfiguration::getIncludes(const std::string& target) const 
 {
-	return StringUtils::split(getCascadingValue<std::string>(
+	return StringUtils::split(getCascadingTargetValue<std::string>(
 				target,
 				"Include"), 
 			'\n'); 
@@ -48,7 +58,7 @@ std::vector<std::string> CascadingFileConfiguration::getIncludes(const std::stri
 
 std::vector<std::string> CascadingFileConfiguration::getExcludes(const std::string& target) const 
 {
-	return StringUtils::split(getCascadingValue<std::string>(
+	return StringUtils::split(getCascadingTargetValue<std::string>(
 				target,
 				"Exclude"), 
 			'\n'); 
@@ -56,7 +66,7 @@ std::vector<std::string> CascadingFileConfiguration::getExcludes(const std::stri
 
 unsigned int CascadingFileConfiguration::getPriority(const std::string& target) const 
 {
-	return getCascadingValue<unsigned int>(
+	return getCascadingTargetValue<unsigned int>(
 			target,
 			"Priority",
 			5);
@@ -64,7 +74,7 @@ unsigned int CascadingFileConfiguration::getPriority(const std::string& target) 
 
 unsigned int CascadingFileConfiguration::getMinBackups(const std::string& target) const
 {
-	return getCascadingValue<unsigned int>(
+	return getCascadingTargetValue<unsigned int>(
 			target,
 			"MinBackups",
 			1);
@@ -72,7 +82,7 @@ unsigned int CascadingFileConfiguration::getMinBackups(const std::string& target
 
 unsigned int CascadingFileConfiguration::getMaxBackups(const std::string& target) const
 {
-	return getCascadingValue<unsigned int>(
+	return getCascadingTargetValue<unsigned int>(
 			target,
 			"MaxBackups",
 			std::numeric_limits<unsigned int>::max());
@@ -80,7 +90,7 @@ unsigned int CascadingFileConfiguration::getMaxBackups(const std::string& target
 
 std::string CascadingFileConfiguration::getPreferredOrder(const std::string& target) const
 {
-	return getCascadingValue<std::string>(
+	return getCascadingTargetValue<std::string>(
 			target,
 			"PreferredOrder",
 			"this, other");
@@ -88,7 +98,7 @@ std::string CascadingFileConfiguration::getPreferredOrder(const std::string& tar
 
 std::string CascadingFileConfiguration::getDistribution(const std::string& target) const
 {
-	return getCascadingValue<std::string>(
+	return getCascadingTargetValue<std::string>(
 			target,
 			"Distribution",
 			"focus");
@@ -96,7 +106,7 @@ std::string CascadingFileConfiguration::getDistribution(const std::string& targe
 
 std::string CascadingFileConfiguration::getTimerString(const std::string& target) const
 {
-	return getCascadingValue<std::string>(
+	return getCascadingTargetValue<std::string>(
 			target,
 			"ExecuteAt",
 			"at start");
@@ -105,8 +115,40 @@ std::string CascadingFileConfiguration::getTimerString(const std::string& target
 
 std::string CascadingFileConfiguration::getHostIdentification(const std::string& target) const
 {
-	return getCascadingValue<std::string>(
+	return getCascadingTargetValue<std::string>(
 			target,
 			"HostIdentification",
 			Poco::Environment::nodeName());
 }
+
+std::string CascadingFileConfiguration::getLocation(const std::string& store) const
+{
+	return getCascadingStoreValue<std::string>(
+			store,
+			"Location");
+}
+
+bool CascadingFileConfiguration::getAlwaysPresent(const std::string& store) const
+{
+	return toBool(getCascadingStoreValue<std::string>(
+			store,
+			"AlwaysPresent",
+			"True"));
+}
+
+unsigned int CascadingFileConfiguration::getMinPriorityForStoring(const std::string& store) const
+{
+	return getCascadingStoreValue<unsigned int>(
+			store,
+			"MinPriorityForStoring",
+			10);
+}
+
+bool CascadingFileConfiguration::toBool(const std::string& input)
+{
+	const std::string lowered = Poco::toLower(input);
+
+	return (lowered == "true" || lowered == "1");
+}
+
+

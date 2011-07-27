@@ -219,6 +219,7 @@ void Target::run(Poco::Timer& timer)
 
 	std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
 
+
 	/*
 
 	for( std::vector<std::string>::const_iterator it = includes.begin();
@@ -281,7 +282,6 @@ class CanStoreResponseAccepter
 
 			if(root["type"] != "readyToStore" || root["target"] != targetName)
 			{
-				LOGI("Not the message we were looking for...:" + what);
 				return;
 			}
 
