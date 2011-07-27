@@ -28,7 +28,10 @@ class DatagramHelper
 {
 	public:
 		template<size_t maxSize, typename FUNCTION>
-		static void receiveMessages(Poco::Net::DatagramSocket& socket, const unsigned int timeoutInMs, FUNCTION exec)
+		static void receiveMessages(
+				Poco::Net::DatagramSocket& socket,
+				const unsigned int timeoutInMs,
+				FUNCTION& exec)
 		{
 			if(timeoutInMs > 0)
 				socket.setReceiveTimeout(Poco::Timespan(0,timeoutInMs));
