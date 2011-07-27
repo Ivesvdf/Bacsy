@@ -30,9 +30,9 @@ class MulticastHelper
 			socket.setReceiveTimeout(Poco::Timespan(0,timeoutInMs));
 			const size_t maxsize = maxSize+1;
 			char buffer[maxsize];
-			while(true)
+			try 
 			{
-				try 
+				while(true)
 				{
 					Poco::Net::SocketAddress sender;
 					const int n = socket.receiveFrom(buffer, maxsize-1, sender);
@@ -44,11 +44,11 @@ class MulticastHelper
 
 					exec(sender, buffer);
 				}
-				catch(Poco::TimeoutException& e)
-				{
-					// Stop trying to receive messages
-					break;
-				}
+			}
+			catch(Poco::TimeoutException& e)
+			{
+				// Stop trying to receive messages
+				break;
 			}
 		}
 };
