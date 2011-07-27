@@ -15,19 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTICAST_HELPER_H
-#define MULTICAST_HELPER_H
+#ifndef DATAGRAM_HELPER_H
+#define DATAGRAM_HELPER_H
 
 #include "Poco/Net/SocketAddress.h"
-#include "Poco/Net/MulticastSocket.h"
+#include "Poco/Net/DatagramSocket.h"
+#include "json/json.h"
+#include "stringUtils.h"
+#include "info.h"
 
-class MulticastHelper
+class DatagramHelper
 {
 	public:
 		template<size_t maxSize, typename FUNCTION>
-		static void receiveMessages(Poco::Net::MulticastSocket& socket, const unsigned int timeoutInMs, FUNCTION exec)
+		static void receiveMessages(Poco::Net::DatagramSocket& socket, const unsigned int timeoutInMs, FUNCTION exec)
 		{
-			socket.setReceiveTimeout(Poco::Timespan(0,timeoutInMs));
+			if(timeoutInMs > 0)
+				socket.setReceiveTimeout(Poco::Timespan(0,timeoutInMs));
+
 			const size_t maxsize = maxSize+1;
 			char buffer[maxsize];
 			try 
@@ -48,8 +53,14 @@ class MulticastHelper
 			catch(Poco::TimeoutException& e)
 			{
 				// Stop trying to receive messages
-				break;
+				return;
 			}
+		}
+
+		static std::string toMessage(Json::Value& root)
+		{
+				Json::FastWriter writer;
+				return StringUtils::rstrip(bacsyProtocolString + "\n" + writer.write(root), "\n");
 		}
 };
 

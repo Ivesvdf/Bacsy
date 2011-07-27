@@ -15,28 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MULTICAST_RESPONDER_H
+#define MULTICAST_RESPONDER_H
+
+#include <string>
 #include "Poco/Thread.h"
-#include "bacsyServer.h"
-#include "backupEngine.h"
-#include "multicastResponder.h"
-#include "cascadingFileConfiguration.h"
-#include "target.h"
-#include "configurationFile.h"
+#include "Poco/Runnable.h"
+#include "Poco/Net/SocketAddress.h"
 
 
-
-int main()
+class MulticastResponder : public Poco::Runnable
 {
-	BacsyServer server;
-	server.start();
+	public:
+		void start();
+		virtual void run();
 
-	CascadingFileConfiguration configuration(".bacsy");
-	BackupEngine backupEngine(configuration);
-	backupEngine.start();
-	
-	MulticastResponder responder;
-	responder.start();
+	private:
+		Poco::Thread thread;
 
-	while(true)
-		Poco::Thread::sleep(10000);
-}
+		static void respondToMulticast(Poco::Net::SocketAddress address, const std::string& what);
+};
+
+#endif

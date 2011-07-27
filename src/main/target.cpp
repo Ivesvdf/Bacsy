@@ -24,13 +24,14 @@
 #include "Poco/Net/MulticastSocket.h"
 #include "Poco/Net/NetException.h"
 #include "Poco/Net/ServerSocket.h"
+#include "Poco/Net/DatagramSocket.h"
 #include "Poco/Net/SocketAddress.h"
 #include "woodcutter/woodcutter.h"
 #include "json/json.h"
 #include "target.h"
 #include "timerStringParser.h"
 #include "info.h"
-#include "multicastHelper.h"
+#include "datagramHelper.h"
 
 bool Target::isPath(std::string s) const
 {
@@ -84,6 +85,7 @@ void Target::startTimers()
 			it != timers.end();
 			it++)
 	{
+		LOGI("Starting timer");
 		// Create a new callback that calls the classes run method
 		Poco::TimerCallback<Target> callback(*this, &Target::run);
 		// And run it on the the item that was added last (the one we just
@@ -201,7 +203,13 @@ void Target::start()
 
 void Target::run(Poco::Timer& timer)
 {
-	LOGI("Starting target " + name);
+	LOGI("Starting target " 
+			+ name 
+			+ " because of Timer(" 
+			+ StringUtils::toString(timer.getStartInterval()) 
+			+ "," 
+			+ StringUtils::toString(timer.getPeriodicInterval()) 
+			+ ")");
 
 	if(!mutex.tryLock())
 	{
@@ -236,7 +244,7 @@ void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::Socket
 	root["priority"] = priority;
 
 	Json::FastWriter writer;
-	const std::string msg = StringUtils::rstrip(bacsyProtocolString + "\n" + writer.write(root), "\n");
+	const std::string msg = DatagramHelper::toMessage(root);
 
 	LOGI("Sending canStore message");
 	sendFrom.sendTo(msg.c_str(), msg.size(), to);
@@ -245,6 +253,10 @@ void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::Socket
 class CanStoreResponseAccepter
 {
 	public:
+		CanStoreResponseAccepter(const std::string targetName):
+			targetName(targetName)
+		{}
+
 		void operator()(Poco::Net::SocketAddress who, const std::string& what)
 		{
 			LOGI("Received Multicast message.");
@@ -268,9 +280,9 @@ class CanStoreResponseAccepter
 				return;
 			}	
 
-			if(root["type"] != "readyToStore")
+			if(root["type"] != "readyToStore" || root["target"] != targetName)
 			{
-				LOGI("Not the message we were looking for...");
+				LOGI("Not the message we were looking for...:" + what);
 				return;
 			}
 
@@ -285,12 +297,11 @@ class CanStoreResponseAccepter
 
 	private:
 		std::vector<Poco::Net::SocketAddress> peopleToContact;
+		std::string targetName;
 };
 
 std::vector<Poco::Net::SocketAddress> Target::findOutWhoToContact()
 {
-	const unsigned int MULTICASTPORT = 2155;
-	const std::string MULTICASTGROUP = "239.255.255.249";
 	Poco::Net::SocketAddress address(MULTICASTGROUP, MULTICASTPORT);
 
 	Poco::Net::MulticastSocket mcSocket(
@@ -306,9 +317,9 @@ std::vector<Poco::Net::SocketAddress> Target::findOutWhoToContact()
 	
 	sendCanStore(mcSocket, address);
 	
-	CanStoreResponseAccepter accepter;
+	CanStoreResponseAccepter accepter(name);
 
-	MulticastHelper::receiveMessages<512>(mcSocket, 1000, accepter);
+	DatagramHelper::receiveMessages<512>(mcSocket, 1000, accepter);
 
 	return accepter.getPeopleToContact();
 }
