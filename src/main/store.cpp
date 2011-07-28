@@ -19,7 +19,10 @@
 
 Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
 	storeName(storeName),
-	configuration(configuration)
+	configuration(configuration),
+	location(configuration.getLocation(storeName)),
+	alwaysPresent(configuration.getAlwaysPresent(storeName)),
+	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName))
 {
 
 }

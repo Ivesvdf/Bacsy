@@ -27,10 +27,11 @@
 
 int main()
 {
+	CascadingFileConfiguration configuration(".bacsy");
+
 	BacsyServer server;
 	server.start();
 
-	CascadingFileConfiguration configuration(".bacsy");
 	BackupEngine backupEngine(configuration);
 	backupEngine.start();
 	

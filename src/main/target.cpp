@@ -219,6 +219,12 @@ void Target::run(Poco::Timer& timer)
 
 	std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
 
+	for(std::vector<Poco::Net::SocketAddress>::const_iterator it = peopleToContact.begin();
+			it != peopleToContact.end();
+			it++)
+	{
+		LOGI("Contacting " + it->toString());
+	}
 
 	/*
 

@@ -29,6 +29,10 @@ public:
 private:
 	const std::string storeName;
 	const CascadingFileConfiguration& configuration;
+
+	const std::string location;
+	const bool alwaysPresent;
+	const unsigned int minPriorityForStoring;
 };
 
 #endif

@@ -64,3 +64,8 @@ std::list<Store*> StoreManager::buildStores(const CascadingFileConfiguration& co
 			
 	return stores;
 }
+
+size_t StoreManager::getStoreCount() const
+{
+	return stores.size();
+}
