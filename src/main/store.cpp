@@ -1,6 +1,3 @@
-#ifndef INFO_H
-#define INFO_H
-
 /*
  * Copyright (C) 2011  Ives van der Flaas
  *
@@ -18,13 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
+#include "store.h"
 
-const std::string bacsyVersion = "@VERSION_MAJOR@.@VERSION_MINOR@";
-const std::string bacsyBuild = "@CURRENT_BUILD_NUM@";
-const std::string bacsyProtocolString = "BACSY " + bacsyVersion;
+Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
+	storeName(storeName),
+	configuration(configuration)
+{
 
-const unsigned int MULTICASTPORT = 2155;
-const unsigned int MULTICASTRESPONSEPORT = MULTICASTPORT+1;
-const std::string MULTICASTGROUP = "239.255.255.249";
-#endif
+}

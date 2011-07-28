@@ -31,8 +31,6 @@ void MulticastResponder::start()
 
 void MulticastResponder::respondToMulticast(Poco::Net::SocketAddress address, const std::string& what)
 {
-	LOGI("Received msg: " + what);
-
 	std::vector<std::string> parts = StringUtils::split(what, "\n");
 
 	if(parts.size() != 2 || parts[0] != bacsyProtocolString)

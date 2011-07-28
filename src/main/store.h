@@ -1,6 +1,3 @@
-#ifndef INFO_H
-#define INFO_H
-
 /*
  * Copyright (C) 2011  Ives van der Flaas
  *
@@ -18,13 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef STORE_H
+#define STORE_H
+
 #include <string>
+#include "cascadingFileConfiguration.h"
 
-const std::string bacsyVersion = "@VERSION_MAJOR@.@VERSION_MINOR@";
-const std::string bacsyBuild = "@CURRENT_BUILD_NUM@";
-const std::string bacsyProtocolString = "BACSY " + bacsyVersion;
+class Store
+{
+public:
+	Store(const std::string storeName, const CascadingFileConfiguration& configuration);
 
-const unsigned int MULTICASTPORT = 2155;
-const unsigned int MULTICASTRESPONSEPORT = MULTICASTPORT+1;
-const std::string MULTICASTGROUP = "239.255.255.249";
+private:
+	const std::string storeName;
+	const CascadingFileConfiguration& configuration;
+};
+
 #endif
