@@ -32,6 +32,7 @@
 #include "timerStringParser.h"
 #include "info.h"
 #include "datagramHelper.h"
+#include "jsonHelper.h"
 
 bool Target::isPath(std::string s) const
 {
@@ -223,7 +224,10 @@ void Target::run(Poco::Timer& timer)
 			it != peopleToContact.end();
 			it++)
 	{
-		LOGI("Contacting " + it->toString());
+		Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
+		LOGI("Contacting " + contact.toString());
+
+		sendTo(contact);
 	}
 
 	/*
@@ -242,6 +246,18 @@ void Target::run(Poco::Timer& timer)
 	LOGI("Target " + name + " is finished.");
 }
 
+void Target::sendTo(const Poco::Net::SocketAddress& who)
+{
+	Poco::Net::DialogSocket socket(who);
+	socket.sendMessage(bacsyProtocolString);
+	Json::Value root;
+	root["type"] = "store";
+	root["host"] = "IX";
+	root["user"] = "ives";
+	root["target"] = name;
+	socket.sendMessage(JsonHelper::write(root));
+}
+
 void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
 {
 	Json::Value root;
@@ -249,7 +265,6 @@ void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::Socket
 	root["target"] = name;
 	root["priority"] = priority;
 
-	Json::FastWriter writer;
 	const std::string msg = DatagramHelper::toMessage(root);
 
 	LOGI("Sending canStore message");
@@ -276,20 +291,17 @@ class CanStoreResponseAccepter
 				return;
 			}
 
-			std::stringstream stream;
-			stream << parts[1];
-			Json::Reader reader;
-			Json::Value root;
-			if (!reader.parse(stream, root))
+			try
 			{
-				LOGW("Could not parse " + what);
+				const Json::Value root = JsonHelper::read(parts[1]);
+				if(root["type"] != "readyToStore" || root["target"] != targetName)
+					return;
+			}
+			catch(const std::runtime_error& e)
+			{
+				LOGW(e.what());
 				return;
 			}	
-
-			if(root["type"] != "readyToStore" || root["target"] != targetName)
-			{
-				return;
-			}
 
 			LOGI(std::string("Received valid MC message -- adding ") + who.toString());
 			peopleToContact.push_back(who);

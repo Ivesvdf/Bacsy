@@ -18,6 +18,7 @@
 #ifndef BACSYCONNECTION_H
 #define BACSYCONNECTION_H
 
+#include <string>
 #include "Poco/Net/StreamSocket.h"
 #include "Poco/Net/DialogSocket.h"
 #include "Poco/Net/TCPServerConnection.h" 
@@ -26,7 +27,11 @@ class BacsyConnection : public Poco::Net::TCPServerConnection
 {
 public:
 	BacsyConnection(const Poco::Net::StreamSocket& socket);
-	void storeBackup(Poco::Net::DialogSocket& ds);
+	void storeBackup(
+			Poco::Net::DialogSocket& ds,
+			const std::string host,
+			const std::string user,
+			const std::string target);
 	void backupFile(std::string file);
 	virtual void run();
 };

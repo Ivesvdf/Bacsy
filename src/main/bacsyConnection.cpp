@@ -19,6 +19,8 @@
 #include "bacsyConnection.h"
 #include "stringUtils.h"
 #include "info.h"
+#include "jsonHelper.h"
+#include "json/json.h"
 
 
 BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket) : Poco::Net::TCPServerConnection(socket)
@@ -41,30 +43,35 @@ void BacsyConnection::run()
 		return;
 	}
 
-	std::string command;
-	ds.receiveMessage(command);
+	std::string json;
+	ds.receiveMessage(json);
+	Json::Value root = JsonHelper::read(json);
 
-	if(command == "STORE")
+	if(root["type"] == "store")
 	{
-		storeBackup(ds);
+		storeBackup(
+				ds,
+				root["host"].asString(),
+				root["user"].asString(),
+				root["target"].asString());
 	}
 	else
 	{
-		LOGE("Unrecognized command: " + command + " -- stopping connection");
+		LOGE("Unrecognized command: " + json + " -- stopping connection");
 		return;
 	}
 	LOGI("Naturally stopping connection with client");
 }
 
 
-void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds)
+void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds, 
+		const std::string host,
+		const std::string user,
+		const std::string target)
 {
 	LOGI("Storing backup.");
 
-	std::string hostIdentification;
-	ds.receiveMessage(hostIdentification);
-
-	LOGI("Backup is for " + hostIdentification);
+	LOGI("Backup is for " + host);
 
 	// Test if there are any stores available
 

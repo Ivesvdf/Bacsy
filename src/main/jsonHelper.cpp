@@ -15,19 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INFO_H
-#define INFO_H
+#include <sstream>
+#include <stdexcept>
+#include "jsonHelper.h"
+#include "stringUtils.h"
 
-#include <string>
 
-const std::string bacsyVersion = "@VERSION_MAJOR@.@VERSION_MINOR@";
-const std::string bacsyBuild = "@CURRENT_BUILD_NUM@";
-const std::string bacsyProtocolString = "BACSY " + bacsyVersion;
+std::string JsonHelper::write(const Json::Value& root)
+{
+	Json::FastWriter writer;
+	return StringUtils::rstrip(writer.write(root), "\n");	
+}
 
-const unsigned int MULTICASTPORT = 2155;
-const unsigned int MULTICASTRESPONSEPORT = MULTICASTPORT+1;
-const std::string MULTICASTGROUP = "239.255.255.249";
 
-const int BACSYSERVERPORT = 26951;
+Json::Value JsonHelper::read(const std::string& input)
+{
+	std::stringstream stream;
+	stream << input;
+	Json::Reader reader;
+	Json::Value root;
+	if (!reader.parse(stream, root))
+		throw std::runtime_error("Could not parse Json input " + input);
 
-#endif
+	return root;
+}

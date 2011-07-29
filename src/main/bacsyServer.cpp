@@ -16,11 +16,12 @@
  */
 
 #include "bacsyServer.h"
+#include "info.h"
 
 BacsyServer::BacsyServer(): 
 	Poco::Net::TCPServer(
 			new TCPServerConnectionFactoryImpl<BacsyConnection>(),
-			Poco::Net::ServerSocket(26951),
+			Poco::Net::ServerSocket(BACSYSERVERPORT),
 			0)
 {
 

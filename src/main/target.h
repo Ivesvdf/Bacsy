@@ -55,6 +55,7 @@ private:
 
 	std::vector<Poco::Net::SocketAddress> findOutWhoToContact();
 	void sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const;
+	void sendTo(const Poco::Net::SocketAddress& to);
 
 public:
 	Target(std::string sectionName, const CascadingFileConfiguration& config);

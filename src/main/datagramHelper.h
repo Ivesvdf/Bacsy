@@ -20,9 +20,8 @@
 
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
-#include "json/json.h"
-#include "stringUtils.h"
 #include "info.h"
+#include "jsonHelper.h"
 
 class DatagramHelper
 {
@@ -62,8 +61,12 @@ class DatagramHelper
 
 		static std::string toMessage(Json::Value& root)
 		{
-				Json::FastWriter writer;
-				return StringUtils::rstrip(bacsyProtocolString + "\n" + writer.write(root), "\n");
+			return bacsyProtocolString + "\n" + JsonHelper::write(root);
+		}
+
+		static std::string toMessageNL(Json::Value& root)
+		{
+			return toMessage(root) + "\n";
 		}
 };
 
