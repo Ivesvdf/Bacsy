@@ -16,7 +16,10 @@
  */
 
 #include "Poco/File.h"
-#include "Poco/Glob.h"
+#include "Poco/FileStream.h"
+#include "Poco/Net/SocketStream.h"
+#include "Poco/Environment.h"
+#include "Poco/StreamCopier.h"
 #include "Poco/Exception.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
@@ -48,6 +51,7 @@ Target::Target(std::string section, const CascadingFileConfiguration& config):
 	maxBackups(config.getMaxBackups(section)),
 	preferredOrder(config.getPreferredOrder(section)),
 	distribution(config.getDistribution(section)),
+	hostIdentification(config.getHostIdentification(section)),
 	timers(createTimers(config.getTimerString(section)))
 {
 	// Handle excludes
@@ -126,76 +130,6 @@ Target::~Target()
 		delete (*it);
 	}
 }
-void Target::backupPath(const Poco::File& path) const
-{
-	std::string pathString = path.path();
-	LOGI("Filename = " + pathString);
-
-	if(pathExcludes.count(StringUtils::rstrip(pathString, "/\\")) == 1)
-	{
-		LOGI("Is in excludes -- not exploring!");
-		return;
-	}
-
-	if(!path.exists())
-	{
-		LOGE("Could not backup file " + pathString + 
-				" because it does not exist.");
-		return;
-	}
-
-	if(!path.canRead())
-	{
-		LOGE("Could not backup file " + pathString + 
-				" because this user does not have read permissions.");
-		return;
-	}
-
-	for(std::vector<std::string>::const_iterator it = pathGlobExcludes.begin();
-			it != pathGlobExcludes.end();
-			it++)
-	{
-		Poco::Glob glob(*it);
-		if(glob.match(pathString))
-		{
-			LOGI("Not continuing; exclude path glob " + *it + " matched.");
-			return;
-		}
-	}
-
-	const std::string localFile = pathString.substr(pathString.find_last_of("/\\")+1);
-	for(std::vector<std::string>::const_iterator it = fileGlobExcludes.begin();
-			it != fileGlobExcludes.end();
-			it++)
-	{
-		Poco::Glob glob(*it);
-		if(glob.match(localFile))
-		{
-			LOGI("Not continuing; exclude file glob " + *it + " matched.");
-			return;
-		}
-	}
-
-	if(path.isDirectory())
-	{
-		LOGI("Path is a directory -- expanding.");
-		std::vector<Poco::File> directoryContents;
-		path.list(directoryContents);
-
-		for(std::vector<Poco::File>::const_iterator it = directoryContents.begin();
-				it != directoryContents.end();
-				it++)
-		{
-			backupPath(*it);
-		}
-	}
-	else // Is file
-	{
-		LOGI("Path is a file -- not expanding.");
-		LOGI("Modified date = " + StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
-	}
-
-}
 
 void Target::start()
 {
@@ -230,21 +164,35 @@ void Target::run(Poco::Timer& timer)
 		sendTo(contact);
 	}
 
-	/*
-
-	for( std::vector<std::string>::const_iterator it = includes.begin();
-			it != includes.end();
-			it++)
-	{
-		backupPath(Poco::File(*it));
-	}
-
-	*/
-
 	mutex.unlock();
 
 	LOGI("Target " + name + " is finished.");
 }
+
+class FileSender
+{
+public:
+	FileSender(Poco::Net::DialogSocket& socket):
+		socket(socket)
+	{}
+
+	inline void operator()(const Poco::File& file)
+	{
+		LOGI("Should be sending file...");
+		LOGI("Size of file = " + StringUtils::toString(file.getSize()));
+
+		Poco::FileInputStream input(file.path());
+		Poco::Net::SocketStream output(socket);
+
+		socket.sendMessage(file.path());
+		socket.sendMessage(StringUtils::toString(file.getSize()));
+
+		Poco::StreamCopier::copyStream(input, output, 65536);
+	}
+
+private:
+	Poco::Net::DialogSocket& socket;
+};
 
 void Target::sendTo(const Poco::Net::SocketAddress& who)
 {
@@ -252,10 +200,17 @@ void Target::sendTo(const Poco::Net::SocketAddress& who)
 	socket.sendMessage(bacsyProtocolString);
 	Json::Value root;
 	root["type"] = "store";
-	root["host"] = "IX";
-	root["user"] = "ives";
+	root["host"] = hostIdentification;
 	root["target"] = name;
 	socket.sendMessage(JsonHelper::write(root));
+
+	FileSender sender(socket);
+	for( std::vector<std::string>::const_iterator it = includes.begin();
+			it != includes.end();
+			it++)
+	{
+		backupPath(Poco::File(*it), sender);
+	}
 }
 
 void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const

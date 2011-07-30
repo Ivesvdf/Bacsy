@@ -30,9 +30,8 @@ public:
 	void storeBackup(
 			Poco::Net::DialogSocket& ds,
 			const std::string host,
-			const std::string user,
 			const std::string target);
-	void backupFile(std::string file);
+	void backupFile(Poco::Net::DialogSocket& ds, std::string file, size_t size);
 	virtual void run();
 };
 

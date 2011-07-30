@@ -15,9 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Poco/FileStream.h"
+#include "Poco/Net/SocketStream.h"
+#include "Poco/Environment.h"
+#include "Poco/StreamCopier.h"
 #include "woodcutter/woodcutter.h"
+#include "DialogSocketStream.h"
 #include "bacsyConnection.h"
 #include "stringUtils.h"
+#include "streamUtilities.h"
 #include "info.h"
 #include "jsonHelper.h"
 #include "json/json.h"
@@ -52,7 +58,6 @@ void BacsyConnection::run()
 		storeBackup(
 				ds,
 				root["host"].asString(),
-				root["user"].asString(),
 				root["target"].asString());
 	}
 	else
@@ -66,7 +71,6 @@ void BacsyConnection::run()
 
 void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds, 
 		const std::string host,
-		const std::string user,
 		const std::string target)
 {
 	LOGI("Storing backup.");
@@ -76,15 +80,32 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	// Test if there are any stores available
 
 	std::string file;
+	std::string size;
 	std::string checksum;
-	while(ds.receiveMessage(file) && ds.receiveMessage(checksum))
+	while(ds.receiveMessage(file) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
 	{
-		backupFile(file);
+		LOGI("Receiving file = " + file);
+		LOGI("Receiving size = " + size);
+		backupFile(ds, file, StringUtils::fromString<size_t>(size));
 	}
 }
 
-void BacsyConnection::backupFile(std::string file)
+int i = 0;
+void BacsyConnection::backupFile(Poco::Net::DialogSocket& ds, std::string file, size_t size)
 {
 	LOGI("Pushing file " + file + " to the backup queue.");
+
+	Poco::FileOutputStream output("/tmp/bla.txt");
+
+	std::streamsize received = StreamUtilities::copyStream(ds, output, 65536, size);
+	if(received != static_cast<std::streamsize>(size))
+	{
+		LOGE("Received sizes do not match -- I should do something about this.");
+	}
+	LOGI("Bytes received = " + StringUtils::toString(received));
+
+	output.close();
+	if(i++ == 9)
+		abort();
 }
 
