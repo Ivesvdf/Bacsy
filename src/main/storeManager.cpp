@@ -69,3 +69,26 @@ size_t StoreManager::getStoreCount() const
 {
 	return stores.size();
 }
+
+class StorePriorityLower
+{
+public:
+	StorePriorityLower(unsigned int priority):
+		priority(priority)
+	{}
+
+	bool operator()(Store* store)
+	{
+		return store->getMinPriorityForStoring() > priority;
+	}
+private:
+	unsigned int priority;
+};
+
+std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
+{
+	std::list<Store*> copy(stores);
+	copy.remove_if(StorePriorityLower(minPriority));
+
+	return copy;
+}

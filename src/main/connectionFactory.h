@@ -15,25 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSYCONNECTION_H
-#define BACSYCONNECTION_H
+#ifndef CONNECTION_FACTORY_H
+#define CONNECTION_FACTORY_H
 
-#include <string>
-#include "Poco/Net/StreamSocket.h"
-#include "Poco/Net/DialogSocket.h"
-#include "Poco/Net/TCPServerConnection.h" 
+#include "Poco/Net/TCPServerConnectionFactory.h"
+#include "bacsyConnection.h"
 #include "storeManager.h"
 
-class BacsyConnection : public Poco::Net::TCPServerConnection
+class ConnectionFactory: public Poco::Net::TCPServerConnectionFactory
 {
 public:
-	BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager);
-	void storeBackup(
-			Poco::Net::DialogSocket& ds,
-			const std::string host,
-			const std::string target);
-	void backupFile(Poco::Net::DialogSocket& ds, std::string file, size_t size);
-	virtual void run();
+	ConnectionFactory(StoreManager& manager):
+		manager(manager)
+	{}
+
+	virtual Poco::Net::TCPServerConnection* createConnection(const Poco::Net::StreamSocket& socket)
+	{
+		return new BacsyConnection(socket, manager);
+	}	
+
+private:
+	StoreManager& manager;
 };
 
 #endif

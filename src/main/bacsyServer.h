@@ -27,7 +27,7 @@ using Poco::Net::TCPServerConnectionFactoryImpl;
 class BacsyServer : public Poco::Net::TCPServer
 {
 public:
-	BacsyServer();
+	BacsyServer(StoreManager& storeManager);
 };
 
 #endif

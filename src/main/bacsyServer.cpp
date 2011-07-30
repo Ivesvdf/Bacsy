@@ -17,10 +17,11 @@
 
 #include "bacsyServer.h"
 #include "info.h"
+#include "connectionFactory.h"
 
-BacsyServer::BacsyServer(): 
+BacsyServer::BacsyServer(StoreManager& storeManager): 
 	Poco::Net::TCPServer(
-			new TCPServerConnectionFactoryImpl<BacsyConnection>(),
+			new ConnectionFactory(storeManager),
 			Poco::Net::ServerSocket(BACSYSERVERPORT),
 			0)
 {

@@ -82,7 +82,15 @@ class CascadingFileConfiguration
 		{
 			T rv = defaultValue;
 
-			rv = config.get<T>(globalSectionName, keyname, rv);
+			try
+			{
+				rv = config.get<T>(globalSectionName, keyname, rv);
+			}
+			catch(NoSuchSectionException& e)
+			{
+				// Ignore, global sections aren't obligatory
+			}
+
 			rv = config.get<T>(section, keyname, rv);
 
 			return rv;

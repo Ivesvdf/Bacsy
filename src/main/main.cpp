@@ -28,8 +28,9 @@
 int main()
 {
 	CascadingFileConfiguration configuration(".bacsy");
+	StoreManager storeManager(configuration);
 
-	BacsyServer server;
+	BacsyServer server(storeManager);
 	server.start();
 
 	BackupEngine backupEngine(configuration);

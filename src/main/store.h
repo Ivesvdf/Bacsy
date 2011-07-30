@@ -26,6 +26,7 @@ class Store
 public:
 	Store(const std::string storeName, const CascadingFileConfiguration& configuration);
 
+	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
 private:
 	const std::string storeName;
 	const CascadingFileConfiguration& configuration;

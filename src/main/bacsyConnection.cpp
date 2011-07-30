@@ -20,16 +20,16 @@
 #include "Poco/Environment.h"
 #include "Poco/StreamCopier.h"
 #include "woodcutter/woodcutter.h"
-#include "DialogSocketStream.h"
+#include "json/json.h"
 #include "bacsyConnection.h"
 #include "stringUtils.h"
 #include "streamUtilities.h"
 #include "info.h"
 #include "jsonHelper.h"
-#include "json/json.h"
 
 
-BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket) : Poco::Net::TCPServerConnection(socket)
+BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) : 
+	Poco::Net::TCPServerConnection(socket)
 {
 
 }
@@ -90,10 +90,12 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	}
 }
 
-int i = 0;
-void BacsyConnection::backupFile(Poco::Net::DialogSocket& ds, std::string file, size_t size)
+void BacsyConnection::backupFile(
+		Poco::Net::DialogSocket& ds,
+		std::string filename,
+		size_t size)
 {
-	LOGI("Pushing file " + file + " to the backup queue.");
+	LOGI("Pushing file " + filename + " to the backup queue.");
 
 	Poco::FileOutputStream output("/tmp/bla.txt");
 
@@ -105,7 +107,5 @@ void BacsyConnection::backupFile(Poco::Net::DialogSocket& ds, std::string file, 
 	LOGI("Bytes received = " + StringUtils::toString(received));
 
 	output.close();
-	if(i++ == 9)
-		abort();
 }
 

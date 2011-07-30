@@ -29,6 +29,7 @@ public:
 	~StoreManager();
 
 	size_t getStoreCount() const;
+	std::list<Store*> getStores(unsigned int minPriority) const;
 private:
 	static std::list<Store*> buildStores(const CascadingFileConfiguration& configuration);
 	const CascadingFileConfiguration& configuration;
