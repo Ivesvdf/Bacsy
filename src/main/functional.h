@@ -15,36 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSYCONNECTION_H
-#define BACSYCONNECTION_H
+#ifndef FUNCTIONAL_H
+#define FUNCTIONAL_H
 
-#include <string>
-#include "Poco/Net/StreamSocket.h"
-#include "Poco/Net/DialogSocket.h"
-#include "Poco/Net/TCPServerConnection.h" 
-#include "storeManager.h"
-
-class BacsyConnection : public Poco::Net::TCPServerConnection
+template <class S, class A>
+class fun1_ref_t : public std::unary_function<A,S>
 {
-public:
-	BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager);
-	void storeBackup(
-			Poco::Net::DialogSocket& ds,
-			const std::string host,
-			const std::string target,
-			const unsigned int priority,
-			const std::string runID);
-
-	void backupFile(
-			Poco::Net::DialogSocket& ds,
-			std::string file,
-			size_t size,
-			unsigned int priority);
-
-	virtual void run();
-
-private:
-	StoreManager& storeManager;
+	S (*pmem)(A);
+	public:
+	explicit fun1_ref_t ( S (*p)(A) ) : pmem (p) {}
+	S operator() (A x) const
+	{ return (*pmem)(x); }
 };
+
+template <class S, class A>
+fun1_ref_t<S,A> fun_ref (S (*f)(A))
+{ 
+	return fun1_ref_t<S,A>(f); 
+}
+
 
 #endif

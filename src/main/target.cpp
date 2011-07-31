@@ -202,6 +202,11 @@ void Target::sendTo(const Poco::Net::SocketAddress& who)
 	root["type"] = "store";
 	root["host"] = hostIdentification;
 	root["target"] = name;
+	root["priority"] = priority;
+	root["runID"] = Poco::DateTimeFormatter::format(
+			Poco::Timestamp(),
+			Poco::DateTimeFormat::ISO8601_FORMAT);
+
 	socket.sendMessage(JsonHelper::write(root));
 
 	FileSender sender(socket);
