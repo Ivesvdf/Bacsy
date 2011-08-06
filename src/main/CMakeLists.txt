@@ -23,5 +23,5 @@ add_library(common STATIC configurationFile stringUtils
 	storeManager store jsonHelper streamUtilities)
 
 add_executable(bacsy main.cpp)
-target_link_libraries(bacsy gtest ${POCO_LIBRARIES} 
-	${RSYNC_LIBRARIES} common json)
+target_link_libraries(bacsy 
+	${RSYNC_LIBRARIES} common ${POCO_LIBRARIES} json ${PLATFORMDEPENDENTLIBS})

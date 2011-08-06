@@ -20,6 +20,7 @@
 
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
+#include "Poco/Exception.h"
 #include "info.h"
 #include "jsonHelper.h"
 

@@ -6,9 +6,9 @@ find_path( POCO_INCLUDE_DIRS 	Poco/
 )		
 
 SET(POCO_COMPONENTS
-	PocoFoundation
 	PocoNet
 	PocoUtil
+	PocoFoundation
 	)
 
 SET(POCO_LIBRARIES "")

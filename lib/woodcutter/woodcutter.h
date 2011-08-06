@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <fstream>
 
+#undef ERROR
+
 const int INFO = 0, WARNING = 1, ERROR = 2, FATAL = 3;
 
 const std::string sevletters[4] = {
