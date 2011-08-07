@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <functional>
 #include "Poco/Path.h"
+#include "Poco/File.h"
 #include "Poco/Ascii.h"
 #include "Poco/FileStream.h"
 #include "Poco/Net/SocketStream.h"
@@ -107,7 +108,8 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	{
 		Poco::Path originalPath(file);
 
-		const Poco::Path storePath("/tmp/backup/");
+		Poco::Path storePath(Poco::Path::temp());
+		storePath.pushDirectory("backup");
 		Poco::Path newPath = storePath;
 		std::string nodeIdentification(originalPath.getNode());
 
@@ -132,24 +134,39 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			newPath.pushDirectory(originalPath[i]);
 		}
 
+		Poco::File newPathFile(newPath);
+		if(!newPathFile.exists())
+			newPathFile.createDirectories();
+
 		newPath.setFileName(originalPath.getFileName());
 
 		LOGI("Receiving file = " + newPath.toString());
 		LOGI("Receiving size = " + size);
-		backupFile(ds, file, StringUtils::fromString<size_t>(size), priority);
+		backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
 	}
 }
 
 void BacsyConnection::backupFile(
 		Poco::Net::DialogSocket& ds,
-		std::string filename,
+		std::string targetFile,
 		size_t size,
 		unsigned int priority)
 {
-	LOGI("Pushing file " + filename + " to the backup queue.");
+	LOGI("Pushing file " + targetFile + " to the backup queue.");
 
-	Poco::FileOutputStream output("/tmp/bla.txt");
+	Poco::FileOutputStream output;
+	try
+	{
+		output.open(targetFile, std::ios::out | std::ios::trunc);
+	}
+	catch(Poco::FileException& e)
+	{
+		LOGE("Cannot store file " + targetFile + " because of exception: " + e.what());
+		return;
+	}
 
+	// We must keep receiving the file! If not the protocol gets out of sync
+	// and we're screwed. 
 	std::streamsize received = StreamUtilities::copyStream(ds, output, 65536, size);
 	if(received != static_cast<std::streamsize>(size))
 	{

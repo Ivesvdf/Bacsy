@@ -37,7 +37,7 @@ public:
 
 	void backupFile(
 			Poco::Net::DialogSocket& ds,
-			std::string file,
+			std::string targetFile,
 			size_t size,
 			unsigned int priority);
 
