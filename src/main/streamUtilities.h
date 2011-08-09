@@ -34,7 +34,7 @@ public:
 class SimpleOStream
 {
 public:
-	virtual void write(char* s, std::streamsize n)=0;
+	virtual void write(const char* const s, std::streamsize n)=0;
 	virtual bool isOk() const = 0;
 };
 
@@ -57,7 +57,7 @@ class SimpleOStreamStream : public SimpleOStream
 {
 public:
 	SimpleOStreamStream(std::ostream& ostream);
-	void write(char* s, std::streamsize n);
+	void write(const char* const s, std::streamsize n);
 	bool isOk() const;
 private:
 	std::ostream& ostream;
@@ -67,7 +67,7 @@ class SimpleDialogSocketStream : public SimpleIOStream
 {
 	public:
 		SimpleDialogSocketStream(Poco::Net::DialogSocket& socket);
-		void write(char* s, std::streamsize n);
+		void write(const char* const s, std::streamsize n);
 		std::streamsize read(char* s, std::streamsize n);
 		bool isOk() const;
 
@@ -84,9 +84,7 @@ public:
 	SimpleTee(std::vector<SimpleOStream*> outputs);
 
 	void addOutput(SimpleOStream& ostream);
-
-	virtual void write(char* s, std::streamsize n);
-
+	virtual void write(const char* const s, std::streamsize n);
 	virtual bool isOk() const;
 private:
 	std::vector<SimpleOStream*> outputs;
@@ -121,6 +119,11 @@ public:
 			unsigned bufferSize,
 			std::streamsize limit);
 
+	static std::streamsize copyStream(
+			Poco::Net::DialogSocket& inSocket,
+			SimpleOStream& ostream,
+			unsigned bufferSize,
+			std::streamsize limit);
 private:
 	template<typename READCLASS, typename WRITECLASS>
 		static std::streamsize copyStreamImpl(

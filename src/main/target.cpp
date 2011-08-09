@@ -206,6 +206,8 @@ void Target::sendTo(const Poco::Net::SocketAddress& who)
 	root["runID"] = Poco::DateTimeFormatter::format(
 			Poco::Timestamp(),
 			Poco::DateTimeFormat::ISO8601_FORMAT);
+	// TODO: Change this to an actual limit...
+	root["maxStoreTimes"] = maxBackups;
 
 	socket.sendMessage(JsonHelper::write(root));
 

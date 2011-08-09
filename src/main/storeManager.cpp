@@ -79,7 +79,7 @@ public:
 
 	bool operator()(Store* store)
 	{
-		return store->getMinPriorityForStoring() > priority;
+		return store->getMinPriorityForStoring() < priority;
 	}
 private:
 	unsigned int priority;

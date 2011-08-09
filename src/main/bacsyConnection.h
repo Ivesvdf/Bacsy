@@ -18,6 +18,7 @@
 #ifndef BACSYCONNECTION_H
 #define BACSYCONNECTION_H
 
+#include <list>
 #include <string>
 #include "Poco/Net/StreamSocket.h"
 #include "Poco/Net/DialogSocket.h"
@@ -33,7 +34,17 @@ public:
 			const std::string host,
 			const std::string target,
 			const unsigned int priority,
-			const std::string runID);
+			const std::string runID,
+			const unsigned int maxStoreTimes);
+
+	void storeInStores(
+			Poco::Net::DialogSocket& ds,
+			const std::string host,
+			const std::string target,
+			const unsigned int priority,
+			const std::string runID,
+			std::list<Store*> storeTo,
+			const std::string ancestor);
 
 	void backupFile(
 			Poco::Net::DialogSocket& ds,

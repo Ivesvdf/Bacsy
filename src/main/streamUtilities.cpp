@@ -57,6 +57,16 @@ std::streamsize StreamUtilities::copyStream(
 	return copyStreamImpl(in, out, bufferSize, limit);
 }
 
+std::streamsize StreamUtilities::copyStream(
+			Poco::Net::DialogSocket& inSocket,
+			SimpleOStream& ostream,
+			unsigned bufferSize,
+			std::streamsize limit)
+{
+	SimpleDialogSocketStream in(inSocket);
+	return copyStreamImpl(in, ostream, bufferSize, limit);
+}
+
 SimpleIStreamStream::SimpleIStreamStream(std::istream& istream):
 		istream(istream)
 {
@@ -78,7 +88,7 @@ SimpleOStreamStream::SimpleOStreamStream(std::ostream& ostream):
 {
 }
 
-void SimpleOStreamStream::write(char* s, std::streamsize n)
+void SimpleOStreamStream::write(const char* const s, std::streamsize n)
 {
 	ostream.write(s, n);
 }
@@ -93,7 +103,7 @@ SimpleDialogSocketStream::SimpleDialogSocketStream(Poco::Net::DialogSocket& sock
 	ok(true)
 {}
 
-void SimpleDialogSocketStream::write(char* s, std::streamsize n)
+void SimpleDialogSocketStream::write(const char* const s, std::streamsize n)
 {
 	socket.sendBytes(s, n);
 }
@@ -129,7 +139,7 @@ void SimpleTee::addOutput(SimpleOStream& ostream)
 	outputs.push_back(&ostream);
 }
 
-void SimpleTee::write(char* s, std::streamsize n)
+void SimpleTee::write(const char* const s, std::streamsize n)
 {
 	for(std::vector<SimpleOStream*>::iterator it = outputs.begin();
 			it != outputs.end();

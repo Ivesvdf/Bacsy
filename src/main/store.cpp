@@ -15,6 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
+#include <utility>
+#include <functional>
+#include "Poco/File.h"
+#include "Poco/Ascii.h"
+#include "functional.h"
 #include "store.h"
 
 Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
@@ -24,5 +30,57 @@ Store::Store(const std::string storeName, const CascadingFileConfiguration& conf
 	alwaysPresent(configuration.getAlwaysPresent(storeName)),
 	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName))
 {
+	// Create the main directory for this store at start if it doesn't exist
+	Poco::File locationFile(location);
+	if(!locationFile.exists())
+		locationFile.createDirectories();
+}
 
+std::string Store::getAncestorForNewRun(const std::string& ancestor)
+{
+	return "";
+}
+
+Poco::FileOutputStream& Store::getOutputForCompleteFile(
+		const Poco::Path& originalPath,
+		const std::string& host, 
+		const std::string& target, 
+		const std::string& runID,
+		Poco::FileOutputStream& output)
+{
+	Poco::Path storePath(Poco::Path::temp());
+	storePath.pushDirectory("backup" + storeName);
+	Poco::Path newPath = storePath;
+	std::string nodeIdentification(originalPath.getNode());
+
+	newPath.pushDirectory(host);
+	newPath.pushDirectory(target + "_" + runID);
+
+	// Keep only alphabetic characters
+	nodeIdentification.erase(
+			std::remove_if(
+				nodeIdentification.begin(),
+				nodeIdentification.end(),
+				std::not1(fun_ref(Poco::Ascii::isAlpha))),
+			nodeIdentification.end());
+
+	if(nodeIdentification.empty())
+		nodeIdentification = "root";
+
+	newPath.pushDirectory(nodeIdentification);
+
+	for(int i = 0; i < originalPath.depth(); i++)
+	{
+		newPath.pushDirectory(originalPath[i]);
+	}
+
+	Poco::File newPathFile(newPath);
+	if(!newPathFile.exists())
+		newPathFile.createDirectories();
+
+	newPath.setFileName(originalPath.getFileName());
+
+	output.open(newPath.toString(), std::ios::out | std::ios::trunc);
+
+	return output;
 }

@@ -19,6 +19,8 @@
 #define STORE_H
 
 #include <string>
+#include "Poco/FileStream.h"
+#include "Poco/Path.h"
 #include "cascadingFileConfiguration.h"
 
 class Store
@@ -27,6 +29,14 @@ public:
 	Store(const std::string storeName, const CascadingFileConfiguration& configuration);
 
 	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
+	std::string getAncestorForNewRun(const std::string& ancestor);
+
+	 Poco::FileOutputStream& getOutputForCompleteFile(
+			const Poco::Path& originalPath,
+			const std::string& host,
+			const std::string& target,
+			const std::string& runID,
+			Poco::FileOutputStream& output);
 private:
 	const std::string storeName;
 	const CascadingFileConfiguration& configuration;

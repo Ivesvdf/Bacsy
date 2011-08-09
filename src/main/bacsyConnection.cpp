@@ -16,6 +16,7 @@
  */
 
 #include <algorithm>
+#include <utility>
 #include <functional>
 #include "Poco/Path.h"
 #include "Poco/File.h"
@@ -70,7 +71,8 @@ void BacsyConnection::run()
 					root["host"].asString(),
 					root["target"].asString(),
 					root["priority"].asUInt(),
-					root["runID"].asString());
+					root["runID"].asString(),
+					root["maxStoreTimes"].asUInt());
 		}
 		else
 		{
@@ -94,55 +96,129 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		const std::string host,
 		const std::string target,
 		const unsigned int priority,
-		const std::string runID)
+		const std::string runID,
+		const unsigned int maxStoreTimes)
 {
 	LOGI("Storing backup for " + host);
 
 	// Test if there are any stores available
-	std::list<Store*> usableStores = storeManager.getStores(priority);
+	typedef std::list<Store*> StorePointerList;
+	StorePointerList storesToTry = storeManager.getStores(priority);
+	unsigned int storesSentTo = 0;
 
-	std::string file;
-	std::string size;
-	std::string checksum;
-	while(ds.receiveMessage(file) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
+	std::cerr << storesToTry.size() << "size LEFT" << std::endl;
+	while(maxStoreTimes - storesSentTo > 0 && !storesToTry.empty())
 	{
-		Poco::Path originalPath(file);
+		LOGI("Entering");
+		StorePointerList sendTo;
 
-		Poco::Path storePath(Poco::Path::temp());
-		storePath.pushDirectory("backup");
-		Poco::Path newPath = storePath;
-		std::string nodeIdentification(originalPath.getNode());
+		Store& store = *(*storesToTry.begin());
 
-		newPath.pushDirectory(host);
-		newPath.pushDirectory(target + "_" + runID);
+		// Find the ancestor for this store, we'll later on find all stores
+		// that share this ancestor and give them priority (it saves
+		// bandwidth) 
+		const std::string ancestor = store.getAncestorForNewRun(target);
 
-		// Keep only alphabetic characters
-		nodeIdentification.erase(
-				std::remove_if(
-					nodeIdentification.begin(),
-					nodeIdentification.end(),
-					std::not1(fun_ref(Poco::Ascii::isAlpha))),
-				nodeIdentification.end());
+		unsigned int nrAdded = 0;
 
-		if(nodeIdentification.empty())
-			nodeIdentification = "root";
-
-		newPath.pushDirectory(nodeIdentification);
-
-		for(int i = 0; i < originalPath.depth(); i++)
+		for(StorePointerList::iterator it = storesToTry.begin();
+				it != storesToTry.end();
+				++it)
 		{
-			newPath.pushDirectory(originalPath[i]);
+			if(ancestor == (*it)->getAncestorForNewRun(target) && nrAdded < maxStoreTimes - storesSentTo)
+			{
+				sendTo.push_back(*it);
+				nrAdded++;
+			}
 		}
 
-		Poco::File newPathFile(newPath);
-		if(!newPathFile.exists())
-			newPathFile.createDirectories();
+		LOGI("Storing in stores");
+		storeInStores(ds, host, target, priority, runID, sendTo, ancestor);
+		storesSentTo += sendTo.size();
 
-		newPath.setFileName(originalPath.getFileName());
+		for(StorePointerList::iterator it = sendTo.begin();
+				it != sendTo.end();
+				it++)
+		{
+			storesToTry.remove(*it);
+		}
+	}
+	
+}
 
-		LOGI("Receiving file = " + newPath.toString());
-		LOGI("Receiving size = " + size);
-		backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
+
+void BacsyConnection::storeInStores(
+		Poco::Net::DialogSocket& ds,
+		const std::string host,
+		const std::string target,
+		const unsigned int priority,
+		const std::string runID,
+		std::list<Store*> storeTo,
+		const std::string ancestor)
+{
+	if(ancestor.length() == 0)
+	{
+		LOGI("No ancestor");
+		std::string file;
+		std::string size;
+		std::string checksum;
+		while(ds.receiveMessage(file) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
+		{
+			const Poco::Path originalPath(file);
+
+
+			LOGI("Receiving size = " + size);
+			//backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
+
+			SimpleTee tee;
+
+			std::list<std::pair<Poco::FileOutputStream*, SimpleOStreamStream*> > pointers;
+
+			for(std::list<Store*>::iterator it = storeTo.begin();
+					it != storeTo.end();
+					++it)
+			{
+				Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream();
+				try
+				{
+					SimpleOStreamStream* outputStream = new SimpleOStreamStream((*it)->getOutputForCompleteFile(
+								originalPath,
+								host,
+								target,
+								runID,
+								*fileOutputStream));
+					pointers.push_back(std::make_pair(fileOutputStream, outputStream));
+					tee.addOutput(*outputStream);
+				}
+				catch(Poco::FileException& e)
+				{
+					LOGE(std::string("Cannot store file because of exception: ") + e.what());
+				}
+			}
+			
+			// We must keep receiving the file! If not the protocol gets out of sync
+			// and we're screwed. 
+			std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
+			if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
+			{
+				LOGE("Received sizes do not match -- I should do something about this.");
+			}
+			LOGI("Bytes received = " + StringUtils::toString(received));
+
+			for(std::list<std::pair<Poco::FileOutputStream*, SimpleOStreamStream*> >::iterator it = pointers.begin();
+					it != pointers.end();
+					it++)
+			{
+				it->first->close();
+				delete it->first;
+				delete it->second;
+			}
+			
+		}
+	}
+	else
+	{
+		// Not yet implemented
 	}
 }
 
