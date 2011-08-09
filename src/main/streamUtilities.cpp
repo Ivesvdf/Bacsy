@@ -56,3 +56,118 @@ std::streamsize StreamUtilities::copyStream(
 	SimpleDialogSocketStream out(outSocket);
 	return copyStreamImpl(in, out, bufferSize, limit);
 }
+
+SimpleIStreamStream::SimpleIStreamStream(std::istream& istream):
+		istream(istream)
+{
+}
+
+std::streamsize SimpleIStreamStream::read(char* s, std::streamsize n)
+{
+	istream.read(s, n);
+	return istream.gcount();
+}
+
+bool SimpleIStreamStream::isOk() const
+{
+	return istream;
+}
+
+SimpleOStreamStream::SimpleOStreamStream(std::ostream& ostream):
+		ostream(ostream)
+{
+}
+
+void SimpleOStreamStream::write(char* s, std::streamsize n)
+{
+	ostream.write(s, n);
+}
+
+bool SimpleOStreamStream::isOk() const
+{
+	return ostream;
+}
+
+SimpleDialogSocketStream::SimpleDialogSocketStream(Poco::Net::DialogSocket& socket):
+	socket(socket),
+	ok(true)
+{}
+
+void SimpleDialogSocketStream::write(char* s, std::streamsize n)
+{
+	socket.sendBytes(s, n);
+}
+
+std::streamsize SimpleDialogSocketStream::read(char* s, std::streamsize n)
+{
+	const std::streamsize rv = socket.receiveRawBytes(s, n);
+
+	if(rv == 0)
+	{
+		ok = false;
+	}
+
+	return rv;
+}
+
+bool SimpleDialogSocketStream::isOk() const
+{
+	return ok;
+}
+
+SimpleTee::SimpleTee()
+{
+}
+
+SimpleTee::SimpleTee(std::vector<SimpleOStream*> outputs):
+	outputs(outputs)
+{
+}
+
+void SimpleTee::addOutput(SimpleOStream& ostream)
+{
+	outputs.push_back(&ostream);
+}
+
+void SimpleTee::write(char* s, std::streamsize n)
+{
+	for(std::vector<SimpleOStream*>::iterator it = outputs.begin();
+			it != outputs.end();
+			it++)
+	{
+		(*it)->write(s, n);
+	}
+}
+
+bool SimpleTee::isOk() const
+{
+	bool ok = true;
+
+	for(std::vector<SimpleOStream*>::const_iterator it = outputs.begin();
+			it != outputs.end();
+			it++)
+	{
+		if(!(*it)->isOk())
+		{
+			ok = false;
+			break;
+		}
+	}
+
+	return ok;
+}
+
+void MD5OutputStream::write(char* s, std::streamsize n)
+{
+	engine.update(s, n);
+}
+
+bool MD5OutputStream::isOk() const
+{
+	return true;
+}
+
+const Poco::MD5Engine& MD5OutputStream::getEngine() const
+{
+	return engine;
+}

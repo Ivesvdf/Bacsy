@@ -19,84 +19,89 @@
 #define STREAM_UTILITIES_H
 
 #include "Poco/Buffer.h"
+#include "Poco/MD5Engine.h"
 #include "Poco/Net/DialogSocket.h"
 #include "stringUtils.h"
 
 
-class SimpleIStreamStream
+class SimpleIStream
 {
 public:
-	SimpleIStreamStream(std::istream& istream):
-		istream(istream)
-	{}
+	virtual std::streamsize read(char* s, std::streamsize n)=0;
+	virtual bool isOk() const = 0;
+};
 
-	inline std::streamsize read(char* s, std::streamsize n)
-	{
-		istream.read(s, n);
-		return istream.gcount();
-	}
+class SimpleOStream
+{
+public:
+	virtual void write(char* s, std::streamsize n)=0;
+	virtual bool isOk() const = 0;
+};
 
-	inline bool isOk() const
-	{
-		return istream;
-	}
+class SimpleIOStream : public SimpleIStream, SimpleOStream
+{
+
+};
+
+class SimpleIStreamStream : public SimpleIStream
+{
+public:
+	SimpleIStreamStream(std::istream& istream);
+	std::streamsize read(char* s, std::streamsize n);
+	bool isOk() const;
 private:
 	std::istream& istream;
 };
 
-class SimpleOStreamStream
+class SimpleOStreamStream : public SimpleOStream
 {
 public:
-	SimpleOStreamStream(std::ostream& ostream):
-		ostream(ostream)
-	{ }
-
-	inline void write(char* s, std::streamsize n)
-	{
-		ostream.write(s, n);
-	}
-
-	inline bool isOk() const
-	{
-		return ostream;
-	}
+	SimpleOStreamStream(std::ostream& ostream);
+	void write(char* s, std::streamsize n);
+	bool isOk() const;
 private:
 	std::ostream& ostream;
 };
 
-class SimpleDialogSocketStream
+class SimpleDialogSocketStream : public SimpleIOStream
 {
 	public:
-		SimpleDialogSocketStream(Poco::Net::DialogSocket& socket):
-			socket(socket),
-			ok(true)
-		{}
-
-		inline void write(char* s, std::streamsize n)
-		{
-			socket.sendBytes(s, n);
-		}
-
-		inline std::streamsize read(char* s, std::streamsize n)
-		{
-			const std::streamsize rv = socket.receiveRawBytes(s, n);
-
-			if(rv == 0)
-			{
-				ok = false;
-			}
-
-			return rv;
-		}
-
-		inline bool isOk() const
-		{
-			return ok;
-		}
+		SimpleDialogSocketStream(Poco::Net::DialogSocket& socket);
+		void write(char* s, std::streamsize n);
+		std::streamsize read(char* s, std::streamsize n);
+		bool isOk() const;
 
 	private:
 		Poco::Net::DialogSocket& socket;
 		bool ok;
+};
+
+class SimpleTee: public SimpleOStream
+{
+public: 
+	SimpleTee();
+
+	SimpleTee(std::vector<SimpleOStream*> outputs);
+
+	void addOutput(SimpleOStream& ostream);
+
+	virtual void write(char* s, std::streamsize n);
+
+	virtual bool isOk() const;
+private:
+	std::vector<SimpleOStream*> outputs;
+};
+
+class MD5OutputStream : public SimpleOStream
+{
+public:
+	virtual void write(char* s, std::streamsize n);
+
+	virtual bool isOk() const;
+	const Poco::MD5Engine& getEngine() const;
+
+private:
+	Poco::MD5Engine engine;
 };
 
 class StreamUtilities
