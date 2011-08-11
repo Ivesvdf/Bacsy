@@ -19,6 +19,7 @@
 #include <utility>
 #include <functional>
 #include "Poco/Path.h"
+#include "Poco/Exception.h"
 #include "Poco/File.h"
 #include "Poco/Ascii.h"
 #include "Poco/FileStream.h"

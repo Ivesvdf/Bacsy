@@ -43,7 +43,7 @@ StoreManager::StoreManager(const CascadingFileConfiguration& configuration):
 
 StoreManager::~StoreManager()
 {
-	std::for_each(stores.begin(), stores.end(), DeleteObject());
+	std::for_each(stores.begin(), stores.end(), ObjectDeleter());
 }
 
 std::list<Store*> StoreManager::buildStores(const CascadingFileConfiguration& configuration)
