@@ -146,6 +146,20 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	
 }
 
+class FileAssociations
+{
+public:
+	FileAssociations(Poco::FileOutputStream* fileOutputStream, SimpleOStreamStream* ostreamStream, Poco::File file):
+		fileOutputStream(fileOutputStream),
+		ostreamStream(ostreamStream),
+		file(file)
+	{
+	}
+
+	Poco::FileOutputStream* fileOutputStream;
+	SimpleOStreamStream* ostreamStream;
+	Poco::File file;
+};
 
 void BacsyConnection::storeInStores(
 		Poco::Net::DialogSocket& ds,
@@ -156,38 +170,40 @@ void BacsyConnection::storeInStores(
 		std::list<Store*> storeTo,
 		const std::string ancestor)
 {
+
+
 	if(ancestor.length() == 0)
 	{
 		LOGI("No ancestor");
 		std::string file;
 		std::string size;
+		std::string changed;
 		std::string checksum;
-		while(ds.receiveMessage(file) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
+		while(ds.receiveMessage(file) && ds.receiveMessage(changed) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
 		{
-			const Poco::Path originalPath(file);
-
-
 			LOGI("Receiving size = " + size);
 			//backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
 
 			SimpleTee tee;
 
-			std::list<std::pair<Poco::FileOutputStream*, SimpleOStreamStream*> > pointers;
+			std::list<FileAssociations> pointers;
 
 			for(std::list<Store*>::iterator it = storeTo.begin();
 					it != storeTo.end();
 					++it)
 			{
-				Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream();
 				try
 				{
-					SimpleOStreamStream* outputStream = new SimpleOStreamStream((*it)->getOutputForCompleteFile(
+					const Poco::Path originalPath(file);
+
+					Poco::File targetFile = (*it)->getOutputForCompleteFile(
 								originalPath,
 								host,
 								target,
-								runID,
-								*fileOutputStream));
-					pointers.push_back(std::make_pair(fileOutputStream, outputStream));
+								runID);
+					Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream(targetFile.path(), std::ios::out | std::ios::trunc);
+					SimpleOStreamStream* outputStream = new SimpleOStreamStream(*fileOutputStream);
+					pointers.push_back(FileAssociations(fileOutputStream, outputStream, targetFile));
 					tee.addOutput(*outputStream);
 				}
 				catch(Poco::FileException& e)
@@ -198,20 +214,24 @@ void BacsyConnection::storeInStores(
 			
 			// We must keep receiving the file! If not the protocol gets out of sync
 			// and we're screwed. 
-			std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
+			const std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
 			if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
 			{
 				LOGE("Received sizes do not match -- I should do something about this.");
 			}
 			LOGI("Bytes received = " + StringUtils::toString(received));
 
-			for(std::list<std::pair<Poco::FileOutputStream*, SimpleOStreamStream*> >::iterator it = pointers.begin();
+			for(std::list<FileAssociations>::iterator it = pointers.begin();
 					it != pointers.end();
 					it++)
 			{
-				it->first->close();
-				delete it->first;
-				delete it->second;
+				it->fileOutputStream->close();
+				it->file.setLastModified(
+						Poco::Timestamp::fromUtcTime(
+							StringUtils::fromString<Poco::Timestamp::UtcTimeVal>(
+								changed)*10000000));
+				delete it->fileOutputStream;
+				delete it->ostreamStream;
 			}
 			
 		}

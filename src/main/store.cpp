@@ -41,12 +41,11 @@ std::string Store::getAncestorForNewRun(const std::string& ancestor)
 	return "";
 }
 
-Poco::FileOutputStream& Store::getOutputForCompleteFile(
+Poco::File Store::getOutputForCompleteFile(
 		const Poco::Path& originalPath,
 		const std::string& host, 
 		const std::string& target, 
-		const std::string& runID,
-		Poco::FileOutputStream& output)
+		const std::string& runID)
 {
 	Poco::Path storePath(Poco::Path::temp());
 	storePath.pushDirectory("backup" + storeName);
@@ -80,7 +79,5 @@ Poco::FileOutputStream& Store::getOutputForCompleteFile(
 
 	newPath.setFileName(originalPath.getFileName());
 
-	output.open(newPath.toString(), std::ios::out | std::ios::trunc);
-
-	return output;
+	return Poco::File(newPath);
 }

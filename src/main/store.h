@@ -21,6 +21,7 @@
 #include <string>
 #include "Poco/FileStream.h"
 #include "Poco/Path.h"
+#include "Poco/File.h"
 #include "cascadingFileConfiguration.h"
 
 class Store
@@ -31,12 +32,11 @@ public:
 	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
 	std::string getAncestorForNewRun(const std::string& ancestor);
 
-	 Poco::FileOutputStream& getOutputForCompleteFile(
+	Poco::File getOutputForCompleteFile(
 			const Poco::Path& originalPath,
 			const std::string& host,
 			const std::string& target,
-			const std::string& runID,
-			Poco::FileOutputStream& output);
+			const std::string& runID);
 private:
 	const std::string storeName;
 	const CascadingFileConfiguration& configuration;

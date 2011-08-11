@@ -185,6 +185,7 @@ public:
 		Poco::Net::SocketStream output(socket);
 
 		socket.sendMessage(file.path());
+		socket.sendMessage(StringUtils::toString(file.getLastModified().utcTime()/10000000));
 		socket.sendMessage(StringUtils::toString(file.getSize()));
 
 		Poco::StreamCopier::copyStream(input, output, 65536);
