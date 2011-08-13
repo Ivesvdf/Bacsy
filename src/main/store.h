@@ -21,13 +21,16 @@
 #include <string>
 #include "Poco/FileStream.h"
 #include "Poco/Path.h"
+#include "Poco/Mutex.h"
 #include "Poco/File.h"
+#include "jsonStoreIndex.h"
 #include "cascadingFileConfiguration.h"
 
 class Store
 {
 public:
 	Store(const std::string storeName, const CascadingFileConfiguration& configuration);
+	~Store();
 
 	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
 	std::string getAncestorForNewRun(const std::string& ancestor);
@@ -37,13 +40,26 @@ public:
 			const std::string& host,
 			const std::string& target,
 			const std::string& runID);
+
+	void newCompleteRun(
+			const std::string& host,
+			const std::string& target,
+			const std::string& runID);
 private:
+	std::string getRunDirectory(
+			const std::string& host,
+			const std::string& target,
+			const std::string& runID);
+
 	const std::string storeName;
 	const CascadingFileConfiguration& configuration;
 
 	const std::string location;
 	const bool alwaysPresent;
 	const unsigned int minPriorityForStoring;
+
+	JsonStoreIndex* storeIndex;
+	Poco::FastMutex storeIndexMutex;
 };
 
 #endif

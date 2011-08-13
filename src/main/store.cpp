@@ -19,6 +19,7 @@
 #include <utility>
 #include <functional>
 #include "Poco/File.h"
+#include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
 #include "functional.h"
 #include "store.h"
@@ -26,7 +27,7 @@
 Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
 	storeName(storeName),
 	configuration(configuration),
-	location(configuration.getLocation(storeName)),
+	location(StringUtils::rstrip(configuration.getLocation(storeName), "/\\") + "/"),
 	alwaysPresent(configuration.getAlwaysPresent(storeName)),
 	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName))
 {
@@ -34,11 +35,37 @@ Store::Store(const std::string storeName, const CascadingFileConfiguration& conf
 	Poco::File locationFile(location);
 	if(!locationFile.exists())
 		locationFile.createDirectories();
+
+	storeIndex = new JsonStoreIndex(locationFile.path() + "index.json");
+}
+
+Store::~Store()
+{
+	delete storeIndex;
 }
 
 std::string Store::getAncestorForNewRun(const std::string& ancestor)
 {
 	return "";
+}
+
+
+void Store::newCompleteRun(
+			const std::string& host,
+			const std::string& target,
+			const std::string& runID)
+{
+	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
+
+	storeIndex->addNewFullRun(target, getRunDirectory(host, target, runID));
+}
+
+std::string Store::getRunDirectory(
+			const std::string& host,
+			const std::string& target,
+			const std::string& runID)
+{
+	return "[" + host + "][" + target + "] " + runID;
 }
 
 Poco::File Store::getOutputForCompleteFile(
@@ -47,15 +74,12 @@ Poco::File Store::getOutputForCompleteFile(
 		const std::string& target, 
 		const std::string& runID)
 {
-	Poco::Path storePath(Poco::Path::temp());
-	storePath.pushDirectory("backup" + storeName);
-	Poco::Path newPath = storePath;
+	Poco::Path newPath(location);
+
+	newPath.pushDirectory(getRunDirectory(host, target, runID));
+
+	// Keep only alphabetic characters in the nodeID
 	std::string nodeIdentification(originalPath.getNode());
-
-	newPath.pushDirectory(host);
-	newPath.pushDirectory(target + "_" + runID);
-
-	// Keep only alphabetic characters
 	nodeIdentification.erase(
 			std::remove_if(
 				nodeIdentification.begin(),

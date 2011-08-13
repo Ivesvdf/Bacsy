@@ -107,7 +107,6 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	StorePointerList storesToTry = storeManager.getStores(priority);
 	unsigned int storesSentTo = 0;
 
-	std::cerr << storesToTry.size() << "size LEFT" << std::endl;
 	while(maxStoreTimes - storesSentTo > 0 && !storesToTry.empty())
 	{
 		LOGI("Entering");
@@ -176,6 +175,7 @@ void BacsyConnection::storeInStores(
 	if(ancestor.length() == 0)
 	{
 		LOGI("No ancestor");
+
 		std::string file;
 		std::string size;
 		std::string changed;
@@ -236,6 +236,15 @@ void BacsyConnection::storeInStores(
 			}
 			
 		}
+
+		// Register this run with every store we saved it to
+		for(std::list<Store*>::iterator it = storeTo.begin();
+					it != storeTo.end();
+					++it)
+		{
+			(*it)->newCompleteRun(host, target, runID);
+		}
+
 	}
 	else
 	{
