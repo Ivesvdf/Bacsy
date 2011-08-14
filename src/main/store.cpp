@@ -36,7 +36,7 @@ Store::Store(const std::string storeName, const CascadingFileConfiguration& conf
 	if(!locationFile.exists())
 		locationFile.createDirectories();
 
-	storeIndex = new JsonStoreIndex(locationFile.path() + "index.json");
+	storeIndex = new JsonStoreIndex(location + "index.json");
 }
 
 Store::~Store()
