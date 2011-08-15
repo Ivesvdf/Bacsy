@@ -124,6 +124,12 @@ public:
 			SimpleOStream& ostream,
 			unsigned bufferSize,
 			std::streamsize limit);
+
+	static std::streamsize copyStream(
+			SimpleIStream& in,
+			SimpleOStream& out,
+			unsigned bufferSize,
+			std::streamsize limit);
 private:
 	template<typename READCLASS, typename WRITECLASS>
 		static std::streamsize copyStreamImpl(

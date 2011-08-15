@@ -81,7 +81,6 @@ class CascadingFileConfiguration
 				const T& defaultValue = T()) const
 		{
 			T rv = defaultValue;
-
 			try
 			{
 				rv = config.get<T>(globalSectionName, keyname, rv);

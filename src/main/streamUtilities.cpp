@@ -36,6 +36,15 @@ std::streamsize StreamUtilities::copyStream(
 
 
 std::streamsize StreamUtilities::copyStream(
+		SimpleIStream& in,
+		SimpleOStream& out,
+		unsigned bufferSize,
+		std::streamsize limit)
+{
+	return copyStreamImpl(in, out, bufferSize, limit);
+}
+
+std::streamsize StreamUtilities::copyStream(
 		Poco::Net::DialogSocket& inSocket,
 		std::ostream& ostr,
 		unsigned bufferSize,
