@@ -15,14 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/Buffer.h"
-#include "toSignatureStream.h"
-#include "stringUtils.h"
-#include "woodcutter/woodcutter.h"
+#ifndef NULLSTREAM_H
+#define NULLSTREAM_H
 
-ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):
-	RsyncStream<1024>(output, rs_sig_begin(RS_DEFAULT_BLOCK_LEN,checksumLength))
+#include <iostream>
+#include "streamUtilities.h"
+#include "librsync.h"
+
+class NullStream : public SimpleOStream
 {
+public:
+	virtual void write(const char* const c, std::streamsize size);
+	virtual bool isOk() const;
+};
 
-}
-
+#endif

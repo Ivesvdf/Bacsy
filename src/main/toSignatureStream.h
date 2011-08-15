@@ -21,24 +21,12 @@
 #include <iostream>
 #include "streamUtilities.h"
 #include "librsync.h"
+#include "rsyncStream.h"
 
-class ToSignatureStream : public SimpleOStream
+class ToSignatureStream : public RsyncStream<1024>
 {
 public:
 	ToSignatureStream(SimpleOStream& output, const size_t checksumLength = 16);
-	~ToSignatureStream();
-			
-	virtual void write(const char* const c, std::streamsize size);
-	virtual bool isOk() const;
-
-	void close();
-
-private:
-	rs_job_t* job;
-	rs_buffers_s buffers;
-	bool closed; 
-
-	SimpleOStream& output;
 };
 
 #endif
