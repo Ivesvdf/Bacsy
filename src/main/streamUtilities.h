@@ -18,6 +18,7 @@
 #ifndef STREAM_UTILITIES_H
 #define STREAM_UTILITIES_H
 
+#include <limits>
 #include "Poco/Buffer.h"
 #include "Poco/MD5Engine.h"
 #include "Poco/Net/DialogSocket.h"
@@ -38,7 +39,7 @@ public:
 	virtual bool isOk() const = 0;
 };
 
-class SimpleIOStream : public SimpleIStream, SimpleOStream
+class SimpleIOStream : public SimpleIStream, public SimpleOStream
 {
 
 };
@@ -110,26 +111,26 @@ public:
 	static std::streamsize copyStream(
 			std::istream& istr,
 			Poco::Net::DialogSocket& outSocket,
-			unsigned bufferSize,
-			std::streamsize limit);
+			unsigned bufferSize = 8192,
+			std::streamsize limit = std::numeric_limits<std::streamsize>::max());
 
 	static std::streamsize copyStream(
 			Poco::Net::DialogSocket& inSocket,
 			std::ostream& ostr,
-			unsigned bufferSize,
-			std::streamsize limit);
+			unsigned bufferSize = 8192,
+			std::streamsize limit = std::numeric_limits<std::streamsize>::max());
 
 	static std::streamsize copyStream(
 			Poco::Net::DialogSocket& inSocket,
 			SimpleOStream& ostream,
-			unsigned bufferSize,
-			std::streamsize limit);
+			unsigned bufferSize = 8192,
+			std::streamsize limit = std::numeric_limits<std::streamsize>::max());
 
 	static std::streamsize copyStream(
 			SimpleIStream& in,
 			SimpleOStream& out,
-			unsigned bufferSize,
-			std::streamsize limit);
+			unsigned bufferSize = 8192,
+			std::streamsize limit = std::numeric_limits<std::streamsize>::max());
 private:
 	template<typename READCLASS, typename WRITECLASS>
 		static std::streamsize copyStreamImpl(

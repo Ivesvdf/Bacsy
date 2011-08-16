@@ -21,11 +21,12 @@
 #include <gtest/gtest.h>
 #include "toSignatureStream.h"
 #include "loadSignatureStream.h"
-#include "simpleBufferOutputStream.h"
+#include "simpleBufferStream.h"
+#include "performDeltaStream.h"
 
 TEST( SignatureStreamTest, HelloWorldTest )
 {
-	SimpleBufferOutputStream outputStream;
+	SimpleBufferStream outputStream;
 
 	{
 		ToSignatureStream stream(outputStream, 8);
@@ -64,7 +65,7 @@ TEST( SignatureStreamTest, LongerTest )
 	,0xF9,0x5B,0xE0,0xC7,0x3C,0x17};
 
 
-	SimpleBufferOutputStream outputStream;
+	SimpleBufferStream outputStream;
 	{
 		ToSignatureStream stream(outputStream, 8);
 		stream.write(longer, sizeof(longer)-1);
@@ -99,7 +100,7 @@ TEST( SignatureStreamTest, SimulateFileTest )
 	,0xF9,0x5B,0xE0,0xC7,0x3C,0x17};
 
 
-	SimpleBufferOutputStream outputStream;
+	SimpleBufferStream outputStream;
 	std::stringstream ss(longer);
 	{
 		ToSignatureStream stream(outputStream, 8);
@@ -127,7 +128,27 @@ TEST( SignatureStreamTest, DumbSignatureLoadTest )
 		ToSignatureStream stream(lss, 8);
 		stream.write("hello world!", 12);
 	}
-
-
 }
 
+TEST( SignatureStreamTest, CompleteSimpleTest )
+{
+	char newStr[] = "Hello world!";
+	char oldStr[] = "Hello to the world?";
+
+	SimpleBufferStream tempStream;
+
+	{
+		ToSignatureStream stream(tempStream, 8);
+		stream.write(newStr, 12);
+	}
+
+
+	LoadSignatureStream lss;
+
+	ToSignatureStream stream(lss, 8);
+	StreamUtilities::copyStream(tempStream, stream); 
+
+	SimpleBufferStream outputStream;
+	PerformDeltaStream deltaStream(outputStream, lss.getSignature());
+	
+}

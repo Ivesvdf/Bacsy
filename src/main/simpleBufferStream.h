@@ -15,23 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMPLE_BUFFER_OUTPUT_STREAM
-#define SIMPLE_BUFFER_OUTPUT_STREAM
+#ifndef SIMPLE_BUFFER_STREAM
+#define SIMPLE_BUFFER_STREAM
 
 #include "streamUtilities.h" 
 
-class SimpleBufferOutputStream : public SimpleOStream
+class SimpleBufferStream : public SimpleIOStream
 {
 public:
-	SimpleBufferOutputStream();
-	~SimpleBufferOutputStream();
+	SimpleBufferStream();
+	~SimpleBufferStream();
 	char* getBuffer(unsigned int *n);
 	
-	void write(const char* const c, std::streamsize size);
-	bool isOk() const;
+	virtual void write(const char* const c, std::streamsize size);
+	virtual bool isOk() const;
+	virtual std::streamsize read(char* c, std::streamsize max);
 private:
 	size_t maxSize;
 	size_t currentSize;
+	size_t readOffset;
 	char* buffer;
 };
 

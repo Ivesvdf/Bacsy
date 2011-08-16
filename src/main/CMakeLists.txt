@@ -21,7 +21,7 @@ add_library(common STATIC configurationFile stringUtils
 	timeSchedule backupEngine cascadingFileConfiguration
 	jsonStoreIndex datagramHelper multicastResponder
 	storeManager store jsonHelper streamUtilities
-	concurrentMap toSignatureStream simpleBufferOutputStream
+	concurrentMap toSignatureStream simpleBufferStream
 	rsyncStream nullStream loadSignatureStream 
 	performDeltaStream)
 

@@ -16,28 +16,30 @@
  */
 
 #include <cstring>
-#include "simpleBufferOutputStream.h"
+#include <algorithm>
+#include "simpleBufferStream.h"
 
-SimpleBufferOutputStream::SimpleBufferOutputStream():
+SimpleBufferStream::SimpleBufferStream():
 	maxSize(512),
 	currentSize(0),
+	readOffset(0),
 	buffer(new char[maxSize])
 {
 	
 }
 
-SimpleBufferOutputStream::~SimpleBufferOutputStream()
+SimpleBufferStream::~SimpleBufferStream()
 {
 	delete[] buffer;
 }
 
-char* SimpleBufferOutputStream::getBuffer(unsigned int *n)
+char* SimpleBufferStream::getBuffer(unsigned int *n)
 {
 	*n = currentSize;
 	return buffer;
 }
 
-void SimpleBufferOutputStream::write(const char* const c, std::streamsize size)
+void SimpleBufferStream::write(const char* const c, std::streamsize size)
 {
 	if(currentSize + size > maxSize)
 	{
@@ -54,7 +56,20 @@ void SimpleBufferOutputStream::write(const char* const c, std::streamsize size)
 	currentSize += size;
 }
 
-bool SimpleBufferOutputStream::isOk() const
+bool SimpleBufferStream::isOk() const
 {
 	return true;
 }
+
+std::streamsize SimpleBufferStream::read(char* c, std::streamsize max)
+{
+	if(readOffset >= currentSize)
+		return 0;
+
+	const std::streamsize bytesToCopy = std::min(max, std::streamsize(currentSize-readOffset));
+	memcpy(c, buffer + readOffset, bytesToCopy);
+
+	readOffset += bytesToCopy;
+	return bytesToCopy;
+}
+
