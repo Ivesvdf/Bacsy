@@ -20,6 +20,7 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include "toSignatureStream.h"
+#include "loadSignatureStream.h"
 #include "simpleBufferOutputStream.h"
 
 TEST( SignatureStreamTest, HelloWorldTest )
@@ -118,4 +119,15 @@ TEST( SignatureStreamTest, SimulateFileTest )
 	}
 }
 
+TEST( SignatureStreamTest, DumbSignatureLoadTest )
+{
+	LoadSignatureStream lss;
+
+	{
+		ToSignatureStream stream(lss, 8);
+		stream.write("hello world!", 12);
+	}
+
+
+}
 
