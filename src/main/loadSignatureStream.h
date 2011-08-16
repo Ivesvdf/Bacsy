@@ -20,12 +20,18 @@
 
 #include "rsyncStream.h"
 
+/**
+ * Loads a Signature to an rs_signature_t object. This object is *owned* by
+ * this LoadSignatureStream. Don't free the little bastard yourself or die
+ * horribly. 
+ */
 class LoadSignatureStream : public RsyncStream<1024>
 {
 public:
 	LoadSignatureStream();
 	~LoadSignatureStream();
 
+	rs_signature_t* getSignature() const;
 private:
 	SimpleOStreamStream dumpStream;
 	rs_signature_t* signature;

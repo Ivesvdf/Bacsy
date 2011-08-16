@@ -22,7 +22,8 @@ add_library(common STATIC configurationFile stringUtils
 	jsonStoreIndex datagramHelper multicastResponder
 	storeManager store jsonHelper streamUtilities
 	concurrentMap toSignatureStream simpleBufferOutputStream
-	rsyncStream nullStream loadSignatureStream)
+	rsyncStream nullStream loadSignatureStream 
+	performDeltaStream)
 
 add_executable(bacsy main.cpp)
 target_link_libraries(bacsy 

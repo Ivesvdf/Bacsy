@@ -15,21 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "loadSignatureStream.h"
+#include "performDeltaStream.h"
 
-LoadSignatureStream::LoadSignatureStream():
-	RsyncStream<1024>(dumpStream, rs_loadsig_begin(&signature)),
-	dumpStream(std::cerr)
+PerformDeltaStream::PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature):
+	RsyncStream<1024>(ostream, rs_delta_begin(signature))
 {
 
-}
-
-LoadSignatureStream::~LoadSignatureStream()
-{
-	rs_free_sumset(signature);
-}
-
-rs_signature_t* LoadSignatureStream::getSignature() const
-{
-	return signature;
 }
