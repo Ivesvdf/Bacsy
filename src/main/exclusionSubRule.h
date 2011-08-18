@@ -15,26 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FUNCTIONAL_H
-#define FUNCTIONAL_H
+#ifndef EXCLUSION_SUB_RULE_H
+#define EXCLUSION_SUB_RULE_H
 
-#include <functional>
+#include "Poco/File.h"
 
-template <class S, class A>
-class fun1_ref_t : public std::unary_function<A,S>
+class ExclusionSubRule
 {
-	S (*pmem)(A);
-	public:
-	explicit fun1_ref_t ( S (*p)(A) ) : pmem (p) {}
-	S operator() (A x) const
-	{ return (*pmem)(x); }
+public:
+	ExclusionSubRule(bool negated);
+	virtual bool matchWithoutNegate(const Poco::File& inputFile)=0;
+	bool match(const Poco::File& inputFile);
+
+private:
+	const bool negated;
 };
-
-template <class S, class A>
-fun1_ref_t<S,A> fun_ref (S (*f)(A))
-{ 
-	return fun1_ref_t<S,A>(f); 
-}
-
 
 #endif

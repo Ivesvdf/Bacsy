@@ -107,3 +107,22 @@ TEST( ExcludeStringParserTest, SemiRealisticExample)
 
 	ASSERT_EQ(one, ExcludeStringParser::parse("/home/ives/.* & !.bashrc & !.vimrc & <1MB"));
 }
+
+
+TEST( ExcludeStringParserTest, VerySpecialQuotedCase)
+{
+	// For people who want \" in their filenames
+	StringList one;
+	one.push_back("bla\\\"bla");
+
+	ASSERT_EQ(one, ExcludeStringParser::parse("\"bla\\\\\\\"bla\""));
+}
+
+
+TEST( ExcludeStringParserTest, BackslashAtTheEnd)
+{
+	StringList one;
+	one.push_back("C:\\dir\\");
+
+	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:\\dir\\\\\""));
+}

@@ -15,26 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FUNCTIONAL_H
-#define FUNCTIONAL_H
+#include <string>
+#include "stringUtils.h"
+#include "pathExclusionSubRule.h"
 
-#include <functional>
-
-template <class S, class A>
-class fun1_ref_t : public std::unary_function<A,S>
+PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):
+	ExclusionSubRule(negated),
+	path(path)
 {
-	S (*pmem)(A);
-	public:
-	explicit fun1_ref_t ( S (*p)(A) ) : pmem (p) {}
-	S operator() (A x) const
-	{ return (*pmem)(x); }
-};
-
-template <class S, class A>
-fun1_ref_t<S,A> fun_ref (S (*f)(A))
-{ 
-	return fun1_ref_t<S,A>(f); 
 }
 
+bool PathExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+{
+	return StringUtils::rstrip(path, "/\\") == StringUtils::rstrip(inputFile.path(), "/\\");
+}
 
-#endif

@@ -38,6 +38,11 @@ std::list<std::string> ExcludeStringParser::parse(const std::string& input)
 				{
 					prevWasEscape = true;
 				}
+				else if(c == '\\' && prevWasEscape)
+				{
+					tmp.push_back('\\');
+					prevWasEscape = false;
+				}
 				else if(c == '"' && prevWasEscape)
 				{
 					tmp.push_back('"');

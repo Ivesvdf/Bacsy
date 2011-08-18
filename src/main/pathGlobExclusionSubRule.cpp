@@ -15,26 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FUNCTIONAL_H
-#define FUNCTIONAL_H
+#include "pathGlobExclusionSubRule.h"
 
-#include <functional>
-
-template <class S, class A>
-class fun1_ref_t : public std::unary_function<A,S>
+PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string glob, bool negated):
+	ExclusionSubRule(negated),
+	glob(glob)
 {
-	S (*pmem)(A);
-	public:
-	explicit fun1_ref_t ( S (*p)(A) ) : pmem (p) {}
-	S operator() (A x) const
-	{ return (*pmem)(x); }
-};
-
-template <class S, class A>
-fun1_ref_t<S,A> fun_ref (S (*f)(A))
-{ 
-	return fun1_ref_t<S,A>(f); 
 }
 
-
-#endif
+bool PathGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+{
+	return glob.match(inputFile.path());
+}

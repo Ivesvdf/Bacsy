@@ -23,7 +23,9 @@ add_library(common STATIC configurationFile stringUtils
 	storeManager store jsonHelper streamUtilities
 	concurrentMap toSignatureStream simpleBufferStream
 	rsyncStream nullStream loadSignatureStream 
-	performDeltaStream excludeStringParser)
+	performDeltaStream excludeStringParser exclusionRule
+	exclusionSubRule pathExclusionSubRule 
+	fileGlobExclusionSubRule pathGlobExclusionSubRule)
 
 add_executable(bacsy main.cpp)
 target_link_libraries(bacsy 

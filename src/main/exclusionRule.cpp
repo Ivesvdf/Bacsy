@@ -15,26 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FUNCTIONAL_H
-#define FUNCTIONAL_H
+#include <algorithm>
+#include "utils.h"
+#include "exclusionRule.h"
 
-#include <functional>
-
-template <class S, class A>
-class fun1_ref_t : public std::unary_function<A,S>
+ExclusionRule::~ExclusionRule()
 {
-	S (*pmem)(A);
-	public:
-	explicit fun1_ref_t ( S (*p)(A) ) : pmem (p) {}
-	S operator() (A x) const
-	{ return (*pmem)(x); }
-};
-
-template <class S, class A>
-fun1_ref_t<S,A> fun_ref (S (*f)(A))
-{ 
-	return fun1_ref_t<S,A>(f); 
+	std::for_each(subRules.begin(), subRules.end(), ObjectDeleter());
 }
 
+bool ExclusionRule::match(const Poco::File& inputFile)
+{
+	for(std::list<ExclusionSubRule*>::iterator it = subRules.begin();
+			it != subRules.end();
+			++it)
+	{
+		if(!(*it)->match(inputFile))
+		{
+			return false;
+		}
+	}
 
-#endif
+	return true;
+}
+
+void ExclusionRule::addSubRule(ExclusionSubRule* sr)
+{
+	subRules.push_back(sr);
+}
