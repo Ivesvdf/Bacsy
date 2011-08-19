@@ -19,6 +19,21 @@
 #include "utils.h"
 #include "exclusionRule.h"
 
+#include <iostream>
+ExclusionRule::ExclusionRule(const ExclusionRule& rule)
+{
+	for(std::list<ExclusionSubRule*>::const_iterator it = rule.subRules.begin();
+			it != rule.subRules.end();
+			++it)
+	{
+		addSubRule((*it)->clone());
+	}
+}
+
+ExclusionRule::ExclusionRule()
+{
+}
+
 ExclusionRule::~ExclusionRule()
 {
 	std::for_each(subRules.begin(), subRules.end(), ObjectDeleter());
@@ -43,3 +58,4 @@ void ExclusionRule::addSubRule(ExclusionSubRule* sr)
 {
 	subRules.push_back(sr);
 }
+

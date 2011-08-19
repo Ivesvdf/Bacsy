@@ -17,9 +17,10 @@
 
 #include "fileGlobExclusionSubRule.h"
 
-FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string glob, bool negated):
+FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string iglob, bool negated):
 	ExclusionSubRule(negated),
-	glob(glob)
+	glob(iglob),
+	globStr(iglob)
 {
 }
 
@@ -27,4 +28,9 @@ bool FileGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
 {
 	Poco::Path path(inputFile.path());
 	return glob.match(path.getFileName());
+}
+
+ExclusionSubRule* FileGlobExclusionSubRule::clone() const
+{
+	return new FileGlobExclusionSubRule(globStr, getNegated());
 }

@@ -15,21 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PATH_EXCLUSION_SUB_RULE_H
-#define PATH_EXCLUSION_SUB_RULE_H
+#ifndef STRING_EXCLUSION_RULE_BUILDER_H
+#define STRING_EXCLUSION_RULE_BUILDER_H
 
-#include <string>
-#include "exclusionSubRule.h"
-
-class PathExclusionSubRule : public ExclusionSubRule
+#include "exclusionRule.h"
+class StringExclusionRuleBuilder
 {
 public:
-	PathExclusionSubRule(const std::string path, bool negated);
-	PathExclusionSubRule(const PathExclusionSubRule& copy);
-	bool matchWithoutNegate(const Poco::File& inputFile);
-	virtual ExclusionSubRule* clone() const;
-private:
-	const std::string path;
+	static ExclusionRule build(const std::string& source);
+	static bool isPath(std::string s);
 };
 
 #endif

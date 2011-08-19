@@ -24,8 +24,11 @@ class ExclusionSubRule
 {
 public:
 	ExclusionSubRule(bool negated);
+	virtual ~ExclusionSubRule();
 	virtual bool matchWithoutNegate(const Poco::File& inputFile)=0;
 	bool match(const Poco::File& inputFile);
+	virtual ExclusionSubRule* clone() const=0;
+	bool getNegated() const { return negated; }
 
 private:
 	const bool negated;

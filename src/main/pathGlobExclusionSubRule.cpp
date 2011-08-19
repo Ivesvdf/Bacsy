@@ -17,13 +17,19 @@
 
 #include "pathGlobExclusionSubRule.h"
 
-PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string glob, bool negated):
+PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string iglob, bool negated):
 	ExclusionSubRule(negated),
-	glob(glob)
+	glob(iglob),
+	globStr(iglob)
 {
 }
 
 bool PathGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
 {
 	return glob.match(inputFile.path());
+}
+
+ExclusionSubRule* PathGlobExclusionSubRule::clone() const
+{
+	return new PathGlobExclusionSubRule(globStr, getNegated());
 }

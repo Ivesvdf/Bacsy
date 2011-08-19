@@ -114,7 +114,7 @@ std::list<std::string> ExcludeStringParser::parse(const std::string& input)
 		{
 			pos++;
 		}
-		while(input[pos] == ' ');
+		while(pos < input.length() && input[pos] == ' ');
 
 	}
 

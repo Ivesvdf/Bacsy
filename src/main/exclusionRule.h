@@ -25,6 +25,8 @@
 class ExclusionRule
 {
 public:
+	ExclusionRule(const ExclusionRule& rule);
+	ExclusionRule();
 	virtual ~ExclusionRule();
 
 	bool match(const Poco::File& inputFile);

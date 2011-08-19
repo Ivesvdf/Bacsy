@@ -25,7 +25,8 @@ add_library(common STATIC configurationFile stringUtils
 	rsyncStream nullStream loadSignatureStream 
 	performDeltaStream excludeStringParser exclusionRule
 	exclusionSubRule pathExclusionSubRule 
-	fileGlobExclusionSubRule pathGlobExclusionSubRule)
+	fileGlobExclusionSubRule pathGlobExclusionSubRule
+	stringExclusionRuleBuilder)
 
 add_executable(bacsy main.cpp)
 target_link_libraries(bacsy 

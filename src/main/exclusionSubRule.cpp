@@ -31,3 +31,7 @@ bool ExclusionSubRule::match(const Poco::File& inputFile)
 	else
 		return result;
 }
+
+ExclusionSubRule::~ExclusionSubRule()
+{
+}

@@ -20,7 +20,7 @@
 
 typedef std::list<std::string> StringList;
 
-TEST( ExcludeStringParserTest, OnlyLiteralTest)
+TEST( ExclusionStringParserTests, OnlyLiteralTest)
 {
 	StringList one;
 	one.push_back("C:/bla.txt");
@@ -43,7 +43,7 @@ TEST( ExcludeStringParserTest, OnlyLiteralTest)
 	ASSERT_EQ(four, ExcludeStringParser::parse("*.txt \"*.dat\""));
 }
 
-TEST( ExcludeStringParserTest, EscapeQuoteInLiteral)
+TEST( ExclusionStringParserTests, EscapeQuoteInLiteral)
 {
 	StringList one;
 	one.push_back("C:/bla\"txt");
@@ -51,7 +51,7 @@ TEST( ExcludeStringParserTest, EscapeQuoteInLiteral)
 	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:/bla\\\"txt\""));
 }
 
-TEST( ExcludeStringParserTest, BackslashesAllowed)
+TEST( ExclusionStringParserTests, BackslashesAllowed)
 {
 	StringList one;
 	one.push_back("C:\\bla.txt");
@@ -60,7 +60,7 @@ TEST( ExcludeStringParserTest, BackslashesAllowed)
 	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:\\bla.txt\""));
 }
 
-TEST( ExcludeStringParserTest, AndTest)
+TEST( ExclusionStringParserTests, AndTest)
 {
 	StringList one;
 	one.push_back("*.txt");
@@ -70,7 +70,7 @@ TEST( ExcludeStringParserTest, AndTest)
 	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & *.dat"));
 }
 
-TEST( ExcludeStringParserTest, SimpleNotTest)
+TEST( ExclusionStringParserTests, SimpleNotTest)
 {
 	StringList one;
 	one.push_back("*.txt");
@@ -81,7 +81,7 @@ TEST( ExcludeStringParserTest, SimpleNotTest)
 	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & ! *.dat"));
 }
 
-TEST( ExcludeStringParserTest, MergedNotTest)
+TEST( ExclusionStringParserTests, MergedNotTest)
 {
 	StringList one;
 	one.push_back("*.txt");
@@ -92,7 +92,7 @@ TEST( ExcludeStringParserTest, MergedNotTest)
 	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & !*.dat"));
 }
 
-TEST( ExcludeStringParserTest, SemiRealisticExample)
+TEST( ExclusionStringParserTests, SemiRealisticExample)
 {
 	StringList one;
 	one.push_back("/home/ives/.*");
@@ -109,7 +109,7 @@ TEST( ExcludeStringParserTest, SemiRealisticExample)
 }
 
 
-TEST( ExcludeStringParserTest, VerySpecialQuotedCase)
+TEST( ExclusionStringParserTests, VerySpecialQuotedCase)
 {
 	// For people who want \" in their filenames
 	StringList one;
@@ -119,7 +119,7 @@ TEST( ExcludeStringParserTest, VerySpecialQuotedCase)
 }
 
 
-TEST( ExcludeStringParserTest, BackslashAtTheEnd)
+TEST( ExclusionStringParserTests, BackslashAtTheEnd)
 {
 	StringList one;
 	one.push_back("C:\\dir\\");

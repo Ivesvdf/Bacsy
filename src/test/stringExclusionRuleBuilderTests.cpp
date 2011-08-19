@@ -15,21 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PATH_EXCLUSION_SUB_RULE_H
-#define PATH_EXCLUSION_SUB_RULE_H
+#include <gtest/gtest.h>
+#include "stringExclusionRuleBuilder.h"
 
-#include <string>
-#include "exclusionSubRule.h"
 
-class PathExclusionSubRule : public ExclusionSubRule
+TEST( StringExclusionRuleBuilderTests, TestCompilation)
 {
-public:
-	PathExclusionSubRule(const std::string path, bool negated);
-	PathExclusionSubRule(const PathExclusionSubRule& copy);
-	bool matchWithoutNegate(const Poco::File& inputFile);
-	virtual ExclusionSubRule* clone() const;
-private:
-	const std::string path;
-};
+	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+}
 
-#endif

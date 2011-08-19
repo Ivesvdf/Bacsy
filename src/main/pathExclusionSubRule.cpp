@@ -30,3 +30,14 @@ bool PathExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
 	return StringUtils::rstrip(path, "/\\") == StringUtils::rstrip(inputFile.path(), "/\\");
 }
 
+ExclusionSubRule* PathExclusionSubRule::clone() const
+{
+	return new PathExclusionSubRule(*this);
+}
+
+PathExclusionSubRule::PathExclusionSubRule(const PathExclusionSubRule& copy):
+	ExclusionSubRule(copy.getNegated()),
+	path(copy.path)
+{
+	
+}
