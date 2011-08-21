@@ -1,4 +1,4 @@
-find_package(Poco REQUIRED)
+find_package(Poco REQUIRED COMPONENTS Net Util)
 find_package(rsync REQUIRED)
 
 if(WIN32)
