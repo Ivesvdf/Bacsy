@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 2.6 )
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 	TRUE )
 set( CMAKE_COLOR_MAKEFILE	ON )
 set( CMAKE_VERBOSE_MAKEFILE OFF )
-set( CMAKE_CXX_FLAGS "-g -Wall" )
+set( CMAKE_CXX_FLAGS "-Wall" )
 
 list( APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/" )
 
