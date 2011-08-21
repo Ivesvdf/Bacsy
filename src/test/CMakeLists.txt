@@ -16,5 +16,5 @@ target_link_libraries(test
                           gtest
                           ${RSYNC_LIBRARIES}
                           json
-                          ${PLATFORMDEPENDENTLIBS}
+                          ${PLATFORM_DEPENDENT_LIBS}
 )
