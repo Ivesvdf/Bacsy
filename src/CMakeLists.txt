@@ -12,6 +12,12 @@ endif()
 include_directories(${POCO_INCLUDE_DIRS})
 include_directories(${RSYNC_INCLUDE_DIRS})
 
+set(bacsy_libraries ${RSYNC_LIBRARIES}
+                    common
+                    ${POCO_LIBRARIES}
+                    json
+                    ${PLATFORM_DEPENDENT_LIBS})
+
 add_subdirectory(test)
 add_subdirectory(main)
 

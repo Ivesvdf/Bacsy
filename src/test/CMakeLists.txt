@@ -10,11 +10,4 @@ add_executable(test
                    stringExclusionRuleBuilderTests
 )
 
-target_link_libraries(test
-                          common
-                          ${POCO_LIBRARIES}
-                          gtest
-                          ${RSYNC_LIBRARIES}
-                          json
-                          ${PLATFORM_DEPENDENT_LIBS}
-)
+target_link_libraries(test gtest ${bacsy_libraries})

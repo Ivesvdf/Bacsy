@@ -51,10 +51,4 @@ add_library(common STATIC
 )
 
 add_executable(bacsy main.cpp)
-target_link_libraries(bacsy
-                          ${RSYNC_LIBRARIES}
-                          common
-                          ${POCO_LIBRARIES}
-                          json
-                          ${PLATFORM_DEPENDENT_LIBS}
-)
+target_link_libraries(bacsy ${bacsy_libraries})
