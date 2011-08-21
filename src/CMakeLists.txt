@@ -12,8 +12,8 @@ endif()
 include_directories(${POCO_INCLUDE_DIRS})
 include_directories(${RSYNC_INCLUDE_DIRS})
 
-set(bacsy_libraries ${RSYNC_LIBRARIES}
-                    common
+set(bacsy_libraries common
+                    ${RSYNC_LIBRARIES}
                     ${POCO_LIBRARIES}
                     json
                     ${PLATFORM_DEPENDENT_LIBS})
