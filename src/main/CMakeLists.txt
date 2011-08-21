@@ -16,19 +16,45 @@ configure_file(info.h.in info.h @ONLY)
 include_directories("${PROJECT_BINARY_DIR}/src/main")
 
 
-add_library(common STATIC configurationFile stringUtils
-	bacsyConnection bacsyServer target timerStringParser 
-	timeSchedule backupEngine cascadingFileConfiguration
-	jsonStoreIndex datagramHelper multicastResponder
-	storeManager store jsonHelper streamUtilities
-	concurrentMap toSignatureStream simpleBufferStream
-	rsyncStream nullStream loadSignatureStream 
-	performDeltaStream exclusionStringParser exclusionRule
-	exclusionSubRule pathExclusionSubRule 
-	fileGlobExclusionSubRule pathGlobExclusionSubRule
-	sizeExclusionSubRule
-	stringExclusionRuleBuilder)
+add_library(common STATIC
+                 configurationFile
+                 stringUtils
+                 bacsyConnection
+                 bacsyServer
+                 target
+                 timerStringParser
+                 timeSchedule
+                 backupEngine
+                 cascadingFileConfiguration
+                 jsonStoreIndex
+                 datagramHelper
+                 multicastResponder
+                 storeManager
+                 store
+                 jsonHelper
+                 streamUtilities
+                 concurrentMap
+                 toSignatureStream
+                 simpleBufferStream
+                 rsyncStream
+                 nullStream
+                 loadSignatureStream
+                 performDeltaStream
+                 exclusionStringParser
+                 exclusionRule
+                 exclusionSubRule
+                 pathExclusionSubRule
+                 fileGlobExclusionSubRule
+                 pathGlobExclusionSubRule
+                 sizeExclusionSubRule
+                 stringExclusionRuleBuilder
+)
 
 add_executable(bacsy main.cpp)
-target_link_libraries(bacsy 
-	${RSYNC_LIBRARIES} common ${POCO_LIBRARIES} json ${PLATFORMDEPENDENTLIBS})
+target_link_libraries(bacsy
+                          ${RSYNC_LIBRARIES}
+                          common
+                          ${POCO_LIBRARIES}
+                          json
+                          ${PLATFORMDEPENDENTLIBS}
+)
