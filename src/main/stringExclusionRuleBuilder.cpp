@@ -32,8 +32,6 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 	typedef std::list<std::string> StringList;
 	StringList parsed = ExclusionStringParser::parse(source);
 
-	enum Type { STRING, AND, NOT, NONE };
-	Type prev = NONE;
 	bool negated = false;
 
 	for(StringList::const_iterator it = parsed.begin();
