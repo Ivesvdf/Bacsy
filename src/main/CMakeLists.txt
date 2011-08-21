@@ -26,6 +26,7 @@ add_library(common STATIC configurationFile stringUtils
 	performDeltaStream excludeStringParser exclusionRule
 	exclusionSubRule pathExclusionSubRule 
 	fileGlobExclusionSubRule pathGlobExclusionSubRule
+	sizeExclusionSubRule
 	stringExclusionRuleBuilder)
 
 add_executable(bacsy main.cpp)

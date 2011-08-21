@@ -15,8 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Poco/Ascii.h"
+#include "stringUtils.h"
+#include "woodcutter/woodcutter.h"
 #include "stringExclusionRuleBuilder.h"
 #include "pathGlobExclusionSubRule.h"
+#include "sizeExclusionSubRule.h"
 #include "fileGlobExclusionSubRule.h"
 #include "pathExclusionSubRule.h"
 #include "excludeStringParser.h"
@@ -37,7 +41,67 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 			++it)
 	{
 		const std::string& subject = *it;
-		if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
+
+		if(subject == "&")
+		{
+			// Do nothing
+		}
+		else if(subject == "!")
+		{
+			negated = true;
+			continue;
+		}
+		// Test for size subrule
+		else if(subject.size() > 3 && (subject[0] == '>' || subject[0] == '<'))
+		{
+			const char theOperator = subject[0];
+			const std::string numberString = subject.substr(1, subject.length()-3);
+
+			const Poco::File::FileSize sizeInUnit = StringUtils::fromString<size_t>(numberString);
+
+			const char possiblePrefix = subject[subject.length()-2];
+
+			using Poco::Ascii;
+
+			const char prefix = Poco::Ascii::isDigit(possiblePrefix) ? 0 : possiblePrefix;
+
+			if(!Poco::Ascii::isAlpha(prefix) && prefix != 0)
+			{
+				LOGE("Invalid prefix in size subrule : " + subject);
+				continue;
+			}
+
+			if(subject[subject.length()-1] != 'B')
+			{
+				LOGE("Invalid unit in subrule " + subject + ", only B is supported.");
+				continue;
+			}
+
+			Poco::File::FileSize sizeInBytes = -1;
+			switch(prefix)
+			{
+				case 0:
+					sizeInBytes = sizeInUnit;
+					break;
+				case 'k':
+					sizeInBytes = sizeInUnit * 1024;
+					break;
+				case 'M':
+					sizeInBytes = sizeInUnit * 1024 * 1024;
+					break;
+				case 'G':
+					sizeInBytes = sizeInUnit * 1024*1024*1024;
+					break;
+				default:
+					sizeInBytes = 0;
+					LOGE(std::string("Unrecognized prefix ") + prefix + " in subrule " + subject);
+					continue;
+			}
+
+
+			rule.addSubRule(new SizeExclusionSubRule(sizeInBytes, theOperator, negated));
+		}
+		else if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
 		{
 			// Probable glob found ... (no problem if it turns
 			// out this wasn't a glob; except for the performance hit
@@ -57,6 +121,8 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 			// No signs this is a glob, interpret as path
 			rule.addSubRule(new PathExclusionSubRule(subject, negated));
 		}
+
+		negated = false;
 	}
 	return rule;
 }
