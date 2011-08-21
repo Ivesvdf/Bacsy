@@ -10,22 +10,24 @@
 #  RSYNC_LIBRARIES
 #     which contains the library directory for librsync.a
 
-set( SEARCHPATH /usr /usr/local /opt /opt/local $ENV{HOME}/opt
-	${CMAKE_SOURCE_DIR}/external/)
+set(SEARCHPATH /usr /usr/local /opt /opt/local $ENV{HOME}/opt
+               ${CMAKE_SOURCE_DIR}/external/)
 #			
-find_path( RSYNC_INCLUDE_DIRS librsync.h
-				PATHS ${SEARCHPATH} 	
-				PATH_SUFFIXES include 
+find_path(RSYNC_INCLUDE_DIRS    librsync.h
+              PATHS             ${SEARCHPATH}
+              PATH_SUFFIXES     include
 )		
 
 
 
-find_library( RSYNC_LIBRARIES rsync
-				PATHS ${SEARCHPATH} 	
-				PATH_SUFFIXES lib 
+find_library(RSYNC_LIBRARIES      rsync
+                 PATHS            ${SEARCHPATH}
+                 PATH_SUFFIXES    lib
 )
 
-unset( SEARCHPATH )
+unset(SEARCHPATH)
 
-include( FindPackageHandleStandardArgs )
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(rsync DEFAULT_MSG RSYNC_LIBRARIES RSYNC_INCLUDE_DIRS)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(rsync DEFAULT_MSG
+                                        RSYNC_LIBRARIES
+                                        RSYNC_INCLUDE_DIRS)
