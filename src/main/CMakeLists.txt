@@ -56,5 +56,5 @@ target_link_libraries(bacsy
                           common
                           ${POCO_LIBRARIES}
                           json
-                          ${PLATFORMDEPENDENTLIBS}
+                          ${PLATFORM_DEPENDENT_LIBS}
 )
