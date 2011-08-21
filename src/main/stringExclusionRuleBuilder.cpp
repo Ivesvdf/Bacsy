@@ -23,14 +23,14 @@
 #include "sizeExclusionSubRule.h"
 #include "fileGlobExclusionSubRule.h"
 #include "pathExclusionSubRule.h"
-#include "excludeStringParser.h"
+#include "exclusionStringParser.h"
 
 ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 {
 	ExclusionRule rule;
 
 	typedef std::list<std::string> StringList;
-	StringList parsed = ExcludeStringParser::parse(source);
+	StringList parsed = ExclusionStringParser::parse(source);
 
 	enum Type { STRING, AND, NOT, NONE };
 	Type prev = NONE;

@@ -22,6 +22,7 @@
 #include <Poco/String.h>
 #include "stringUtils.h"
 #include "cascadingFileConfiguration.h"
+#include "stringExclusionRuleBuilder.h"
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& directory):
 	inputTargetStream((StringUtils::rstrip(directory, "/") + std::string("/targets.config")).c_str()),
@@ -56,12 +57,22 @@ std::vector<std::string> CascadingFileConfiguration::getIncludes(const std::stri
 			'\n'); 
 }
 
-std::vector<std::string> CascadingFileConfiguration::getExcludes(const std::string& target) const 
+std::list<ExclusionRule> CascadingFileConfiguration::getExcludes(const std::string& target) const 
 {
-	return StringUtils::split(getCascadingTargetValue<std::string>(
+	std::list<ExclusionRule> rv;
+	const std::vector<std::string> stringExcludes = StringUtils::split(getCascadingTargetValue<std::string>(
 				target,
 				"Exclude"), 
 			'\n'); 
+
+	for(std::vector<std::string>::const_iterator it = stringExcludes.begin();
+			it != stringExcludes.end();
+			++it)
+	{
+		rv.push_back(StringExclusionRuleBuilder::build(*it));
+	}
+
+	return rv;
 }
 
 unsigned int CascadingFileConfiguration::getPriority(const std::string& target) const 

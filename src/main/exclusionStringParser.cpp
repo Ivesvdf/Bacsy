@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "excludeStringParser.h"
+#include "exclusionStringParser.h"
 
-std::list<std::string> ExcludeStringParser::parse(const std::string& input)
+std::list<std::string> ExclusionStringParser::parse(const std::string& input)
 {
 	size_t pos = 0;
 	std::list<std::string> rv;

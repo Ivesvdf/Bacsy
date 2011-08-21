@@ -16,7 +16,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "excludeStringParser.h"
+#include "exclusionStringParser.h"
 
 typedef std::list<std::string> StringList;
 
@@ -25,22 +25,22 @@ TEST( ExclusionStringParserTests, OnlyLiteralTest)
 	StringList one;
 	one.push_back("C:/bla.txt");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("C:/bla.txt"));
-	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:/bla.txt\""));
+	ASSERT_EQ(one, ExclusionStringParser::parse("C:/bla.txt"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:/bla.txt\""));
 
 	StringList two;
 	two.push_back("C:/bla txt");
-	ASSERT_EQ(two, ExcludeStringParser::parse("C:/bla\\ txt"));
+	ASSERT_EQ(two, ExclusionStringParser::parse("C:/bla\\ txt"));
 
 	StringList three;
 	three.push_back("*.txt");
 	three.push_back("*.dat");
-	ASSERT_EQ(three, ExcludeStringParser::parse("*.txt *.dat"));
+	ASSERT_EQ(three, ExclusionStringParser::parse("*.txt *.dat"));
 
 	StringList four;
 	four.push_back("*.txt");
 	four.push_back("*.dat");
-	ASSERT_EQ(four, ExcludeStringParser::parse("*.txt \"*.dat\""));
+	ASSERT_EQ(four, ExclusionStringParser::parse("*.txt \"*.dat\""));
 }
 
 TEST( ExclusionStringParserTests, EscapeQuoteInLiteral)
@@ -48,7 +48,7 @@ TEST( ExclusionStringParserTests, EscapeQuoteInLiteral)
 	StringList one;
 	one.push_back("C:/bla\"txt");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:/bla\\\"txt\""));
+	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:/bla\\\"txt\""));
 }
 
 TEST( ExclusionStringParserTests, BackslashesAllowed)
@@ -56,8 +56,8 @@ TEST( ExclusionStringParserTests, BackslashesAllowed)
 	StringList one;
 	one.push_back("C:\\bla.txt");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("C:\\bla.txt"));
-	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:\\bla.txt\""));
+	ASSERT_EQ(one, ExclusionStringParser::parse("C:\\bla.txt"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:\\bla.txt\""));
 }
 
 TEST( ExclusionStringParserTests, AndTest)
@@ -67,7 +67,7 @@ TEST( ExclusionStringParserTests, AndTest)
 	one.push_back("&");
 	one.push_back("*.dat");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & *.dat"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("*.txt & *.dat"));
 }
 
 TEST( ExclusionStringParserTests, SimpleNotTest)
@@ -78,7 +78,7 @@ TEST( ExclusionStringParserTests, SimpleNotTest)
 	one.push_back("!");
 	one.push_back("*.dat");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & ! *.dat"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("*.txt & ! *.dat"));
 }
 
 TEST( ExclusionStringParserTests, MergedNotTest)
@@ -89,7 +89,7 @@ TEST( ExclusionStringParserTests, MergedNotTest)
 	one.push_back("!");
 	one.push_back("*.dat");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("*.txt & !*.dat"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("*.txt & !*.dat"));
 }
 
 TEST( ExclusionStringParserTests, SemiRealisticExample)
@@ -105,7 +105,7 @@ TEST( ExclusionStringParserTests, SemiRealisticExample)
 	one.push_back("&");
 	one.push_back("<1MB");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("/home/ives/.* & !.bashrc & !.vimrc & <1MB"));
+	ASSERT_EQ(one, ExclusionStringParser::parse("/home/ives/.* & !.bashrc & !.vimrc & <1MB"));
 }
 
 
@@ -115,7 +115,7 @@ TEST( ExclusionStringParserTests, VerySpecialQuotedCase)
 	StringList one;
 	one.push_back("bla\\\"bla");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("\"bla\\\\\\\"bla\""));
+	ASSERT_EQ(one, ExclusionStringParser::parse("\"bla\\\\\\\"bla\""));
 }
 
 
@@ -124,5 +124,5 @@ TEST( ExclusionStringParserTests, BackslashAtTheEnd)
 	StringList one;
 	one.push_back("C:\\dir\\");
 
-	ASSERT_EQ(one, ExcludeStringParser::parse("\"C:\\dir\\\\\""));
+	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:\\dir\\\\\""));
 }

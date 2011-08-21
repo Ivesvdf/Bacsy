@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXCLUDE_STRING_PARSER_H
-#define EXCLUDE_STRING_PARSER_H
+#ifndef EXCLUSION_STRING_PARSER_H
+#define EXCLUSION_STRING_PARSER_H
 
 #include <string>
 #include <list>
 
-class ExcludeStringParser
+class ExclusionStringParser
 {
 public:
 	static std::list<std::string> parse(const std::string& input);

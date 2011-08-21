@@ -42,9 +42,7 @@ private:
 	const std::string timerString;
 	const std::string hostIdentification;
 
-	std::vector<std::string> fileGlobExcludes;
-	std::vector<std::string> pathGlobExcludes;
-	std::set<std::string> pathExcludes;
+	std::list<ExclusionRule> exclusionRules;
 	std::list<Poco::Timer*> timers;
 
 	Poco::Mutex mutex;
@@ -74,12 +72,6 @@ private:
 		std::string pathString = path.path();
 		LOGI("Filename = " + pathString);
 
-		if(pathExcludes.count(StringUtils::rstrip(pathString, "/\\")) == 1)
-		{
-			LOGI("Is in excludes -- not exploring!");
-			return;
-		}
-
 		if(!path.exists())
 		{
 			LOGE("Could not backup file " + pathString + 
@@ -94,27 +86,13 @@ private:
 			return;
 		}
 
-		for(std::vector<std::string>::const_iterator it = pathGlobExcludes.begin();
-				it != pathGlobExcludes.end();
-				it++)
+		for(std::list<ExclusionRule>::const_iterator it = exclusionRules.begin();
+				it != exclusionRules.end();
+				++it)
 		{
-			Poco::Glob glob(*it);
-			if(glob.match(pathString))
+			if(it->match(path))
 			{
-				LOGI("Not continuing; exclude path glob " + *it + " matched.");
-				return;
-			}
-		}
-
-		const std::string localFile = pathString.substr(pathString.find_last_of("/\\")+1);
-		for(std::vector<std::string>::const_iterator it = fileGlobExcludes.begin();
-				it != fileGlobExcludes.end();
-				it++)
-		{
-			Poco::Glob glob(*it);
-			if(glob.match(localFile))
-			{
-				LOGI("Not continuing; exclude file glob " + *it + " matched.");
+				LOGI("Exclude rule matched.");
 				return;
 			}
 		}

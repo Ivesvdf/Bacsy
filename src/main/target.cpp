@@ -45,43 +45,15 @@ bool Target::isPath(std::string s) const
 Target::Target(std::string section, const CascadingFileConfiguration& config):
 	name(section),
 	includes(config.getIncludes(section)),
-	excludes(config.getExcludes(section)),
 	priority(config.getPriority(section)),
 	minBackups(config.getMinBackups(section)),
 	maxBackups(config.getMaxBackups(section)),
 	preferredOrder(config.getPreferredOrder(section)),
 	distribution(config.getDistribution(section)),
 	hostIdentification(config.getHostIdentification(section)),
+	exclusionRules(config.getExcludes(section)),
 	timers(createTimers(config.getTimerString(section)))
 {
-	// Handle excludes
-	for(std::vector<string>::const_iterator it = excludes.begin();
-			it != excludes.end();
-			it++)
-	{
-		const std::string& subject = *it;
-
-		if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
-		{
-			// Probable glob found ... (no problem if it turns
-			// out this wasn't a glob; except for the performance hit
-			// obviously)
-			if(isPath(subject))
-			{
-				pathGlobExcludes.push_back(subject);
-			}
-			else
-			{
-				// If the glob is not a path glob, it's a file glob
-				fileGlobExcludes.push_back(subject);
-			}
-		}
-		else
-		{
-			// No signs this is a glob, interpret as path
-			pathExcludes.insert(StringUtils::rstrip(subject, "/\\"));
-		}
-	}
 }
 
 void Target::startTimers()

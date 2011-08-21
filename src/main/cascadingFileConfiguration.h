@@ -24,6 +24,7 @@
 #include <string>
 #include "woodcutter/woodcutter.h"
 #include "configurationFile.h"
+#include "exclusionRule.h"
 
 
 class CascadingFileConfiguration
@@ -34,7 +35,7 @@ class CascadingFileConfiguration
 		std::list<std::string> getTargets() const;
 		std::list<std::string> getStores() const;
 		std::vector<std::string> getIncludes(const std::string& target) const;
-		std::vector<std::string> getExcludes(const std::string& target) const;
+		std::list<ExclusionRule>  getExcludes(const std::string& target) const;
 		unsigned int getPriority(const std::string& target) const;
 		unsigned int getMinBackups(const std::string& target) const;
 		unsigned int getMaxBackups(const std::string& target) const;

@@ -23,7 +23,7 @@ add_library(common STATIC configurationFile stringUtils
 	storeManager store jsonHelper streamUtilities
 	concurrentMap toSignatureStream simpleBufferStream
 	rsyncStream nullStream loadSignatureStream 
-	performDeltaStream excludeStringParser exclusionRule
+	performDeltaStream exclusionStringParser exclusionRule
 	exclusionSubRule pathExclusionSubRule 
 	fileGlobExclusionSubRule pathGlobExclusionSubRule
 	sizeExclusionSubRule
