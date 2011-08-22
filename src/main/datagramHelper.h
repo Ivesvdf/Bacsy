@@ -34,7 +34,7 @@ class DatagramHelper
 				FUNCTION& exec)
 		{
 			if(timeoutInMs > 0)
-				socket.setReceiveTimeout(Poco::Timespan(0,timeoutInMs));
+				socket.setReceiveTimeout(Poco::Timespan(0,1000*timeoutInMs));
 
 			const size_t maxsize = maxSize+1;
 			char buffer[maxsize];
