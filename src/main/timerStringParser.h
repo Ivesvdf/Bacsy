@@ -43,6 +43,10 @@ private:
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);
 
+	TimeSchedule parseNHours(
+			const Poco::LocalDateTime& now,
+			const std::string& timerString);
+
 	TimeSchedule parseOnStart(
 			const Poco::LocalDateTime& now,
 			const std::string& timerString);

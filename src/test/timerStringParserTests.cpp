@@ -144,6 +144,23 @@ TEST( TimerStringParserTest, BasicNMinutesTest )
 	ASSERT_EQ("0d01h40m", getRepeat(wednesday1400, "every 100 minutes"));
 }
 
+TEST( TimerStringParserTest, BasicNHoursTest )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+
+	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "every 5 hours"));
+	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "every 2 hours"));
+
+	ASSERT_EQ("0d05h00m", getRepeat(wednesday1400, "every 5 hours"));
+	ASSERT_EQ("0d02h00m", getRepeat(wednesday1400, "every 2 hours"));
+}
+
 TEST( TimerStringParserTest, Every1MinuteTest )
 {
 	Poco::LocalDateTime wednesday1400(
@@ -156,6 +173,20 @@ TEST( TimerStringParserTest, Every1MinuteTest )
 
 	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "every 1 minute"));
 	ASSERT_EQ("0d00h01m", getRepeat(wednesday1400, "every 1 minute"));
+}
+
+TEST( TimerStringParserTest, Every1HourTest )
+{
+	Poco::LocalDateTime wednesday1400(
+			2011,
+			07,
+			13,
+			14,
+			00);
+
+
+	ASSERT_EQ("0d00h00m", getDelay(wednesday1400, "every 1 hour"));
+	ASSERT_EQ("0d01h00m", getRepeat(wednesday1400, "every 1 hour"));
 }
 
 TEST( TimerStringParserTest, OnStartTest )
