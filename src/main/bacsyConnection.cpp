@@ -132,7 +132,14 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			}
 		}
 
-		LOGI("Storing in stores");
+		LOGI("Storing in stores: ");
+		for(StorePointerList::const_iterator it = storesToTry.begin();
+				it != storesToTry.end();
+				++it)
+		{
+			LOGI("  - " + (*it)->toString());
+		}
+
 		storeInStores(ds, host, target, priority, runID, sendTo, ancestor);
 		storesSentTo += sendTo.size();
 

@@ -85,10 +85,16 @@ private:
 	unsigned int priority;
 };
 
+bool StoreManager::notReadyForStoring(const Store* store)
+{
+	return !store->readyForStoring();
+}
+
 std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
 {
 	std::list<Store*> copy(stores);
 	copy.remove_if(StorePriorityLower(minPriority));
+	copy.remove_if(notReadyForStoring);
 
 	return copy;
 }

@@ -29,12 +29,13 @@ Store::Store(const std::string storeName, const CascadingFileConfiguration& conf
 	configuration(configuration),
 	location(StringUtils::rstrip(configuration.getLocation(storeName), "/\\") + "/"),
 	alwaysPresent(configuration.getAlwaysPresent(storeName)),
-	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName))
+	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName)),
+	baseLocation(location)
+
 {
 	// Create the main directory for this store at start if it doesn't exist
-	Poco::File locationFile(location);
-	if(!locationFile.exists())
-		locationFile.createDirectories();
+	if(!baseLocation.exists() && alwaysPresent)
+		baseLocation.createDirectories();
 
 	storeIndex = new JsonStoreIndex(location + "index.json");
 }
@@ -104,4 +105,21 @@ Poco::File Store::getOutputForCompleteFile(
 	newPath.setFileName(originalPath.getFileName());
 
 	return Poco::File(newPath);
+}
+
+bool Store::readyForStoring() const
+{
+	// If the location was AlwaysPresent but did not exist,
+	// the necessary directories would have been created in the Store ctor. 
+	return baseLocation.exists(); 
+}
+
+std::string Store::toString() const
+{
+	return storeName 
+		+ " @ " 
+		+ location 
+		+ "\tMSP=" 
+		+ StringUtils::toString(minPriorityForStoring) 
+		+ ",\t AP=" + StringUtils::toString(alwaysPresent);
 }

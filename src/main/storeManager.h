@@ -32,6 +32,7 @@ public:
 	std::list<Store*> getStores(unsigned int minPriority) const;
 private:
 	static std::list<Store*> buildStores(const CascadingFileConfiguration& configuration);
+	static bool notReadyForStoring(const Store* store);
 	const CascadingFileConfiguration& configuration;
 	std::list<Store*> stores;
 };

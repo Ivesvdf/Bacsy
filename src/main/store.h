@@ -45,6 +45,11 @@ public:
 			const std::string& host,
 			const std::string& target,
 			const std::string& runID);
+
+
+	bool readyForStoring() const;
+
+	std::string toString() const;
 private:
 	std::string getRunDirectory(
 			const std::string& host,
@@ -57,6 +62,8 @@ private:
 	const std::string location;
 	const bool alwaysPresent;
 	const unsigned int minPriorityForStoring;
+
+	Poco::File baseLocation;
 
 	JsonStoreIndex* storeIndex;
 	Poco::FastMutex storeIndexMutex;
