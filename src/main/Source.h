@@ -66,6 +66,8 @@ public:
 
 
 private:
+	inline bool isExcluded(const Poco::File& path) const;
+
 	template<typename FUNCTION>
 	void backupPath(const Poco::File& path, FUNCTION& function) const
 	{
@@ -86,15 +88,10 @@ private:
 			return;
 		}
 
-		for(std::list<ExclusionRule>::const_iterator it = exclusionRules.begin();
-				it != exclusionRules.end();
-				++it)
+		if(isExcluded(path))
 		{
-			if(it->match(path))
-			{
-				LOGI("Exclude rule matched.");
-				return;
-			}
+			LOGI("Exclude rule matched.");
+			return;
 		}
 
 		if(path.isDirectory())
@@ -120,5 +117,21 @@ private:
 
 	}
 };
+
+
+inline bool Source::isExcluded(const Poco::File& path) const
+{
+	for(std::list<ExclusionRule>::const_iterator it = exclusionRules.begin();
+			it != exclusionRules.end();
+			++it)
+	{
+		if(it->match(path))
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
 
 #endif
