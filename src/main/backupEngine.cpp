@@ -21,49 +21,49 @@
 #include <algorithm>
 #include "backupEngine.h"
 
-class TargetNameToTargetter
+class SourceNameToSourceter
 {
 public:
-	TargetNameToTargetter(const CascadingFileConfiguration& configuration): configuration(configuration) {}
-	Target* operator()(const std::string& targetName)
+	SourceNameToSourceter(const CascadingFileConfiguration& configuration): configuration(configuration) {}
+	Source* operator()(const std::string& sourceName)
 	{
-		return new Target(targetName, configuration);
+		return new Source(sourceName, configuration);
 	}
 
 private:
 	const CascadingFileConfiguration& configuration;
 };
 
-std::vector<Target*> targetNamesToTargets(
-		const std::list<std::string>& targetStrings,
+std::vector<Source*> sourceNamesToSources(
+		const std::list<std::string>& sourceStrings,
 		const CascadingFileConfiguration& configuration)
 {
-	std::vector<Target*> targets;
-	targets.resize(targetStrings.size());
+	std::vector<Source*> sources;
+	sources.resize(sourceStrings.size());
 
 
-	TargetNameToTargetter targetNameToTarget(configuration); 
+	SourceNameToSourceter sourceNameToSource(configuration); 
 
 	std::transform(
-			targetStrings.begin(),
-			targetStrings.end(),
-			targets.begin(),
-			targetNameToTarget);
+			sourceStrings.begin(),
+			sourceStrings.end(),
+			sources.begin(),
+			sourceNameToSource);
 			
 
-	return targets;
+	return sources;
 }
 
 BackupEngine::BackupEngine(const CascadingFileConfiguration& configuration):
 	configuration(configuration),
-	targets(targetNamesToTargets(configuration.getTargets(), configuration))
+	sources(sourceNamesToSources(configuration.getSources(), configuration))
 {
 }
 
 BackupEngine::~BackupEngine()
 {
-	for(std::vector<Target*>::iterator it = targets.begin();
-			it != targets.end();
+	for(std::vector<Source*>::iterator it = sources.begin();
+			it != sources.end();
 			it++)
 	{
 		delete *it; 
@@ -72,8 +72,8 @@ BackupEngine::~BackupEngine()
 
 void BackupEngine::start()
 {
-	for(std::vector<Target*>::iterator it = targets.begin();
-			it != targets.end();
+	for(std::vector<Source*>::iterator it = sources.begin();
+			it != sources.end();
 			it++)
 	{
 		(*it)->start();

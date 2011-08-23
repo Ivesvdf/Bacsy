@@ -38,12 +38,12 @@ public:
 	Poco::File getOutputForCompleteFile(
 			const Poco::Path& originalPath,
 			const std::string& host,
-			const std::string& target,
+			const std::string& source,
 			const std::string& runID);
 
 	void newCompleteRun(
 			const std::string& host,
-			const std::string& target,
+			const std::string& source,
 			const std::string& runID);
 
 
@@ -53,7 +53,7 @@ public:
 private:
 	std::string getRunDirectory(
 			const std::string& host,
-			const std::string& target,
+			const std::string& source,
 			const std::string& runID);
 
 	const std::string storeName;

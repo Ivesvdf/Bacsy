@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TARGET_H
-#define TARGET_H
+#ifndef SOURCE_H
+#define SOURCE_H
 
 #include <string>
 #include <set>
@@ -28,7 +28,7 @@
 #include "Poco/Timer.h"
 #include "cascadingFileConfiguration.h"
 
-class Target
+class Source
 {
 private:
 	const std::string name;
@@ -57,8 +57,8 @@ private:
 	void sendTo(const Poco::Net::SocketAddress& to);
 
 public:
-	Target(std::string sectionName, const CascadingFileConfiguration& config);
-	~Target();
+	Source(std::string sectionName, const CascadingFileConfiguration& config);
+	~Source();
 
 	void start();
 

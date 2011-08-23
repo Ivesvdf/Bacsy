@@ -21,7 +21,7 @@ add_library(common STATIC
                  stringUtils
                  bacsyConnection
                  bacsyServer
-                 target
+                 source
                  timerStringParser
                  timeSchedule
                  backupEngine

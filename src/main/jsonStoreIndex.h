@@ -27,22 +27,22 @@ public:
 	JsonStoreIndex(const std::string path);
 
 	void addNewFullRun(
-			const std::string& target,
+			const std::string& source,
 			const std::string& directory);
 
 	void addNewDeltaRun(
-			const std::string& target,
+			const std::string& source,
 			const std::string& directory,
 			const std::string& builtFromDir);
 
 	std::string getCorrespondingFullRunForDelta(
-			const std::string& target,
+			const std::string& source,
 			const std::string& dir) const;
 
-	std::string getLastFullRun(const std::string& target) const;
+	std::string getLastFullRun(const std::string& source) const;
 
 	bool isDeltaRun(
-			const std::string& target,
+			const std::string& source,
 			const std::string& dir);
 private:
 	void store();

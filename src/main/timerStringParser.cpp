@@ -183,9 +183,9 @@ TimeSchedule TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const
 			minutes);
 	
 	const Poco::Timespan daysToWaitTimespan(dayOffset*Poco::Timespan::DAYS);
-	const Poco::LocalDateTime target = tmp + daysToWaitTimespan;
+	const Poco::LocalDateTime source = tmp + daysToWaitTimespan;
 
-	const Poco::Timespan wait = target - now;
+	const Poco::Timespan wait = source - now;
 
 	return TimeSchedule(wait, Poco::Timespan(1*Poco::Timespan::DAYS));
 }
@@ -194,17 +194,17 @@ TimeSchedule TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const
 TimeSchedule TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, const std::string& timerString)
 {
 	const int nowDay = now.dayOfWeek(); // 0 = Sunday, 6 = Saturday
-	int targetDay = extractDay(timerString); // 0 = Sunday, 6 = Saturday
+	int sourceDay = extractDay(timerString); // 0 = Sunday, 6 = Saturday
 
-	if(targetDay < 0)
+	if(sourceDay < 0)
 	{
 		LOGE("Invalid day of week in timerString " + timerString);
 	}
 
-	if(targetDay < nowDay) // wait until next week...
-		targetDay += 7;
+	if(sourceDay < nowDay) // wait until next week...
+		sourceDay += 7;
 
-	int daysToWait = targetDay - nowDay;
+	int daysToWait = sourceDay - nowDay;
 
 	std::pair<int, int> hourMinutes = parseTime(extractTime(timerString));
 	const int hour = hourMinutes.first;

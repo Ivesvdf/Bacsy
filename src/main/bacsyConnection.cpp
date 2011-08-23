@@ -70,7 +70,7 @@ void BacsyConnection::run()
 			storeBackup(
 					ds,
 					root["host"].asString(),
-					root["target"].asString(),
+					root["source"].asString(),
 					root["priority"].asUInt(),
 					root["runID"].asString(),
 					root["maxStoreTimes"].asUInt());
@@ -95,7 +95,7 @@ void BacsyConnection::run()
 
 void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds, 
 		const std::string host,
-		const std::string target,
+		const std::string source,
 		const unsigned int priority,
 		const std::string runID,
 		const unsigned int maxStoreTimes)
@@ -117,7 +117,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		// Find the ancestor for this store, we'll later on find all stores
 		// that share this ancestor and give them priority (it saves
 		// bandwidth) 
-		const std::string ancestor = store.getAncestorForNewRun(target);
+		const std::string ancestor = store.getAncestorForNewRun(source);
 
 		unsigned int nrAdded = 0;
 
@@ -125,7 +125,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != storesToTry.end();
 				++it)
 		{
-			if(ancestor == (*it)->getAncestorForNewRun(target) && nrAdded < maxStoreTimes - storesSentTo)
+			if(ancestor == (*it)->getAncestorForNewRun(source) && nrAdded < maxStoreTimes - storesSentTo)
 			{
 				sendTo.push_back(*it);
 				nrAdded++;
@@ -140,7 +140,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		storeInStores(ds, host, target, priority, runID, sendTo, ancestor);
+		storeInStores(ds, host, source, priority, runID, sendTo, ancestor);
 		storesSentTo += sendTo.size();
 
 		for(StorePointerList::iterator it = sendTo.begin();
@@ -171,7 +171,7 @@ public:
 void BacsyConnection::storeInStores(
 		Poco::Net::DialogSocket& ds,
 		const std::string host,
-		const std::string target,
+		const std::string source,
 		const unsigned int priority,
 		const std::string runID,
 		std::list<Store*> storeTo,
@@ -204,14 +204,14 @@ void BacsyConnection::storeInStores(
 				{
 					const Poco::Path originalPath(file);
 
-					Poco::File targetFile = (*it)->getOutputForCompleteFile(
+					Poco::File sourceFile = (*it)->getOutputForCompleteFile(
 								originalPath,
 								host,
-								target,
+								source,
 								runID);
-					Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream(targetFile.path(), std::ios::out | std::ios::trunc);
+					Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream(sourceFile.path(), std::ios::out | std::ios::trunc);
 					SimpleOStreamStream* outputStream = new SimpleOStreamStream(*fileOutputStream);
-					pointers.push_back(FileAssociations(fileOutputStream, outputStream, targetFile));
+					pointers.push_back(FileAssociations(fileOutputStream, outputStream, sourceFile));
 					tee.addOutput(*outputStream);
 				}
 				catch(Poco::FileException& e)
@@ -249,7 +249,7 @@ void BacsyConnection::storeInStores(
 					it != storeTo.end();
 					++it)
 		{
-			(*it)->newCompleteRun(host, target, runID);
+			(*it)->newCompleteRun(host, source, runID);
 		}
 
 	}
@@ -261,20 +261,20 @@ void BacsyConnection::storeInStores(
 
 void BacsyConnection::backupFile(
 		Poco::Net::DialogSocket& ds,
-		std::string targetFile,
+		std::string sourceFile,
 		size_t size,
 		unsigned int priority)
 {
-	LOGI("Pushing file " + targetFile + " to the backup queue.");
+	LOGI("Pushing file " + sourceFile + " to the backup queue.");
 
 	Poco::FileOutputStream output;
 	try
 	{
-		output.open(targetFile, std::ios::out | std::ios::trunc);
+		output.open(sourceFile, std::ios::out | std::ios::trunc);
 	}
 	catch(Poco::FileException& e)
 	{
-		LOGE("Cannot store file " + targetFile + " because of exception: " + e.what());
+		LOGE("Cannot store file " + sourceFile + " because of exception: " + e.what());
 		return;
 	}
 

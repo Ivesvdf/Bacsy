@@ -42,19 +42,19 @@ void JsonStoreIndex::read()
 	}	
 }
 
-void JsonStoreIndex::addNewFullRun(const std::string& target, const std::string& directory)
+void JsonStoreIndex::addNewFullRun(const std::string& source, const std::string& directory)
 {
 	Json::Value insert;
 	insert["type"] = "full";
 	insert["dir"] = directory;
 
-	root[target].append(insert);
+	root[source].append(insert);
 
 	store();
 }
 
 void JsonStoreIndex::addNewDeltaRun(
-		const std::string& target,
+		const std::string& source,
 		const std::string& directory,
 		const std::string& builtFromDir)
 {
@@ -63,20 +63,20 @@ void JsonStoreIndex::addNewDeltaRun(
 	insert["dir"] = directory;
 	insert["builtFromDir"] = builtFromDir;
 
-	root[target].append(insert);
+	root[source].append(insert);
 
 	store();
 }
 
 
-std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& target, const std::string& dir) const
+std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& source, const std::string& dir) const
 {
-	const Json::Value targetValue = root[target];
+	const Json::Value sourceValue = root[source];
 
 	// Find last delta
-	for(size_t i = 0; i < targetValue.size(); i++)
+	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = targetValue[targetValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
 		if(entry["type"].asString() == "delta" && entry["dir"].asString() == dir)
 		{
 			return entry["builtFromDir"].asString();
@@ -86,15 +86,15 @@ std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& t
 }
 
 bool JsonStoreIndex::isDeltaRun(
-			const std::string& target,
+			const std::string& source,
 			const std::string& dir)
 {
-	const Json::Value targetValue = root[target];
+	const Json::Value sourceValue = root[source];
 
 	// Find last delta
-	for(size_t i = 0; i < targetValue.size(); i++)
+	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = targetValue[targetValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
 		if(entry["type"].asString() == "delta" && entry["dir"].asString() == dir)
 		{
 			return true;
@@ -105,16 +105,16 @@ bool JsonStoreIndex::isDeltaRun(
 
 /**
  * @return the directory in which the last full run can be found if there
- * ever was a full run for this target. If not the empty string will be
+ * ever was a full run for this source. If not the empty string will be
  * returned.
  */
-std::string JsonStoreIndex::getLastFullRun(const std::string& target) const
+std::string JsonStoreIndex::getLastFullRun(const std::string& source) const
 {
-	const Json::Value targetValue = root[target];
+	const Json::Value sourceValue = root[source];
 
-	for(size_t i = 0; i < targetValue.size(); i++)
+	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = targetValue[targetValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
 		if(entry["type"].asString() == "full")
 		{
 			return entry["dir"].asString();

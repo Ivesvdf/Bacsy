@@ -31,18 +31,18 @@
 #include "Poco/Net/SocketAddress.h"
 #include "woodcutter/woodcutter.h"
 #include "json/json.h"
-#include "target.h"
+#include "source.h"
 #include "timerStringParser.h"
 #include "info.h"
 #include "datagramHelper.h"
 #include "jsonHelper.h"
 
-bool Target::isPath(std::string s) const
+bool Source::isPath(std::string s) const
 {
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Target::Target(std::string section, const CascadingFileConfiguration& config):
+Source::Source(std::string section, const CascadingFileConfiguration& config):
 	name(section),
 	includes(config.getIncludes(section)),
 	priority(config.getPriority(section)),
@@ -56,7 +56,7 @@ Target::Target(std::string section, const CascadingFileConfiguration& config):
 {
 }
 
-void Target::startTimers()
+void Source::startTimers()
 {
 	for(std::list<Poco::Timer*>::iterator it = timers.begin();
 			it != timers.end();
@@ -64,14 +64,14 @@ void Target::startTimers()
 	{
 		LOGI("Starting timer");
 		// Create a new callback that calls the classes run method
-		Poco::TimerCallback<Target> callback(*this, &Target::run);
+		Poco::TimerCallback<Source> callback(*this, &Source::run);
 		// And run it on the the item that was added last (the one we just
 		// added)
 		(*it)->start(callback);
 	}
 }
 
-std::list<Poco::Timer*> Target::createTimers(const std::string& timerString)
+std::list<Poco::Timer*> Source::createTimers(const std::string& timerString)
 {
 	std::list<Poco::Timer*> theTimers;
 	TimerStringParser parser;
@@ -92,7 +92,7 @@ std::list<Poco::Timer*> Target::createTimers(const std::string& timerString)
 	return theTimers;
 }
 
-Target::~Target()
+Source::~Source()
 {
 	for(std::list<Poco::Timer*>::iterator it = timers.begin();
 			it != timers.end();
@@ -103,14 +103,14 @@ Target::~Target()
 	}
 }
 
-void Target::start()
+void Source::start()
 {
 	startTimers();
 }
 
-void Target::run(Poco::Timer& timer)
+void Source::run(Poco::Timer& timer)
 {
-	LOGI("Starting target " 
+	LOGI("Starting source " 
 			+ name 
 			+ " because of Timer(" 
 			+ StringUtils::toString(timer.getStartInterval()) 
@@ -120,7 +120,7 @@ void Target::run(Poco::Timer& timer)
 
 	if(!mutex.tryLock())
 	{
-		LOGW("Target is already running -- not executing again.");
+		LOGW("Source is already running -- not executing again.");
 		return;
 	}
 
@@ -138,7 +138,7 @@ void Target::run(Poco::Timer& timer)
 
 	mutex.unlock();
 
-	LOGI("Target " + name + " is finished.");
+	LOGI("Source " + name + " is finished.");
 }
 
 class FileSender
@@ -167,14 +167,14 @@ private:
 	Poco::Net::DialogSocket& socket;
 };
 
-void Target::sendTo(const Poco::Net::SocketAddress& who)
+void Source::sendTo(const Poco::Net::SocketAddress& who)
 {
 	Poco::Net::DialogSocket socket(who);
 	socket.sendMessage(bacsyProtocolString);
 	Json::Value root;
 	root["type"] = "store";
 	root["host"] = hostIdentification;
-	root["target"] = name;
+	root["source"] = name;
 	root["priority"] = priority;
 	root["runID"] = Poco::DateTimeFormatter::format(
 			Poco::Timestamp(),
@@ -193,11 +193,11 @@ void Target::sendTo(const Poco::Net::SocketAddress& who)
 	}
 }
 
-void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
+void Source::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
 {
 	Json::Value root;
 	root["type"] = "canStore";
-	root["target"] = name;
+	root["source"] = name;
 	root["priority"] = priority;
 
 	const std::string msg = DatagramHelper::toMessage(root);
@@ -209,8 +209,8 @@ void Target::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::Socket
 class CanStoreResponseAccepter
 {
 	public:
-		CanStoreResponseAccepter(const std::string targetName):
-			targetName(targetName)
+		CanStoreResponseAccepter(const std::string sourceName):
+			sourceName(sourceName)
 		{}
 
 		void operator()(Poco::Net::SocketAddress who, const std::string& what)
@@ -229,7 +229,7 @@ class CanStoreResponseAccepter
 			try
 			{
 				const Json::Value root = JsonHelper::read(parts[1]);
-				if(root["type"] != "readyToStore" || root["target"] != targetName)
+				if(root["type"] != "readyToStore" || root["source"] != sourceName)
 					return;
 			}
 			catch(const std::runtime_error& e)
@@ -249,10 +249,10 @@ class CanStoreResponseAccepter
 
 	private:
 		std::vector<Poco::Net::SocketAddress> peopleToContact;
-		std::string targetName;
+		std::string sourceName;
 };
 
-std::vector<Poco::Net::SocketAddress> Target::findOutWhoToContact()
+std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 {
 	Poco::Net::SocketAddress address(MULTICASTGROUP, MULTICASTPORT);
 

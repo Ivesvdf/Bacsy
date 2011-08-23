@@ -57,7 +57,7 @@ void MulticastResponder::respondToMulticast(Poco::Net::SocketAddress address, co
 		LOGI("Received canStore message -- checking if we can store.");
 		Json::Value responseRoot;
 		responseRoot["type"] = "readyToStore";
-		responseRoot["target"] = root["target"];
+		responseRoot["source"] = root["source"];
 
 		const std::string msg = DatagramHelper::toMessage(responseRoot);
 

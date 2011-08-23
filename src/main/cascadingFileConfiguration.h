@@ -32,17 +32,17 @@ class CascadingFileConfiguration
 	public:
 		CascadingFileConfiguration(const std::string& directory);
 
-		std::list<std::string> getTargets() const;
+		std::list<std::string> getSources() const;
 		std::list<std::string> getStores() const;
-		std::vector<std::string> getIncludes(const std::string& target) const;
-		std::list<ExclusionRule>  getExcludes(const std::string& target) const;
-		unsigned int getPriority(const std::string& target) const;
-		unsigned int getMinBackups(const std::string& target) const;
-		unsigned int getMaxBackups(const std::string& target) const;
-		std::string getPreferredOrder(const std::string& target) const;
-		std::string getDistribution(const std::string& target) const;
-		std::string getTimerString(const std::string& target) const;
-		std::string getHostIdentification(const std::string& target) const;
+		std::vector<std::string> getIncludes(const std::string& source) const;
+		std::list<ExclusionRule>  getExcludes(const std::string& source) const;
+		unsigned int getPriority(const std::string& source) const;
+		unsigned int getMinBackups(const std::string& source) const;
+		unsigned int getMaxBackups(const std::string& source) const;
+		std::string getPreferredOrder(const std::string& source) const;
+		std::string getDistribution(const std::string& source) const;
+		std::string getTimerString(const std::string& source) const;
+		std::string getHostIdentification(const std::string& source) const;
 		std::string getLocation(const std::string& store) const;
 		bool getAlwaysPresent(const std::string& store) const;
 		unsigned int getMinPriorityForStoring(const std::string& input) const;
@@ -62,13 +62,13 @@ class CascadingFileConfiguration
 		}
 		
 		template<typename T>
-		T getCascadingTargetValue( 
+		T getCascadingSourceValue( 
 				const std::string& section,
 				const std::string& keyname, 
 				const T& defaultValue = T()) const
 		{
 			return getCascadingValue(
-					targetConfig,
+					sourceConfig,
 					section,
 					keyname,
 					defaultValue);
@@ -99,9 +99,9 @@ class CascadingFileConfiguration
 		static bool toBool(const std::string& input);
 
 
-		std::ifstream inputTargetStream;	
+		std::ifstream inputSourceStream;	
 		std::ifstream inputStoreStream;	
-		ConfigurationFile targetConfig;
+		ConfigurationFile sourceConfig;
 		ConfigurationFile storeConfig;
 		const std::string globalSectionName;
 };

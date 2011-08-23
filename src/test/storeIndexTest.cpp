@@ -25,36 +25,36 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 
 	JsonStoreIndex store(tmp.path());
 	
-	ASSERT_EQ("", store.getLastFullRun("aTarget"));
-	store.addNewFullRun("aTarget", "aTarget_1");
-	ASSERT_EQ("aTarget_1", store.getLastFullRun("aTarget"));
+	ASSERT_EQ("", store.getLastFullRun("aSource"));
+	store.addNewFullRun("aSource", "aSource_1");
+	ASSERT_EQ("aSource_1", store.getLastFullRun("aSource"));
 	
-	store.addNewDeltaRun("aTarget", "aTarget_2", "aTarget_1");
-	ASSERT_EQ("aTarget_1", store.getLastFullRun("aTarget"));
+	store.addNewDeltaRun("aSource", "aSource_2", "aSource_1");
+	ASSERT_EQ("aSource_1", store.getLastFullRun("aSource"));
 
-	ASSERT_EQ("aTarget_1", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_2"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_2"));
 
-	ASSERT_FALSE(store.isDeltaRun("aTarget", "aTarget_1"));
-	ASSERT_TRUE(store.isDeltaRun("aTarget", "aTarget_2"));
+	ASSERT_FALSE(store.isDeltaRun("aSource", "aSource_1"));
+	ASSERT_TRUE(store.isDeltaRun("aSource", "aSource_2"));
 
-	store.addNewDeltaRun("aTarget", "aTarget_3", "aTarget_1");
-	store.addNewDeltaRun("aTarget", "aTarget_4", "aTarget_1");
-	store.addNewDeltaRun("aTarget", "aTarget_5", "aTarget_1");
-	store.addNewDeltaRun("aTarget", "aTarget_6", "aTarget_1");
+	store.addNewDeltaRun("aSource", "aSource_3", "aSource_1");
+	store.addNewDeltaRun("aSource", "aSource_4", "aSource_1");
+	store.addNewDeltaRun("aSource", "aSource_5", "aSource_1");
+	store.addNewDeltaRun("aSource", "aSource_6", "aSource_1");
 
-	store.addNewFullRun("aTarget", "aTarget_7");
+	store.addNewFullRun("aSource", "aSource_7");
 
-	store.addNewDeltaRun("aTarget", "aTarget_8", "aTarget_7");
-	store.addNewDeltaRun("aTarget", "aTarget_9", "aTarget_7");
-	store.addNewDeltaRun("aTarget", "aTarget_10", "aTarget_7");
+	store.addNewDeltaRun("aSource", "aSource_8", "aSource_7");
+	store.addNewDeltaRun("aSource", "aSource_9", "aSource_7");
+	store.addNewDeltaRun("aSource", "aSource_10", "aSource_7");
 
-	ASSERT_EQ("aTarget_7", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_8"));
-	ASSERT_EQ("aTarget_7", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_9"));
-	ASSERT_EQ("aTarget_7", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_10"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_8"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_9"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_10"));
 
-	ASSERT_EQ("aTarget_1", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_4"));
-	ASSERT_EQ("aTarget_1", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_5"));
-	ASSERT_EQ("aTarget_1", store.getCorrespondingFullRunForDelta("aTarget", "aTarget_6"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_4"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
 }
 
 TEST( StoreIndexTest, ReloadJsonTest )
@@ -64,37 +64,37 @@ TEST( StoreIndexTest, ReloadJsonTest )
 	{
 		JsonStoreIndex storer(tmp.path());
 
-		storer.addNewFullRun("aTarget", "aTarget_1");
-		storer.addNewDeltaRun("aTarget", "aTarget_2", "aTarget_1");
+		storer.addNewFullRun("aSource", "aSource_1");
+		storer.addNewDeltaRun("aSource", "aSource_2", "aSource_1");
 
 
-		storer.addNewDeltaRun("aTarget", "aTarget_3", "aTarget_1");
-		storer.addNewDeltaRun("aTarget", "aTarget_4", "aTarget_1");
-		storer.addNewDeltaRun("aTarget", "aTarget_5", "aTarget_1");
-		storer.addNewDeltaRun("aTarget", "aTarget_6", "aTarget_1");
+		storer.addNewDeltaRun("aSource", "aSource_3", "aSource_1");
+		storer.addNewDeltaRun("aSource", "aSource_4", "aSource_1");
+		storer.addNewDeltaRun("aSource", "aSource_5", "aSource_1");
+		storer.addNewDeltaRun("aSource", "aSource_6", "aSource_1");
 
-		storer.addNewFullRun("aTarget", "aTarget_7");
+		storer.addNewFullRun("aSource", "aSource_7");
 
-		storer.addNewDeltaRun("aTarget", "aTarget_8", "aTarget_7");
-		storer.addNewDeltaRun("aTarget", "aTarget_9", "aTarget_7");
-		storer.addNewDeltaRun("aTarget", "aTarget_10", "aTarget_7");
+		storer.addNewDeltaRun("aSource", "aSource_8", "aSource_7");
+		storer.addNewDeltaRun("aSource", "aSource_9", "aSource_7");
+		storer.addNewDeltaRun("aSource", "aSource_10", "aSource_7");
 	}
 	{
 		JsonStoreIndex loader(tmp.path());
 
-		ASSERT_EQ("aTarget_7", loader.getLastFullRun("aTarget"));
+		ASSERT_EQ("aSource_7", loader.getLastFullRun("aSource"));
 
-		ASSERT_EQ("aTarget_1", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_2"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_2"));
 
-		ASSERT_FALSE(loader.isDeltaRun("aTarget", "aTarget_1"));
-		ASSERT_TRUE(loader.isDeltaRun("aTarget", "aTarget_2"));
+		ASSERT_FALSE(loader.isDeltaRun("aSource", "aSource_1"));
+		ASSERT_TRUE(loader.isDeltaRun("aSource", "aSource_2"));
 
-		ASSERT_EQ("aTarget_7", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_8"));
-		ASSERT_EQ("aTarget_7", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_9"));
-		ASSERT_EQ("aTarget_7", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_10"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_8"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_9"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_10"));
 
-		ASSERT_EQ("aTarget_1", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_4"));
-		ASSERT_EQ("aTarget_1", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_5"));
-		ASSERT_EQ("aTarget_1", loader.getCorrespondingFullRunForDelta("aTarget", "aTarget_6"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_4"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
 	}
 }

@@ -53,31 +53,31 @@ std::string Store::getAncestorForNewRun(const std::string& ancestor)
 
 void Store::newCompleteRun(
 			const std::string& host,
-			const std::string& target,
+			const std::string& source,
 			const std::string& runID)
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
-	storeIndex->addNewFullRun(target, getRunDirectory(host, target, runID));
+	storeIndex->addNewFullRun(source, getRunDirectory(host, source, runID));
 }
 
 std::string Store::getRunDirectory(
 			const std::string& host,
-			const std::string& target,
+			const std::string& source,
 			const std::string& runID)
 {
-	return "[" + host + "][" + target + "] " + runID;
+	return "[" + host + "][" + source + "] " + runID;
 }
 
 Poco::File Store::getOutputForCompleteFile(
 		const Poco::Path& originalPath,
 		const std::string& host, 
-		const std::string& target, 
+		const std::string& source, 
 		const std::string& runID)
 {
 	Poco::Path newPath(location);
 
-	newPath.pushDirectory(getRunDirectory(host, target, runID));
+	newPath.pushDirectory(getRunDirectory(host, source, runID));
 
 	// Keep only alphabetic characters in the nodeID
 	std::string nodeIdentification(originalPath.getNode());

@@ -32,7 +32,7 @@ public:
 	void storeBackup(
 			Poco::Net::DialogSocket& ds,
 			const std::string host,
-			const std::string target,
+			const std::string source,
 			const unsigned int priority,
 			const std::string runID,
 			const unsigned int maxStoreTimes);
@@ -40,7 +40,7 @@ public:
 	void storeInStores(
 			Poco::Net::DialogSocket& ds,
 			const std::string host,
-			const std::string target,
+			const std::string source,
 			const unsigned int priority,
 			const std::string runID,
 			std::list<Store*> storeTo,
@@ -48,7 +48,7 @@ public:
 
 	void backupFile(
 			Poco::Net::DialogSocket& ds,
-			std::string targetFile,
+			std::string sourceFile,
 			size_t size,
 			unsigned int priority);
 

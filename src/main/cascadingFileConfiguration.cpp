@@ -25,9 +25,9 @@
 #include "stringExclusionRuleBuilder.h"
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& directory):
-	inputTargetStream((StringUtils::rstrip(directory, "/") + std::string("/targets.config")).c_str()),
+	inputSourceStream((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str()),
 	inputStoreStream((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str()),
-	targetConfig(inputTargetStream),
+	sourceConfig(inputSourceStream),
 	storeConfig(inputStoreStream),
 	globalSectionName("global")
 
@@ -35,11 +35,11 @@ CascadingFileConfiguration::CascadingFileConfiguration(const std::string& direct
 
 }
 
-std::list<std::string> CascadingFileConfiguration::getTargets() const
+std::list<std::string> CascadingFileConfiguration::getSources() const
 {
-	std::list<std::string> targetNames = targetConfig.sections();
-	targetNames.remove_if(std::bind2nd(std::equal_to<std::string>(), "global"));
-	return targetNames;
+	std::list<std::string> sourceNames = sourceConfig.sections();
+	sourceNames.remove_if(std::bind2nd(std::equal_to<std::string>(), "global"));
+	return sourceNames;
 }
 
 std::list<std::string> CascadingFileConfiguration::getStores() const
@@ -49,19 +49,19 @@ std::list<std::string> CascadingFileConfiguration::getStores() const
 	return storeNames;
 }
 
-std::vector<std::string> CascadingFileConfiguration::getIncludes(const std::string& target) const 
+std::vector<std::string> CascadingFileConfiguration::getIncludes(const std::string& source) const 
 {
-	return StringUtils::split(getCascadingTargetValue<std::string>(
-				target,
+	return StringUtils::split(getCascadingSourceValue<std::string>(
+				source,
 				"Include"), 
 			'\n'); 
 }
 
-std::list<ExclusionRule> CascadingFileConfiguration::getExcludes(const std::string& target) const 
+std::list<ExclusionRule> CascadingFileConfiguration::getExcludes(const std::string& source) const 
 {
 	std::list<ExclusionRule> rv;
-	const std::vector<std::string> stringExcludes = StringUtils::split(getCascadingTargetValue<std::string>(
-				target,
+	const std::vector<std::string> stringExcludes = StringUtils::split(getCascadingSourceValue<std::string>(
+				source,
 				"Exclude"), 
 			'\n'); 
 
@@ -75,59 +75,59 @@ std::list<ExclusionRule> CascadingFileConfiguration::getExcludes(const std::stri
 	return rv;
 }
 
-unsigned int CascadingFileConfiguration::getPriority(const std::string& target) const 
+unsigned int CascadingFileConfiguration::getPriority(const std::string& source) const 
 {
-	return getCascadingTargetValue<unsigned int>(
-			target,
+	return getCascadingSourceValue<unsigned int>(
+			source,
 			"Priority",
 			5);
 }
 
-unsigned int CascadingFileConfiguration::getMinBackups(const std::string& target) const
+unsigned int CascadingFileConfiguration::getMinBackups(const std::string& source) const
 {
-	return getCascadingTargetValue<unsigned int>(
-			target,
+	return getCascadingSourceValue<unsigned int>(
+			source,
 			"MinBackups",
 			1);
 }
 
-unsigned int CascadingFileConfiguration::getMaxBackups(const std::string& target) const
+unsigned int CascadingFileConfiguration::getMaxBackups(const std::string& source) const
 {
-	return getCascadingTargetValue<unsigned int>(
-			target,
+	return getCascadingSourceValue<unsigned int>(
+			source,
 			"MaxBackups",
 			std::numeric_limits<unsigned int>::max());
 }
 
-std::string CascadingFileConfiguration::getPreferredOrder(const std::string& target) const
+std::string CascadingFileConfiguration::getPreferredOrder(const std::string& source) const
 {
-	return getCascadingTargetValue<std::string>(
-			target,
+	return getCascadingSourceValue<std::string>(
+			source,
 			"PreferredOrder",
 			"this, other");
 }
 
-std::string CascadingFileConfiguration::getDistribution(const std::string& target) const
+std::string CascadingFileConfiguration::getDistribution(const std::string& source) const
 {
-	return getCascadingTargetValue<std::string>(
-			target,
+	return getCascadingSourceValue<std::string>(
+			source,
 			"Distribution",
 			"focus");
 }
 
-std::string CascadingFileConfiguration::getTimerString(const std::string& target) const
+std::string CascadingFileConfiguration::getTimerString(const std::string& source) const
 {
-	return getCascadingTargetValue<std::string>(
-			target,
+	return getCascadingSourceValue<std::string>(
+			source,
 			"ExecuteAt",
 			"at start");
 }
 
 
-std::string CascadingFileConfiguration::getHostIdentification(const std::string& target) const
+std::string CascadingFileConfiguration::getHostIdentification(const std::string& source) const
 {
-	return getCascadingTargetValue<std::string>(
-			target,
+	return getCascadingSourceValue<std::string>(
+			source,
 			"HostIdentification",
 			Poco::Environment::nodeName());
 }

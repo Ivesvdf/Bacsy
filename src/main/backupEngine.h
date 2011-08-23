@@ -19,14 +19,14 @@
 #define BACKUP_ENGINE_H
 
 #include <vector>
-#include "target.h"
+#include "source.h"
 #include "cascadingFileConfiguration.h"
 
 class BackupEngine
 {
 	private:
 		const CascadingFileConfiguration& configuration;
-		std::vector<Target*> targets;
+		std::vector<Source*> sources;
 
 	public: 
 		BackupEngine(const CascadingFileConfiguration& configuration);
