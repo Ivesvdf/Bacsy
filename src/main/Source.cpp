@@ -276,3 +276,17 @@ std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 	return accepter.getPeopleToContact();
 }
 
+bool Source::isExcluded(const Poco::File& path) const
+{
+	for(std::list<ExclusionRule>::const_iterator it = exclusionRules.begin();
+			it != exclusionRules.end();
+			++it)
+	{
+		if(it->match(path))
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
