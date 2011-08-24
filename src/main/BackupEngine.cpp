@@ -21,10 +21,10 @@
 #include <algorithm>
 #include "BackupEngine.h"
 
-class SourceNameToSourceter
+class SourceNameToSourcer
 {
 public:
-	SourceNameToSourceter(const CascadingFileConfiguration& configuration): configuration(configuration) {}
+	SourceNameToSourcer(const CascadingFileConfiguration& configuration): configuration(configuration) {}
 	Source* operator()(const std::string& sourceName)
 	{
 		return new Source(sourceName, configuration);
@@ -42,7 +42,7 @@ std::vector<Source*> sourceNamesToSources(
 	sources.resize(sourceStrings.size());
 
 
-	SourceNameToSourceter sourceNameToSource(configuration); 
+	SourceNameToSourcer sourceNameToSource(configuration); 
 
 	std::transform(
 			sourceStrings.begin(),
