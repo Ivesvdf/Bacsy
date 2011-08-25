@@ -118,6 +118,12 @@ void Source::run(Poco::Timer& timer)
 			+ StringUtils::toString(timer.getPeriodicInterval()) 
 			+ ")");
 
+	if(maxBackups == 0)
+	{
+		LOGI("Not executing source " + name + " after all, because maxBackups equals 0.");
+		return;
+	}
+
 	if(!mutex.tryLock())
 	{
 		LOGW("Source is already running -- not executing again.");
