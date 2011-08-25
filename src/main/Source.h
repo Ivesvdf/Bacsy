@@ -30,6 +30,14 @@
 
 class Source
 {
+public:
+	Source(std::string sectionName, const CascadingFileConfiguration& config);
+	~Source();
+
+	void start();
+
+	void run(Poco::Timer& timer);
+
 private:
 	const std::string name;
 	const std::vector<std::string> includes;
@@ -57,77 +65,74 @@ private:
 	void sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const;
 	void sendTo(const Poco::Net::SocketAddress& to);
 
-public:
-	Source(std::string sectionName, const CascadingFileConfiguration& config);
-	~Source();
-
-	void start();
-
-	void run(Poco::Timer& timer);
-
-
-private:
-	bool isExcluded(const Poco::File& path) const;
+	template<typename FUNCTION>
+	void sendAll(FUNCTION fun);
 
 	template<typename FUNCTION>
-	void sendAll(FUNCTION fun)
+	void backupPath(const Poco::File& path, FUNCTION& function) const;
+
+	bool isExcluded(const Poco::File& path) const;
+};
+
+template<typename FUNCTION>
+void Source::sendAll(FUNCTION fun)
+{
+	for( std::vector<std::string>::const_iterator it = includes.begin();
+			it != includes.end();
+			it++)
 	{
-		for( std::vector<std::string>::const_iterator it = includes.begin();
-				it != includes.end();
+		backupPath(Poco::File(*it), fun);
+	}
+}
+
+
+template<typename FUNCTION>
+void Source::backupPath(const Poco::File& path, FUNCTION& function) const
+{
+	std::string pathString = path.path();
+	LOGI("Filename = " + pathString);
+
+	if(!path.exists())
+	{
+		LOGE("Could not backup file " + pathString + 
+				" because it does not exist.");
+		return;
+	}
+
+	if(!path.canRead())
+	{
+		LOGE("Could not backup file " + pathString + 
+				" because this user does not have read permissions.");
+		return;
+	}
+
+	if(isExcluded(path))
+	{
+		LOGI("Exclude rule matched.");
+		return;
+	}
+
+	if(path.isDirectory())
+	{
+		LOGI("Path is a directory -- expanding.");
+		std::vector<Poco::File> directoryContents;
+		path.list(directoryContents);
+
+		for(std::vector<Poco::File>::const_iterator it = directoryContents.begin();
+				it != directoryContents.end();
 				it++)
 		{
-			backupPath(Poco::File(*it), fun);
+			backupPath(*it, function);
 		}
 	}
-
-	template<typename FUNCTION>
-	void backupPath(const Poco::File& path, FUNCTION& function) const
+	else // Is file
 	{
-		std::string pathString = path.path();
-		LOGI("Filename = " + pathString);
-
-		if(!path.exists())
-		{
-			LOGE("Could not backup file " + pathString + 
-					" because it does not exist.");
-			return;
-		}
-
-		if(!path.canRead())
-		{
-			LOGE("Could not backup file " + pathString + 
-					" because this user does not have read permissions.");
-			return;
-		}
-
-		if(isExcluded(path))
-		{
-			LOGI("Exclude rule matched.");
-			return;
-		}
-
-		if(path.isDirectory())
-		{
-			LOGI("Path is a directory -- expanding.");
-			std::vector<Poco::File> directoryContents;
-			path.list(directoryContents);
-
-			for(std::vector<Poco::File>::const_iterator it = directoryContents.begin();
-					it != directoryContents.end();
-					it++)
-			{
-				backupPath(*it, function);
-			}
-		}
-		else // Is file
-		{
-			LOGI("Path is a file -- not expanding.");
-			LOGI("Modified date = " + StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
-			function(path);
-		}
-
-
+		LOGI("Path is a file -- not expanding.");
+		LOGI("Modified date = " + StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
+		function(path);
 	}
-};
+
+
+}
 
 #endif
