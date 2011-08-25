@@ -227,7 +227,7 @@ ExecuteAt
 Priority
   **Default Value:** ?
   
-  **Range:** [0-10]
+  **Domain:** [0-10]
 
   **Semantics:** A source's priority determines how important this source is.
   Higher priorities correspond to **lower** priority numbers. E.g. a source
@@ -255,7 +255,7 @@ HostIdentification
 MinBackups
   **Default Value:** 1
   
-  **Range:** [0 - 2 147 483 648[
+  **Domain:** [0 - 2 147 483 648[
 
   **Semantics:** The minimum number of stores Bacsy will try to copy the
   contents of this source to. When this number is not reached, an error will
@@ -264,7 +264,7 @@ MinBackups
 MaxBackups
   **Default Value:** 1
   
-  **Range:** [0 - 2 147 483 648[
+  **Domain:** [0 - 2 147 483 648[
 
   **Semantics:** The maximum number of stores Bacsy will try to copy the
   contents of this store to. Bacsy will never store more backups than this.
@@ -295,7 +295,7 @@ Distribution
 DryPrintRun
   **Default Value:** False
 
-  **Range:** { True, False }
+  **Domain:** { True, False }
 
   **Semantics:** When DryPrintRun is True, instead of sending files to hosts
   and their stores, the filenames of all files that *would* be sent are
@@ -329,7 +329,7 @@ Location
 MinPriorityForStoring
   **Default Value:** ?
 
-  **Range:** [0,10]
+  **Domain:** [0,10]
 
   **Semantics:** Determines how high a source's priority must be before it is
   accepted by this store. Only runs from sources with a `Priority`_ higher
@@ -340,7 +340,7 @@ MinPriorityForStoring
 AlwaysPresent
   **Default Value:** True
 
-  **Range:** { True, False }
+  **Domain:** { True, False }
 
   **Semantics:** When AlwaysPresent is True, Bacsy will assume this store is
   permanently connected. If the directory given in ``Location`` does not
