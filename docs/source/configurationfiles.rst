@@ -291,6 +291,17 @@ Distribution
   host. Setting it to ``focus`` will store all 10 backups on one host's
   stores. 
 
+ 
+DryPrintRun
+  **Default Value:** False
+
+  **Range:** { True, False }
+
+  **Semantics:** When DryPrintRun is True, instead of sending files to hosts
+  and their stores, the filenames of all files that *would* be sent are
+  printed to standard output. 
+
+  This option is most often used to fine tune your inclusion/exclusion rules.
 
 
 stores.configuration
