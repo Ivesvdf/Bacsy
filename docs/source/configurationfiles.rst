@@ -57,9 +57,10 @@ correspond to *both* values.  For example:
 is used to include both ``/home/ives`` **and** ``/home/naomi``. 
 
 
-Note that keys by the names of ``Include[]`` and ``Include`` are unrelated.
-Only defining ``Include[]`` once is **not** equivalent with defining
-``Include``. 
+.. note::
+  Keys by the names of ``Include[]`` and ``Include`` are unrelated.
+  Only defining ``Include[]`` once is **not** equivalent with defining
+  ``Include``. 
 
 Comments
 --------
