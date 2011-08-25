@@ -81,8 +81,8 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 	timerString = StringUtils::toLower(timerString);
 	Poco::RegularExpression isWeekly("every week on [a-z]+day at " + timeRegex);
 	Poco::RegularExpression isDaily("every day at " + timeRegex);
-	Poco::RegularExpression isNMinutes("every [0-9]+ minutes?");
-	Poco::RegularExpression isNHours("every [0-9]+ hours?");
+	Poco::RegularExpression isNMinutes("every ([0-9]+ )?minutes?");
+	Poco::RegularExpression isNHours("every ([0-9]+ )?hours?");
 	Poco::RegularExpression isOnStart("(on|at) start"); // ok, no regex needed. Shut up :-p
 
 	const std::vector<std::string> splitString = StringUtils::split(timerString, " and ");
@@ -136,7 +136,7 @@ TimeSchedule TimerStringParser::parseNHours(const Poco::LocalDateTime& now, cons
 	Poco::RegularExpression extractNumber("[0-9]+");
 	extractNumber.extract(timerString, numberString);
 
-	const unsigned int minutes = StringUtils::fromString<unsigned int>(numberString);
+	const unsigned int minutes = numberString.empty() ? 1 : StringUtils::fromString<unsigned int>(numberString);
 
 	// Run the first one after 0 sec, aka immediately
 	return TimeSchedule(Poco::Timespan(0), Poco::Timespan(minutes*Poco::Timespan::HOURS));
@@ -149,7 +149,7 @@ TimeSchedule TimerStringParser::parseNMinutes(const Poco::LocalDateTime& now, co
 	Poco::RegularExpression extractNumber("[0-9]+");
 	extractNumber.extract(timerString, numberString);
 
-	const unsigned int minutes = StringUtils::fromString<unsigned int>(numberString);
+	const unsigned int minutes = numberString.empty() ? 1 : StringUtils::fromString<unsigned int>(numberString);
 
 	// Run the first one after 0 sec, aka immediately
 	return TimeSchedule(Poco::Timespan(0), Poco::Timespan(minutes*Poco::Timespan::MINUTES));
