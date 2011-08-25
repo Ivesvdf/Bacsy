@@ -9,17 +9,18 @@ Basic
 The primary way of configuring Bacsy is by writing a set of human readable
 files in a format called *Cascading Configuration File*, or *CCF*. A Cascading
 Configuration File is a normal `INI file
-<http://en.wikipedia.org/wiki/INI_file>`_, with some added semantical meaning. 
+<http://en.wikipedia.org/wiki/INI_file>`_, with some added semantical meaning.
 
-A Cascading Configuration File will contain a number of sections, each of which start with 
+A Cascading Configuration File will contain a number of sections, each of
+which start with 
 
 ::
 
    [ sectionName ]
 
-where sectionName is some arbitrary string and end when another section starts
-or the file ends. Each of these sections will contain a number of assignments,
-which take the shape
+where sectionName is some arbitrary string. A section ends when another
+section starts or the file ends. Each of these sections will contain a number
+of assignments that look like this:
 
 ::
 
