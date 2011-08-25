@@ -41,6 +41,7 @@ private:
 	const std::string distribution;
 	const std::string timerString;
 	const std::string hostIdentification;
+	const bool dryPrintRun;
 
 	std::list<ExclusionRule> exclusionRules;
 	std::list<Poco::Timer*> timers;
@@ -67,6 +68,17 @@ public:
 
 private:
 	bool isExcluded(const Poco::File& path) const;
+
+	template<typename FUNCTION>
+	void sendAll(FUNCTION fun)
+	{
+		for( std::vector<std::string>::const_iterator it = includes.begin();
+				it != includes.end();
+				it++)
+		{
+			backupPath(Poco::File(*it), fun);
+		}
+	}
 
 	template<typename FUNCTION>
 	void backupPath(const Poco::File& path, FUNCTION& function) const

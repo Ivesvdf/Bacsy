@@ -51,6 +51,7 @@ Source::Source(std::string section, const CascadingFileConfiguration& config):
 	preferredOrder(config.getPreferredOrder(section)),
 	distribution(config.getDistribution(section)),
 	hostIdentification(config.getHostIdentification(section)),
+	dryPrintRun(config.getDryPrintRun(section)),
 	exclusionRules(config.getExcludes(section)),
 	timers(createTimers(config.getTimerString(section)))
 {
@@ -147,6 +148,19 @@ void Source::run(Poco::Timer& timer)
 	LOGI("Source " + name + " is finished.");
 }
 
+
+class DoNothingFileSender
+{
+public:
+	DoNothingFileSender()
+	{}
+
+	inline void operator()(const Poco::File& file)
+	{
+		std::cout << file.path() << std::endl;
+	}
+};
+
 class FileSender
 {
 public:
@@ -175,27 +189,30 @@ private:
 
 void Source::sendTo(const Poco::Net::SocketAddress& who)
 {
-	Poco::Net::DialogSocket socket(who);
-	socket.sendMessage(bacsyProtocolString);
-	Json::Value root;
-	root["type"] = "store";
-	root["host"] = hostIdentification;
-	root["source"] = name;
-	root["priority"] = priority;
-	root["runID"] = Poco::DateTimeFormatter::format(
-			Poco::Timestamp(),
-			Poco::DateTimeFormat::ISO8601_FORMAT);
-	// TODO: Change this to an actual limit...
-	root["maxStoreTimes"] = maxBackups;
-
-	socket.sendMessage(JsonHelper::write(root));
-
-	FileSender sender(socket);
-	for( std::vector<std::string>::const_iterator it = includes.begin();
-			it != includes.end();
-			it++)
+	if(dryPrintRun)
 	{
-		backupPath(Poco::File(*it), sender);
+		DoNothingFileSender sender;
+		sendAll(sender);
+	}
+	else
+	{
+		Poco::Net::DialogSocket socket(who);
+		socket.sendMessage(bacsyProtocolString);
+		Json::Value root;
+		root["type"] = "store";
+		root["host"] = hostIdentification;
+		root["source"] = name;
+		root["priority"] = priority;
+		root["runID"] = Poco::DateTimeFormatter::format(
+				Poco::Timestamp(),
+				Poco::DateTimeFormat::ISO8601_FORMAT);
+		// TODO: Change this to an actual limit...
+		root["maxStoreTimes"] = maxBackups;
+
+		socket.sendMessage(JsonHelper::write(root));
+
+		FileSender sender(socket);
+		sendAll(sender);
 	}
 }
 

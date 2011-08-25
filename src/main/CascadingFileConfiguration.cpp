@@ -99,6 +99,14 @@ unsigned int CascadingFileConfiguration::getMaxBackups(const std::string& source
 			std::numeric_limits<unsigned int>::max());
 }
 
+bool CascadingFileConfiguration::getDryPrintRun(const std::string& source) const
+{
+	return toBool(getCascadingSourceValue<std::string>(
+			source,
+			"DryPrintRun",
+			"False"));
+}
+
 std::string CascadingFileConfiguration::getPreferredOrder(const std::string& source) const
 {
 	return getCascadingSourceValue<std::string>(
