@@ -20,4 +20,3 @@ set(bacsy_libraries common
 
 add_subdirectory(test)
 add_subdirectory(main)
-
