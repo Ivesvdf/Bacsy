@@ -66,7 +66,7 @@ class Woodcutter
 			}
 
 			if(severity == FATAL)
-				abort();
+				exit(1);
 		}
 
 		/**
