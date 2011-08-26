@@ -120,7 +120,7 @@ Include[]
   **Semantics:** Each time this key is defined, the associated value is a
   *single directory or file*. This directory (and all its descendants) or file
   will be backed up when the source is run, unless it matches one or more
-  `exclude rules <exclude>`_. If the include is a directory, that directory
+  `exclude rules`_. If the include is a directory, that directory
   does not match any exclude, but one of its descendants does, only that
   descendant will be excluded. 
 
@@ -134,7 +134,7 @@ Include[]
   This example will include two directories, ``/home/ives`` and
   ``/home/naomi/``, and also a single file ``/home/john/.bashrc``. 
 
-.. _exclude:
+.. _exclude rules:
 
 Exclude[]
   **Default Value:** (not defined)
