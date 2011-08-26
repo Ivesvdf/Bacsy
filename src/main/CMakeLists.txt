@@ -51,4 +51,6 @@ add_library(common STATIC
 )
 
 add_executable(bacsy Main.cpp)
+add_executable(bacsy-server BacsyServerMain.cpp)
 target_link_libraries(bacsy ${bacsy_libraries})
+target_link_libraries(bacsy-server ${bacsy_libraries})
