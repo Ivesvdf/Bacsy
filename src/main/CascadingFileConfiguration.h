@@ -47,6 +47,8 @@ class CascadingFileConfiguration
 		std::string getLocation(const std::string& store) const;
 		bool getAlwaysPresent(const std::string& store) const;
 		unsigned int getMinPriorityForStoring(const std::string& input) const;
+		bool sourceFileLoaded() const;
+		bool storesFileLoaded() const;
 
 	private:
 		template<typename T>
@@ -102,9 +104,14 @@ class CascadingFileConfiguration
 
 		std::ifstream inputSourceStream;	
 		std::ifstream inputStoreStream;	
+
+		const bool isSourceFileLoaded;
+		const bool isStoresFileLoaded;
+
 		ConfigurationFile sourceConfig;
 		ConfigurationFile storeConfig;
 		const std::string globalSectionName;
+
 };
 
 #endif

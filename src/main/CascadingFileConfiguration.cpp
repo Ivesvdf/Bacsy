@@ -27,10 +27,11 @@
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& directory):
 	inputSourceStream((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str()),
 	inputStoreStream((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str()),
+	isSourceFileLoaded(inputSourceStream),
+	isStoresFileLoaded(inputStoreStream),
 	sourceConfig(inputSourceStream),
 	storeConfig(inputStoreStream),
 	globalSectionName("global")
-
 {
 
 }
@@ -171,3 +172,15 @@ bool CascadingFileConfiguration::toBool(const std::string& input)
 }
 
 
+bool CascadingFileConfiguration::sourceFileLoaded() const
+{
+	std::cerr <<isSourceFileLoaded << std::endl;
+	
+	return isSourceFileLoaded;
+}
+
+bool CascadingFileConfiguration::storesFileLoaded() const
+{
+	std::cerr << isStoresFileLoaded << std::endl;
+	return isStoresFileLoaded;
+}

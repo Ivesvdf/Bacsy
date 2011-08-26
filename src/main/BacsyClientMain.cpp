@@ -27,6 +27,11 @@ int main()
 {
 	CascadingFileConfiguration configuration(".bacsy");
 
+	if(!configuration.sourceFileLoaded())
+	{
+		LOGF("No .bacsy/sources.config file found.");
+	}
+
 	BackupEngine backupEngine(configuration);
 	backupEngine.start();
 	

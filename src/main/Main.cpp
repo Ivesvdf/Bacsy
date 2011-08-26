@@ -28,6 +28,17 @@
 int main()
 {
 	CascadingFileConfiguration configuration(".bacsy");
+
+	if(!configuration.sourceFileLoaded())
+	{
+		LOGF("No .bacsy/sources.config file found.");
+	}
+
+	if(!configuration.storesFileLoaded())
+	{
+		LOGF("No .bacsy/stores.config file found.");
+	}
+
 	StoreManager storeManager(configuration);
 
 	BacsyServer server(storeManager);
