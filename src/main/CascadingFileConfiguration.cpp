@@ -174,13 +174,10 @@ bool CascadingFileConfiguration::toBool(const std::string& input)
 
 bool CascadingFileConfiguration::sourceFileLoaded() const
 {
-	std::cerr <<isSourceFileLoaded << std::endl;
-	
 	return isSourceFileLoaded;
 }
 
 bool CascadingFileConfiguration::storesFileLoaded() const
 {
-	std::cerr << isStoresFileLoaded << std::endl;
 	return isStoresFileLoaded;
 }
