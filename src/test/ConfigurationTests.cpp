@@ -142,3 +142,28 @@ TEST( ConfigurationTest, TestWhitespaceInsensitive )
 	ASSERT_EQ("someSection", *iterator);
 	ASSERT_EQ(1u, sections.size());
 }
+
+TEST( ConfigurationTest, TestPut )
+{
+	std::stringstream ss;
+
+	ss << "[someSection]\n	a=1";
+	ConfigurationFile file(ss);
+
+	ASSERT_EQ("1", file.get<std::string>("someSection", "a"));
+	file.put("someSection", "a", "5");
+	ASSERT_EQ("5", file.get<std::string>("someSection", "a"));
+}
+
+TEST( ConfigurationTest, TestMerge )
+{
+	std::stringstream ss1,ss2;
+	ss1 << "[someSection]\n	a=1";
+	ss2 << "[someSection]\n	a=5";
+	ConfigurationFile file1(ss1);
+	ConfigurationFile file2(ss2);
+
+	ASSERT_EQ("1", file1.get<std::string>("someSection", "a"));
+	file1.merge(file2);
+	ASSERT_EQ("5", file1.get<std::string>("someSection", "a"));
+}

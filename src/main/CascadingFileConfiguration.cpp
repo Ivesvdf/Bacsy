@@ -181,3 +181,23 @@ bool CascadingFileConfiguration::storesFileLoaded() const
 {
 	return isStoresFileLoaded;
 }
+
+ConfigurationFile& CascadingFileConfiguration::getSourceConfig()
+{
+	return sourceConfig;
+}
+
+ConfigurationFile& CascadingFileConfiguration::getStoreConfig()
+{
+	return storeConfig;
+}
+
+const ConfigurationFile& CascadingFileConfiguration::getSourceConfig() const
+{
+	return sourceConfig;
+}
+
+const ConfigurationFile& CascadingFileConfiguration::getStoreConfig() const
+{
+	return storeConfig;
+}

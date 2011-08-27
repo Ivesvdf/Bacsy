@@ -15,26 +15,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <tclap/CmdLine.h>
+#include <sstream>
 #include "Poco/Thread.h"
 #include "BackupEngine.h"
 #include "CascadingFileConfiguration.h"
 #include "Source.h"
 #include "ConfigurationFile.h"
+#include "info.h"
+#include "ArgParsingUtils.h"
 
 
 
-int main()
+int main(int argc, char **argv)
 {
-	CascadingFileConfiguration configuration(".bacsy");
 
-	if(!configuration.sourceFileLoaded())
+	try 
+	{  
+		TCLAP::CmdLine cmd("Client for the Bacsy backup system", ' ', bacsyVersion);
+
+		TCLAP::ValueArg<std::string> configArg("c","configdir","Directory in which to look for configuration files.",false,".bacsy","string");
+		TCLAP::MultiArg<std::string> defArg("D","definition","Add a definition to the sources configuration. Format: [section]key=value",false,"string");
+
+		cmd.add(configArg);
+		cmd.add(defArg);
+
+		cmd.parse(argc, argv);
+
+		std::string configdir = configArg.getValue();
+		std::vector<std::string> definitions = defArg.getValue();
+
+		CascadingFileConfiguration configuration(configdir);
+		ConfigurationFile& sourcesFile = configuration.getSourceConfig();
+
+		ArgParsingUtils::processDefinitions(definitions, sourcesFile);
+
+		if(!configuration.sourceFileLoaded())
+		{
+			LOGF("No " + configdir + "/sources.config file found.");
+		}
+
+		BackupEngine backupEngine(configuration);
+		backupEngine.start();
+
+		while(true)
+			Poco::Thread::sleep(10000);
+	}
+	catch (TCLAP::ArgException &e)  // catch any exceptions
 	{
-		LOGF("No .bacsy/sources.config file found.");
+		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; 
 	}
 
-	BackupEngine backupEngine(configuration);
-	backupEngine.start();
 	
-	while(true)
-		Poco::Thread::sleep(10000);
 }

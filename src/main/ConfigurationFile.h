@@ -62,6 +62,7 @@ private:
 public:
 	void put(const string& key, const string& val);
 	string get(const string& key) const;
+	list<string> keys() const;
 };
 
 template<typename S>
@@ -104,12 +105,21 @@ public:
 	 * @return a Linked list containing the names of all sections
 	 */
 	list<string> sections() const;
+	list<string> keys(const std::string& section) const;
+
+	/**
+	 * Merges another configurationFile into this one. Other will override
+	 * this!
+	 */
+	void merge(const ConfigurationFile& other);
 
 	template<typename T>
 	T get(string section, string key) const;
 
 	template<typename T>
 	T get(string section, string key, const T& defaultVal) const;
+
+	void put(const string& section, const string& key, const string& val);
 };
 
 template<typename T>

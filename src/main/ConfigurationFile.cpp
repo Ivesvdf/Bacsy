@@ -107,6 +107,18 @@ string Section::get(const string& key) const
 	return it->second;
 }
 
+list<string> Section::keys() const
+{
+	std::list<std::string> rv;
+
+	for(KeyValMap::const_iterator it = kvMap.begin(); it != kvMap.end(); it++)
+	{
+		rv.push_back(it->first);
+	}
+
+	return rv;
+}
+
 list<string> ConfigurationFile::sections() const
 {
 	list<string> rv;
@@ -118,3 +130,42 @@ list<string> ConfigurationFile::sections() const
 
 	return rv;
 }
+
+list<string> ConfigurationFile::keys(const std::string& section) const
+{
+	SectionMap::const_iterator it = sectionMap.find(section);
+	if(it == sectionMap.end())
+		throw NoSuchSectionException(section);
+
+	return it->second.keys();
+}
+
+
+void ConfigurationFile::put(const string& section, const string& key, const string& val)
+{
+	SectionMap::iterator it = sectionMap.find(section);
+	if(it == sectionMap.end())
+		throw NoSuchSectionException(section);
+
+	it->second.put(key,val);
+}
+
+void ConfigurationFile::merge(const ConfigurationFile& other)
+{
+	std::list<std::string> sections = other.sections();
+			
+	for(std::list<std::string>::iterator sectionIt = sections.begin();
+			sectionIt != sections.end();
+			++sectionIt)
+	{
+		std::list<std::string> keys = other.keys(*sectionIt);
+
+		for(std::list<std::string>::iterator keyIterator = keys.begin();
+				keyIterator != keys.end();
+				++keyIterator)
+		{
+			put(*sectionIt, *keyIterator, other.get<std::string>(*sectionIt, *keyIterator));
+		}
+	}
+}
+

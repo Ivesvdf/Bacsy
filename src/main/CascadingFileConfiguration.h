@@ -50,6 +50,11 @@ class CascadingFileConfiguration
 		bool sourceFileLoaded() const;
 		bool storesFileLoaded() const;
 
+		const ConfigurationFile& getSourceConfig() const;
+		const ConfigurationFile& getStoreConfig() const;
+
+		ConfigurationFile& getSourceConfig();
+		ConfigurationFile& getStoreConfig();
 	private:
 		template<typename T>
 		T getCascadingStoreValue( 
