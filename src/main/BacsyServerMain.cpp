@@ -15,30 +15,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <tclap/CmdLine.h>
 #include "Poco/Thread.h"
 #include "BacsyServer.h"
 #include "MulticastResponder.h"
 #include "CascadingFileConfiguration.h"
 #include "ConfigurationFile.h"
+#include "info.h"
+#include "ArgParsingUtils.h"
 
 
-int main()
+int main(int argc, char **argv)
 {
-	CascadingFileConfiguration configuration(".bacsy");
+	try 
+	{  
+		TCLAP::CmdLine cmd("Server for the Bacsy backup system", ' ', bacsyVersion);
 
-	if(!configuration.storesFileLoaded())
+		TCLAP::ValueArg<std::string> configArg("c","configdir","Directory in which to look for configuration files.",false,".bacsy","string");
+		TCLAP::MultiArg<std::string> defArg("D","definition","Add a definition to the sources configuration. Format: [section]key=value",false,"string");
+
+		cmd.add(configArg);
+		cmd.add(defArg);
+
+		cmd.parse(argc, argv);
+
+		std::string configdir = configArg.getValue();
+		std::vector<std::string> definitions = defArg.getValue();
+
+		CascadingFileConfiguration configuration(configdir);
+		ConfigurationFile& sourcesFile = configuration.getSourceConfig();
+
+		ArgParsingUtils::processDefinitions(definitions, sourcesFile);
+
+		if(!configuration.storesFileLoaded())
+		{
+			LOGF("No .bacsy/stores.config file found.");
+		}
+
+		StoreManager storeManager(configuration);
+
+		BacsyServer server(storeManager);
+		server.start();
+
+		MulticastResponder responder;
+		responder.start();
+
+	}
+	catch (TCLAP::ArgException &e)  // catch any exceptions
 	{
-		LOGF("No .bacsy/stores.config file found.");
+		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; 
 	}
 
-	StoreManager storeManager(configuration);
+	
 
-	BacsyServer server(storeManager);
-	server.start();
-
-	MulticastResponder responder;
-	responder.start();
-
-	while(true)
-		Poco::Thread::sleep(10000);
 }
