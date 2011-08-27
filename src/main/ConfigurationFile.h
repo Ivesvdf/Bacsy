@@ -100,38 +100,42 @@ private:
 public:
 	ConfigurationFile(istream& fromFile);
 
-
 	/**
 	 * @return a Linked list containing the names of all sections
 	 */
 	list<string> sections() const;
 
 	template<typename T>
-	T get(string section, string key) const 
-	{
-		SectionMap::const_iterator it = sectionMap.find(section);
-		if(it == sectionMap.end())
-			throw NoSuchSectionException(section);
-
-		const string val = it->second.get(StringUtils::rstrip(key, "[]"));
-
-		Converter<T> c;
-		return c.convert(val);
-	}
+	T get(string section, string key) const;
 
 	template<typename T>
-	T get(string section, string key, const T& defaultVal) const
-	{
-		try 
-		{
-			return get<T>(section, key);
-		}
-		catch(NoSuchKeyException e)
-		{
-			return defaultVal;
-		}
-	}
-
+	T get(string section, string key, const T& defaultVal) const;
 };
+
+template<typename T>
+T ConfigurationFile::get(string section, string key) const 
+{
+	SectionMap::const_iterator it = sectionMap.find(section);
+	if(it == sectionMap.end())
+		throw NoSuchSectionException(section);
+
+	const string val = it->second.get(StringUtils::rstrip(key, "[]"));
+
+	Converter<T> c;
+	return c.convert(val);
+}
+
+template<typename T>
+T ConfigurationFile::get(string section, string key, const T& defaultVal) const
+{
+	try 
+	{
+		return get<T>(section, key);
+	}
+	catch(NoSuchKeyException e)
+	{
+		return defaultVal;
+	}
+}
 
 #endif
