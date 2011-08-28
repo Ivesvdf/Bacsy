@@ -27,7 +27,7 @@ std::string Environment::getDefaultConfigurationDirectory()
 #if defined(POCO_OS_FAMILY_WINDOWS)
 	if(Poco::Environment::has("APPDATA"))
 	{
-		prefix = StringUtils::rstrip(Poco::Environment::get("APPDATA") , "\\/") = "/Bacsy/";
+		prefix = StringUtils::rstrip(Poco::Environment::get("APPDATA") , "\\/") + "/Bacsy/";
 	}
 	else // No idea why APPDATA wouldn't be defined
 	{

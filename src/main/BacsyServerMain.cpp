@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
 		if(!configuration.storesFileLoaded())
 		{
-			LOGF("No " + configdir + " stores.config file found.");
+			LOGF("No " + configdir + "stores.config file found.");
 		}
 
 		StoreManager storeManager(configuration);
