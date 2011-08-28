@@ -108,7 +108,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 
 	if(storesToTry.empty())
 	{
-		LOGW("No stores found with a priority higher than " + StringUtils::toString(priority) + ", cannot possibly accept backup.");
+		LOGW("No stores found with a MinPriorityForStoring higher than " + StringUtils::toString(priority) + ", cannot possibly accept backup.");
 		return;
 	}
 
