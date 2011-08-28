@@ -212,7 +212,7 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 		root["priority"] = priority;
 		root["runID"] = Poco::DateTimeFormatter::format(
 				Poco::Timestamp(),
-				Poco::DateTimeFormat::ISO8601_FORMAT);
+				"%Y-%m-%dT%H.%M.%S%z");
 		// TODO: Change this to an actual limit...
 		root["maxStoreTimes"] = maxBackups;
 
