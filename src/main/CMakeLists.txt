@@ -49,6 +49,7 @@ add_library(common STATIC
                  SizeExclusionSubRule
                  StringExclusionRuleBuilder
 				 ArgParsingUtils
+				 Environment
 )
 
 add_executable(bacsy Main.cpp)

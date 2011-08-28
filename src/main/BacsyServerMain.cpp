@@ -23,6 +23,7 @@
 #include "ConfigurationFile.h"
 #include "info.h"
 #include "ArgParsingUtils.h"
+#include "Environment.h"
 
 
 int main(int argc, char **argv)
@@ -31,8 +32,19 @@ int main(int argc, char **argv)
 	{  
 		TCLAP::CmdLine cmd("Server for the Bacsy backup system", ' ', bacsyVersion);
 
-		TCLAP::ValueArg<std::string> configArg("c","configdir","Directory in which to look for configuration files.",false,".bacsy","string");
-		TCLAP::MultiArg<std::string> defArg("D","definition","Add a definition to the sources configuration. Format: [section]key=value",false,"string");
+		TCLAP::ValueArg<std::string> configArg(
+				"c",
+				"configdir",
+				"Directory in which to look for configuration files.",
+				false,
+				Environment::getDefaultConfigurationDirectory(),
+				"string");
+		TCLAP::MultiArg<std::string> defArg(
+				"D",
+				"definition",
+				"Add a definition to the sources configuration. Format: [section]key=value",
+				false,
+				"string");
 
 		cmd.add(configArg);
 		cmd.add(defArg);
@@ -49,7 +61,7 @@ int main(int argc, char **argv)
 
 		if(!configuration.storesFileLoaded())
 		{
-			LOGF("No .bacsy/stores.config file found.");
+			LOGF("No " + configdir + " stores.config file found.");
 		}
 
 		StoreManager storeManager(configuration);
