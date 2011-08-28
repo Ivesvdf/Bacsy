@@ -105,6 +105,13 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 	// Test if there are any stores available
 	typedef std::list<Store*> StorePointerList;
 	StorePointerList storesToTry = storeManager.getStores(priority);
+
+	if(storesToTry.empty())
+	{
+		LOGW("No stores found with a priority higher than " + StringUtils::toString(priority) + ", cannot possibly accept backup.");
+		return;
+	}
+
 	unsigned int storesSentTo = 0;
 
 	while(maxStoreTimes - storesSentTo > 0 && !storesToTry.empty())
