@@ -52,6 +52,7 @@ Source::Source(std::string section, const CascadingFileConfiguration& config):
 	distribution(config.getDistribution(section)),
 	hostIdentification(config.getHostIdentification(section)),
 	dryPrintRun(config.getDryPrintRun(section)),
+	enabled(config.getEnabled(section)),
 	exclusionRules(config.getExcludes(section)),
 	timers(createTimers(config.getTimerString(section)))
 {
@@ -122,6 +123,12 @@ void Source::run(Poco::Timer& timer)
 	if(maxBackups == 0)
 	{
 		LOGI("Not executing source " + name + " after all, because maxBackups equals 0.");
+		return;
+	}
+
+	if(!enabled)
+	{
+		LOGI("Not executing source " + name + ", because it's disabled.");
 		return;
 	}
 

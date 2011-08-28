@@ -42,6 +42,7 @@ class CascadingFileConfiguration
 		std::string getPreferredOrder(const std::string& source) const;
 		std::string getDistribution(const std::string& source) const;
 		std::string getTimerString(const std::string& source) const;
+		bool getEnabled(const std::string& source) const;
 		bool getDryPrintRun(const std::string& source) const;
 		std::string getHostIdentification(const std::string& source) const;
 		std::string getLocation(const std::string& store) const;

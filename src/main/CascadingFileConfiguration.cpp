@@ -108,6 +108,14 @@ bool CascadingFileConfiguration::getDryPrintRun(const std::string& source) const
 			"False"));
 }
 
+bool CascadingFileConfiguration::getEnabled(const std::string& source) const
+{
+	return toBool(getCascadingSourceValue<std::string>(
+			source,
+			"Enabled",
+			"True"));
+}
+
 std::string CascadingFileConfiguration::getPreferredOrder(const std::string& source) const
 {
 	return getCascadingSourceValue<std::string>(

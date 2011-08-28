@@ -50,6 +50,7 @@ private:
 	const std::string timerString;
 	const std::string hostIdentification;
 	const bool dryPrintRun;
+	const bool enabled;
 
 	std::list<ExclusionRule> exclusionRules;
 	std::list<Poco::Timer*> timers;
