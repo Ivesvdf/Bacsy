@@ -304,6 +304,15 @@ DryPrintRun
   This option is most often used to fine tune your inclusion/exclusion rules.
 
 
+Enabled
+  **Default Value:** True
+
+  **Domain:** { True, False }
+
+  **Semantics:** If Enabled is False, the target won't actually be executed.
+  Use this to (temporarily?) disable targets. 
+
+
 stores.configuration
 --------------------
 Every section name, except for ``global`` (which is optional), defines a new
