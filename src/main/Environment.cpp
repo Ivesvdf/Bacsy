@@ -38,9 +38,9 @@ std::string Environment::getDefaultConfigurationDirectory()
 	const std::string homeConfig = 
 		Poco::Environment::has("XDG_CONFIG_HOME") 
 			? Poco::Environment::get("XDG_CONFIG_HOME") 
-			: Poco::Environment::get("HOME");
+			: StringUtils::rstrip(Poco::Environment::get("HOME"), "/") + "/.config";
 
-	prefix = StringUtils::rstrip(homeConfig, "/") + "/.bacsy/";
+	prefix = StringUtils::rstrip(homeConfig, "/") + "/bacsy/";
 #endif
 
 	return prefix;
