@@ -72,12 +72,13 @@ int main(int argc, char **argv)
 		MulticastResponder responder;
 		responder.start();
 
+		while(true)
+			Poco::Thread::sleep(10000);
 	}
 	catch (TCLAP::ArgException &e)  // catch any exceptions
 	{
 		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; 
 	}
 
-	
-
+	return 0;
 }

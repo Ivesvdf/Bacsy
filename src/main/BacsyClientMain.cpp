@@ -76,5 +76,5 @@ int main(int argc, char **argv)
 		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; 
 	}
 
-	
+	return 0;
 }
