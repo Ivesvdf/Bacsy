@@ -46,8 +46,9 @@ values.
 Array Keys
 ----------
 If a key ends in ``[]``, this key can be defined multiple times in the same
-section. When more than one values are assigned to this key, the key will
-correspond to *both* values.  For example: ::
+section. When more than one value is assigned to this key, the key will
+correspond to a list of all values assigned to that key in that section.  For
+example: ::
 
    Include[] = /home/ives
    Include[] = /home/naomi
