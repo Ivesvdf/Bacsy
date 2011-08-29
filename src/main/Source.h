@@ -27,6 +27,7 @@
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
 #include "CascadingFileConfiguration.h"
+#include "Poco/DirectoryIterator.h"
 
 class Source
 {
@@ -116,12 +117,9 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 	if(path.isDirectory())
 	{
 		LOGI("Path is a directory -- expanding.");
-		std::vector<Poco::File> directoryContents;
-		path.list(directoryContents);
 
-		for(std::vector<Poco::File>::const_iterator it = directoryContents.begin();
-				it != directoryContents.end();
-				it++)
+		Poco::DirectoryIterator end;
+		for(Poco::DirectoryIterator it(path); it != end; ++it)
 		{
 			backupPath(*it, function);
 		}
