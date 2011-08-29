@@ -1,9 +1,15 @@
+.. _Configuration Files:
+
 ===================
 Configuration Files
 ===================
 
 Introduction
 ============
+.. note::
+    Feel free to read :ref:`Configuring Bacsy` before you read this document.
+    You probably won't need 95% of what's written here. 
+
 Basic
 -----
 The primary way of configuring Bacsy is by writing a set of human readable
@@ -12,23 +18,17 @@ Configuration File is a normal `INI file
 <http://en.wikipedia.org/wiki/INI_file>`_, with some added semantical meaning.
 
 A Cascading Configuration File will contain a number of sections, each of
-which start with 
-
-::
+which start with ::
 
    [ sectionName ]
 
 where sectionName is some arbitrary string. A section ends when another
 section starts or the file ends. Each of these sections will contain a number
-of assignments that look like this:
-
-::
+of assignments that look like this: ::
 
    key = some value
 
-For example:
-
-:: 
+For example: :: 
 
    [ global ]
    Priority = 6
@@ -47,9 +47,7 @@ Array Keys
 ----------
 If a key ends in ``[]``, this key can be defined multiple times in the same
 section. When more than one values are assigned to this key, the key will
-correspond to *both* values.  For example:
-
-::
+correspond to *both* values.  For example: ::
 
    Include[] = /home/ives
    Include[] = /home/naomi
@@ -64,7 +62,7 @@ is used to include both ``/home/ives`` **and** ``/home/naomi``.
 
 Comments
 --------
-All lines that start with a ``#`` character will be ignored. 
+All lines that start with a ``#`` or a ``;`` character will be ignored. 
 
 
 The Cascading Part
@@ -76,9 +74,7 @@ the global section, it overrides the value that was given to it in section
 ``global``. 
 
 For example, if you would like to set the default priority for all sources to
-``3``, you'd write something like:
-
-::
+``3``, you'd write something like: ::
 
    [ global ]
    Priority = 3
@@ -124,8 +120,7 @@ Include[]
   does not match any exclude, but one of its descendants does, only that
   descendant will be excluded. 
 
-  **Example 1:**
-  ::
+  **Example 1:** ::
 
     Include[] = /home/ives
     Include[] = /home/naomi/
@@ -153,8 +148,7 @@ Exclude[]
 
   Subrules are separated by the symbol ``&`` and may be prefixed with a ``!`` to negate the subrule.  
 
-  **Example 1:**
-  ::
+  **Example 1:** ::
 
     Exclude[] = "/home/ives/some directory"
     Exclude[] = /home/ives/another\ directory
@@ -170,8 +164,7 @@ Exclude[]
   and final one will exclude all files ending in ``~`` (e.g. ``bla.txt~``,
   ``data~``). 
 
-  **Example 2:**
-  ::
+  **Example 2:** ::
 
     Exclude[] = >50MB
     Exclude[] = <100B
@@ -180,8 +173,7 @@ Exclude[]
   second rule will exclude all files smaller than 100 bytes. 
   
 
-  **Example 3:**
-  ::
+  **Example 3:** ::
 
     Exclude[] = *.avi & >500MB
     Exclude[] = /home/ives/*.vob & <1GB
@@ -198,23 +190,20 @@ ExecuteAt
   **Semantics:** Determines when a source will be executed. There can be
   multiple triggers, separated by the keyword ``and``. Some examples:
 
-  **Example 1:**
-  ::
+  **Example 1:** ::
 
     ExecuteAt = every week on Wednesday at 20h00
 
   Execute the source every week on Wednesday at 8 p.m.
 
-  **Example 2:**
-  ::
+  **Example 2:** ::
 
     ExecuteAt = every 3 hours
 
   Execute the source every three hours, the first time being 1 second after
   starting Bacsy. 
 
-  **Example 3:**
-  ::
+  **Example 3:** ::
 
     ExecuteAt = on start and every 1 minute and every day at 07:00h
 
@@ -325,8 +314,7 @@ Location
   **Semantics:** The base directory in which all backups and associated data
   will be stored. 
 
-  **Example 1:**
-  ::
+  **Example 1:** ::
 
     Location = /media/external_drive/backups
 
