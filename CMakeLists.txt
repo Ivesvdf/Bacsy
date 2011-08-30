@@ -8,6 +8,9 @@ if(CMAKE_BUILD_TYPE MATCHES Profile)
 	message("Building with profiling information")
 endif()
 
+set(BACSY_BUILD_TYPE STATIC
+                     CACHE STRING "The build type for bacsy libraries. Default STATIC.
+                                   To build shared libraries set this value to SHARED.")
 set(CMAKE_CXX_FLAGS_PROFILE "-pg -g")
 set(CMAKE_C_FLAGS_PROFILE "-pg -g")
 
