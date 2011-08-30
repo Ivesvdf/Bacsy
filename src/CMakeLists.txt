@@ -12,11 +12,17 @@ endif()
 include_directories(${POCO_INCLUDE_DIRS})
 include_directories(${RSYNC_INCLUDE_DIRS})
 
-set(bacsy_libraries common
+set(bacsy_libraries bacsy
                     ${RSYNC_LIBRARIES}
-                    ${POCO_LIBRARIES}
+                    ${POCO_LIBRARIES})
+
+if("${BACSY_BUILD_TYPE}" STREQUAL "STATIC")
+	list(APPEND bacsy_libraries
                     json
                     ${PLATFORM_DEPENDENT_LIBS})
+else()
+	list(APPEND bacsy_libraries ${PLATFORM_DEPENDENT_LIBS})
+endif()
 
 add_subdirectory(test)
 add_subdirectory(main)

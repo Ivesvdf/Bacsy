@@ -16,7 +16,7 @@ configure_file(info.h.in info.h @ONLY)
 include_directories("${PROJECT_BINARY_DIR}/src/main")
 
 
-add_library(common STATIC
+set(BACSY_COMMON_SOURCE_FILES
                  ConfigurationFile
                  StringUtils
                  BacsyConnection
@@ -51,10 +51,18 @@ add_library(common STATIC
 				 ArgParsingUtils
 				 Environment
 )
+foreach(source_file ${BACSY_COMMON_SOURCE_FILES})
+	list(APPEND BACSY_COMMON_HEADER_FILES "${source_file}.h")
+endforeach()
 
-add_executable(bacsy Main.cpp)
+add_library(bacsy ${BACSY_BUILD_TYPE} ${BACSY_COMMON_SOURCE_FILES})
+
+add_executable(bacsyd Main.cpp)
 add_executable(bacsy-server BacsyServerMain.cpp)
 add_executable(bacsy-client BacsyClientMain.cpp)
-target_link_libraries(bacsy ${bacsy_libraries})
+if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
+	target_link_libraries(bacsy json)
+endif()
+target_link_libraries(bacsyd ${bacsy_libraries})
 target_link_libraries(bacsy-server ${bacsy_libraries})
 target_link_libraries(bacsy-client ${bacsy_libraries})
