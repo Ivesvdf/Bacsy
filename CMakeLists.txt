@@ -28,6 +28,7 @@ set(CPACK_PACKAGE_VERSION_MINOR ${BACSY_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 include(CMakePackageRPM.cmake)
+include(CMakePackageDEB.cmake)
 include(CPack)
 
 
