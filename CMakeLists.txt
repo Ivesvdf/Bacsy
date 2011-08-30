@@ -16,7 +16,17 @@ set(CMAKE_C_FLAGS_PROFILE "-pg -g")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
+include(CPack)
 project(bacsy)
+set(BACSY_VERSION_MAJOR 0)
+set(BACSY_VERSION_MINOR 1)
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A powerful backup system capable of operating on a distributed P2P basis.")
+set(CPACK_PACKAGE_VENDOR "Bacsy")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR ${BACSY_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${BACSY_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 include_directories(lib/)
 include_directories(src/main)

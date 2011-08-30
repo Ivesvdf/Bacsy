@@ -1,8 +1,5 @@
 #find_file(BUILD_NUMBER_FILE_FOUND build_number.txt PATHS .) 
 
-set (VERSION_MAJOR 1)
-set (VERSION_MINOR 1)
-
 #if(${BUILD_NUMBER_FILE_FOUND} MATCHES "NOTFOUND") 
 #	set(CURRENT_BUILD_NUM 1) 
 #	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}") 
