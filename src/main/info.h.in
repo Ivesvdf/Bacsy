@@ -20,7 +20,7 @@
 
 #include <string>
 
-const std::string bacsyVersion = "@VERSION_MAJOR@.@VERSION_MINOR@";
+const std::string bacsyVersion = "@BACSY_VERSION_MAJOR@.@BACSY_VERSION_MINOR@";
 //const std::string bacsyBuild = "@CURRENT_BUILD_NUM@";
 const std::string bacsyProtocolString = "BACSY " + bacsyVersion;
 
