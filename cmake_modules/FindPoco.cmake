@@ -1,4 +1,4 @@
-find_path(POCO_INCLUDE_DIRS    Poco/
+find_path(POCO_INCLUDE_DIRS    Poco/Ascii.h
               PATH_SUFFIXES    include
 )
 
