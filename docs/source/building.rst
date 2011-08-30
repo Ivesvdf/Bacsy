@@ -56,11 +56,22 @@ Execute ::
 
 Building Debian packages
 ^^^^^^^^^^^^^^^^^^^^^^^^
+.. warning:: When building Debian packages, it is strongly recommended to use a
+   *static* build of the Poco libraries. If you don't, the changes of someone
+   being able to use the packages executables is really small.
 
 Execute ::
 
   cpack -G DEB
 
+Building RPM Packages
+^^^^^^^^^^^^^^^^^^^^^
+
+Execute ::
+
+  cpack -G RPM
+
+This requires rpmbuild. 
 
 Building the documentation
 ==========================
