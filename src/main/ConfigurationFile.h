@@ -120,6 +120,8 @@ public:
 	T get(string section, string key, const T& defaultVal) const;
 
 	void put(const string& section, const string& key, const string& val);
+
+	void registerSection(const string& section);
 };
 
 template<typename T>

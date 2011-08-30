@@ -167,3 +167,16 @@ TEST( ConfigurationTest, TestMerge )
 	file1.merge(file2);
 	ASSERT_EQ("5", file1.get<std::string>("someSection", "a"));
 }
+
+TEST( ConfigurationTest, TestNonOverlappingMerge )
+{
+	std::stringstream ss1,ss2;
+	ss1 << "[someSection]\n	a=1";
+	ss2 << "[anotherSection]\n	b=5";
+	ConfigurationFile file1(ss1);
+	ConfigurationFile file2(ss2);
+
+	file1.merge(file2);
+	ASSERT_EQ("5", file1.get<std::string>("anotherSection", "b"));
+	ASSERT_EQ("1", file1.get<std::string>("someSection", "a"));
+}

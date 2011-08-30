@@ -44,7 +44,7 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 			if(sectionMap.count(currentSection) != 0)
 				throw SyntaxError("No two sections may have the same name (" + currentSection + ")." );
 
-			sectionMap[currentSection] = Section();
+			registerSection(currentSection);
 		}
 		// Comments
 		else if(line[0] == ';' || line[0] == '#')
@@ -72,6 +72,11 @@ ConfigurationFile::ConfigurationFile(istream& fromSource)
 			sectionMap[currentSection].put(key,val);
 		}
 	}
+}
+
+void ConfigurationFile::registerSection(const std::string& section)
+{
+	sectionMap[section] = Section();
 }
 
 void Section::put(const string& inputKey, const string& val)
@@ -158,6 +163,11 @@ void ConfigurationFile::merge(const ConfigurationFile& other)
 			sectionIt != sections.end();
 			++sectionIt)
 	{
+		if(sectionMap.count(*sectionIt) == 0)
+		{
+			registerSection(*sectionIt);
+		}
+
 		std::list<std::string> keys = other.keys(*sectionIt);
 
 		for(std::list<std::string>::iterator keyIterator = keys.begin();
