@@ -39,6 +39,29 @@ Then ::
 When all your dependencies are installed, this should go smoothly. Currently,
 no installer exists. 
 
+Building Packages
+-----------------
+All of these commands are executed from the ``build/`` directory, after
+compiling.
+
+
+Building shell and tar.gz packages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Execute ::
+
+  cpack
+
+
+
+Building Debian packages
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Execute ::
+
+  cpack -G DEB
+
+
 Building the documentation
 ==========================
 The documentation is written in ReStructuredText and built with `sphinx
