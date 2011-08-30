@@ -21,3 +21,12 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Poco DEFAULT_MSG
                                        POCO_LIBRARIES
                                        POCO_INCLUDE_DIRS)
+
+
+include(CheckCXXSourceCompiles)
+set(CMAKE_REQUIRED_INCLUDES ${POCO_INCLUDE_DIRS})
+CHECK_CXX_SOURCE_COMPILES("#include \"Poco/Version.h\"\nint main () {\n#if POCO_VERSION < 0x01040101\n !!! will not compile !!!\n#endif\nreturn 0;}\n" POCO_IS_NEW_ENOUGH )
+
+if(NOT POCO_IS_NEW_ENOUGH)
+	message(FATAL_ERROR "The version of Poco you're using is too old!")
+endif()
