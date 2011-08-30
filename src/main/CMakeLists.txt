@@ -66,3 +66,13 @@ endif()
 target_link_libraries(bacsyd ${bacsy_libraries})
 target_link_libraries(bacsy-server ${bacsy_libraries})
 target_link_libraries(bacsy-client ${bacsy_libraries})
+
+install(TARGETS bacsy
+                bacsyd
+                bacsy-server
+                bacsy-client
+        ARCHIVE DESTINATION lib/static
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin)
+install(FILES ${BACSY_COMMON_HEADER_FILES}
+        DESTINATION include/bacsy)
