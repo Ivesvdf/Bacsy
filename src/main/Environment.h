@@ -17,9 +17,13 @@
 
 #include <string>
 
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 
 class Environment
 {
 public:
 	static std::string getDefaultConfigurationDirectory();
 };
+
+#endif
