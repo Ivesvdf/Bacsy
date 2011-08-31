@@ -22,7 +22,6 @@
 #include <fstream>
 #include <limits>
 #include <string>
-#include "woodcutter/woodcutter.h"
 #include "ConfigurationFile.h"
 #include "ExclusionRule.h"
 
