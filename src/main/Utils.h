@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef UTILS_H
+#define UTILS_H
+
 class ObjectDeleter 
 {
 public:
@@ -24,3 +27,5 @@ public:
 		delete obj;
 	}
 };
+
+#endif
