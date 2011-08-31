@@ -22,7 +22,11 @@
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Exception.h"
 #include "info.h"
-#include "JsonHelper.h"
+
+namespace Json
+{
+	class Value;
+}
 
 class DatagramHelper
 {
@@ -60,10 +64,7 @@ class DatagramHelper
 			}
 		}
 
-		static std::string toMessage(Json::Value& root)
-		{
-			return bacsyProtocolString + "\n" + JsonHelper::write(root);
-		}
+		static std::string toMessage(Json::Value& root);
 
 		static std::string toMessageNL(Json::Value& root)
 		{

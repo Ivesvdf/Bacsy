@@ -22,6 +22,7 @@
 #include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
 #include "Functional.h"
+#include "JsonStoreIndex.h"
 #include "Store.h"
 
 Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
