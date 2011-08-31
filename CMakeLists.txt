@@ -38,3 +38,6 @@ include_directories(src/main)
 add_subdirectory(lib/gtest)
 add_subdirectory(lib/json)
 add_subdirectory(src)
+
+install(FILES lib/woodcutter/woodcutter.h
+        DESTINATION include/bacsy/woodcutter)
