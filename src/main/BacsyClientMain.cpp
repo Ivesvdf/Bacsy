@@ -19,7 +19,7 @@
 #include <sstream>
 #include "Poco/Thread.h"
 #include "BackupEngine.h"
-#include "CascadingFileConfiguration.h"
+#include "CascadingSourceConfiguration.h"
 #include "Source.h"
 #include "ConfigurationFile.h"
 #include "info.h"
@@ -57,12 +57,12 @@ int main(int argc, char **argv)
 		std::string configdir = configArg.getValue();
 		std::vector<std::string> definitions = defArg.getValue();
 
-		CascadingFileConfiguration configuration(configdir);
-		ConfigurationFile& sourcesFile = configuration.getSourceConfig();
+		CascadingSourceConfiguration configuration(configdir);
+		ConfigurationFile& sourcesFile = configuration.getConfig();
 
 		ArgParsingUtils::processDefinitions(definitions, sourcesFile);
 
-		if(!configuration.sourceFileLoaded())
+		if(!configuration.isLoaded())
 		{
 			LOGF("No " + configdir + "/sources.config file found.");
 		}

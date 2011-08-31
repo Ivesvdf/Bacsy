@@ -27,19 +27,19 @@ namespace bacsy
 class SourceNameToSourcer
 {
 public:
-	SourceNameToSourcer(const CascadingFileConfiguration& configuration): configuration(configuration) {}
+	SourceNameToSourcer(const CascadingSourceConfiguration& configuration): configuration(configuration) {}
 	Source* operator()(const std::string& sourceName)
 	{
 		return new Source(sourceName, configuration);
 	}
 
 private:
-	const CascadingFileConfiguration& configuration;
+	const CascadingSourceConfiguration& configuration;
 };
 
 std::vector<Source*> sourceNamesToSources(
 		const std::list<std::string>& sourceStrings,
-		const CascadingFileConfiguration& configuration)
+		const CascadingSourceConfiguration& configuration)
 {
 	std::vector<Source*> sources;
 	sources.resize(sourceStrings.size());
@@ -57,7 +57,7 @@ std::vector<Source*> sourceNamesToSources(
 	return sources;
 }
 
-BackupEngine::BackupEngine(const CascadingFileConfiguration& configuration):
+BackupEngine::BackupEngine(const CascadingSourceConfiguration& configuration):
 	configuration(configuration),
 	sources(sourceNamesToSources(configuration.getSources(), configuration))
 {

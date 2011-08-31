@@ -27,7 +27,7 @@
 namespace bacsy
 {
 
-Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
+Store::Store(const std::string storeName, const CascadingStoreConfiguration& configuration):
 	storeName(storeName),
 	configuration(configuration),
 	location(StringUtils::rstrip(configuration.getLocation(storeName), "/\\") + "/"),

@@ -19,7 +19,7 @@
 #define STORE_MANAGER_H
 
 #include <list>
-#include "CascadingFileConfiguration.h"
+#include "CascadingStoreConfiguration.h"
 #include "Store.h"
 
 namespace bacsy
@@ -28,15 +28,15 @@ namespace bacsy
 class StoreManager
 {
 public:
-	StoreManager(const CascadingFileConfiguration& configuration);
+	StoreManager(const CascadingStoreConfiguration& configuration);
 	~StoreManager();
 
 	size_t getStoreCount() const;
 	std::list<Store*> getStores(unsigned int minPriority) const;
 private:
-	static std::list<Store*> buildStores(const CascadingFileConfiguration& configuration);
+	static std::list<Store*> buildStores(const CascadingStoreConfiguration& configuration);
 	static bool notReadyForStoring(const Store* store);
-	const CascadingFileConfiguration& configuration;
+	const CascadingStoreConfiguration& configuration;
 	std::list<Store*> stores;
 };
 

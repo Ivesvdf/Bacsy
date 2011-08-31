@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CASCADING_FILE_CONFIGURATION
-#define CASCADING_FILE_CONFIGURATION
+#ifndef CASCADING_STORE_CONFIGURATION
+#define CASCADING_STORE_CONFIGURATION
 
 #include <list>
 #include <fstream>
@@ -25,40 +25,44 @@
 #include "woodcutter/woodcutter.h"
 #include "ConfigurationFile.h"
 #include "ExclusionRule.h"
+#include "CascadingFileConfiguration.h"
 
 namespace bacsy
 {
 
-class CascadingFileConfiguration
+class CascadingStoreConfiguration : public CascadingFileConfiguration
 {
 	public:
-		CascadingFileConfiguration();
+		CascadingStoreConfiguration(const std::string& directory);
 
-	protected:
+		std::list<std::string> getStores() const;
+		unsigned int getMinPriorityForStoring(const std::string& input) const;
+		bool isLoaded() const;
+
+		std::string getLocation(const std::string& store) const;
+		bool getAlwaysPresent(const std::string& store) const;
+
+		ConfigurationFile& getConfig();
+		const ConfigurationFile& getConfig() const;
+	private:
 		template<typename T>
-		T getCascadingValue( 
-				const ConfigurationFile& config,
+		T getCascadingStoreValue( 
 				const std::string& section,
 				const std::string& keyname, 
 				const T& defaultValue = T()) const
 		{
-			T rv = defaultValue;
-			try
-			{
-				rv = config.get<T>(globalSectionName, keyname, rv);
-			}
-			catch(NoSuchSectionException& e)
-			{
-				// Ignore, global sections aren't obligatory
-			}
-
-			rv = config.get<T>(section, keyname, rv);
-
-			return rv;
+			return getCascadingValue(
+					storeConfig,
+					section,
+					keyname,
+					defaultValue);
 		}
 
-		static bool toBool(const std::string& input);
+		std::ifstream inputStoreStream;	
 
+		const bool isStoresFileLoaded;
+
+		ConfigurationFile storeConfig;
 		const std::string globalSectionName;
 
 };

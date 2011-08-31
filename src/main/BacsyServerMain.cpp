@@ -19,7 +19,7 @@
 #include "Poco/Thread.h"
 #include "BacsyServer.h"
 #include "MulticastResponder.h"
-#include "CascadingFileConfiguration.h"
+#include "CascadingStoreConfiguration.h"
 #include "ConfigurationFile.h"
 #include "info.h"
 #include "ArgParsingUtils.h"
@@ -56,12 +56,12 @@ int main(int argc, char **argv)
 		std::string configdir = configArg.getValue();
 		std::vector<std::string> definitions = defArg.getValue();
 
-		CascadingFileConfiguration configuration(configdir);
-		ConfigurationFile& sourcesFile = configuration.getSourceConfig();
+		CascadingStoreConfiguration configuration(configdir);
+		ConfigurationFile& sourcesFile = configuration.getConfig();
 
 		ArgParsingUtils::processDefinitions(definitions, sourcesFile);
 
-		if(!configuration.storesFileLoaded())
+		if(!configuration.isLoaded())
 		{
 			LOGF("No " + configdir + "stores.config file found.");
 		}

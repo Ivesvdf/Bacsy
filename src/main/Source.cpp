@@ -45,7 +45,7 @@ bool Source::isPath(std::string s) const
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Source::Source(std::string section, const CascadingFileConfiguration& config):
+Source::Source(std::string section, const CascadingSourceConfiguration& config):
 	name(section),
 	includes(config.getIncludes(section)),
 	priority(config.getPriority(section)),

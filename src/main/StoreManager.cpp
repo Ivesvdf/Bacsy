@@ -27,17 +27,17 @@ namespace bacsy
 class StorenameToStorer
 {
 public:
-	StorenameToStorer(const CascadingFileConfiguration& configuration): configuration(configuration) {}
+	StorenameToStorer(const CascadingStoreConfiguration& configuration): configuration(configuration) {}
 	Store* operator()(const std::string& storeName)
 	{
 		return new Store(storeName, configuration);
 	}
 
 private:
-	const CascadingFileConfiguration& configuration;
+	const CascadingStoreConfiguration& configuration;
 };
 
-StoreManager::StoreManager(const CascadingFileConfiguration& configuration):
+StoreManager::StoreManager(const CascadingStoreConfiguration& configuration):
 	configuration(configuration),
 	stores(buildStores(configuration))
 {
@@ -49,7 +49,7 @@ StoreManager::~StoreManager()
 	std::for_each(stores.begin(), stores.end(), ObjectDeleter());
 }
 
-std::list<Store*> StoreManager::buildStores(const CascadingFileConfiguration& configuration)
+std::list<Store*> StoreManager::buildStores(const CascadingStoreConfiguration& configuration)
 {
 	std::list<std::string> storeNames = configuration.getStores();
 	

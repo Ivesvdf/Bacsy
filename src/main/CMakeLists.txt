@@ -23,6 +23,8 @@ set(BACSY_COMMON_SOURCE_FILES
                  TimeSchedule
                  BackupEngine
                  CascadingFileConfiguration
+				 CascadingSourceConfiguration
+				 CascadingStoreConfiguration
                  JsonStoreIndex
                  DatagramHelper
                  MulticastResponder
@@ -54,18 +56,19 @@ endforeach()
 
 add_library(bacsy ${BACSY_BUILD_TYPE} ${BACSY_COMMON_SOURCE_FILES})
 
-add_executable(bacsyd Main.cpp)
+# add_executable(bacsyd Main.cpp)
 add_executable(bacsy-server BacsyServerMain.cpp)
 add_executable(bacsy-client BacsyClientMain.cpp)
 if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
 	target_link_libraries(bacsy json)
 endif()
-target_link_libraries(bacsyd ${bacsy_libraries})
+
+# target_link_libraries(bacsyd ${bacsy_libraries})
 target_link_libraries(bacsy-server ${bacsy_libraries})
 target_link_libraries(bacsy-client ${bacsy_libraries})
 
 install(TARGETS bacsy
-                bacsyd
+	# bacsyd
                 bacsy-server
                 bacsy-client
         ARCHIVE DESTINATION lib/static

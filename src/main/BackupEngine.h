@@ -20,7 +20,7 @@
 
 #include <vector>
 #include "Source.h"
-#include "CascadingFileConfiguration.h"
+#include "CascadingSourceConfiguration.h"
 
 namespace bacsy
 {
@@ -28,11 +28,11 @@ namespace bacsy
 class BackupEngine
 {
 	private:
-		const CascadingFileConfiguration& configuration;
+		const CascadingSourceConfiguration& configuration;
 		std::vector<Source*> sources;
 
 	public: 
-		BackupEngine(const CascadingFileConfiguration& configuration);
+		BackupEngine(const CascadingSourceConfiguration& configuration);
 		~BackupEngine();
 
 		void start();

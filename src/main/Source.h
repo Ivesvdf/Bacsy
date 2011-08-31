@@ -26,7 +26,7 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
-#include "CascadingFileConfiguration.h"
+#include "CascadingSourceConfiguration.h"
 #include "Poco/DirectoryIterator.h"
 
 namespace bacsy
@@ -35,7 +35,7 @@ namespace bacsy
 class Source
 {
 public:
-	Source(std::string sectionName, const CascadingFileConfiguration& config);
+	Source(std::string sectionName, const CascadingSourceConfiguration& config);
 	~Source();
 
 	void start();
