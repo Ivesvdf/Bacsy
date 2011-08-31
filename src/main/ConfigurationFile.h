@@ -25,6 +25,9 @@
 #include <stdexcept>
 #include "StringUtils.h"
 
+namespace bacsy
+{
+
 using std::istream;
 using std::list;
 using std::map;
@@ -150,4 +153,5 @@ T ConfigurationFile::get(string section, string key, const T& defaultVal) const
 	}
 }
 
+}
 #endif

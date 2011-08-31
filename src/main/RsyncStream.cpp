@@ -16,3 +16,7 @@
  */
 
 #include "RsyncStream.h"
+
+namespace bacsy
+{
+}

@@ -18,6 +18,9 @@
 #include <gtest/gtest.h>
 #include "StringUtils.h"
 
+namespace bacsy
+{
+
 TEST( StringUtilsTest, SimpleStripTest )
 {
 	ASSERT_EQ("x", StringUtils::rstrip("xyyy", "y"));
@@ -92,4 +95,6 @@ TEST( StringUtilsTest, ToLowerTest)
 	ASSERT_EQ("bla", StringUtils::toLower("blA"));
 	ASSERT_EQ("bla", StringUtils::toLower("BLA"));
 	ASSERT_EQ("one two three", StringUtils::toLower("one Two three"));
+}
+
 }

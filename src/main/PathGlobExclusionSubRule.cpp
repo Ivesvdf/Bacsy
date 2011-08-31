@@ -17,6 +17,9 @@
 
 #include "PathGlobExclusionSubRule.h"
 
+namespace bacsy
+{
+
 PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string iglob, bool negated):
 	ExclusionSubRule(negated),
 	glob(iglob),
@@ -32,4 +35,6 @@ bool PathGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
 ExclusionSubRule* PathGlobExclusionSubRule::clone() const
 {
 	return new PathGlobExclusionSubRule(globStr, getNegated());
+}
+
 }

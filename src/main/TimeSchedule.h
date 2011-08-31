@@ -20,6 +20,9 @@
 
 #include "Poco/Timespan.h"
 
+namespace bacsy
+{
+
 class TimeSchedule
 {
 public:
@@ -31,4 +34,5 @@ public:
 	Poco::Timespan repeat;
 };
 
+}
 #endif

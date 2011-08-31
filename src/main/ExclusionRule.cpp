@@ -19,7 +19,9 @@
 #include "Utils.h"
 #include "ExclusionRule.h"
 
-#include <iostream>
+namespace bacsy
+{
+
 ExclusionRule::ExclusionRule(const ExclusionRule& rule)
 {
 	for(std::list<ExclusionSubRule*>::const_iterator it = rule.subRules.begin();
@@ -59,3 +61,4 @@ void ExclusionRule::addSubRule(ExclusionSubRule* sr)
 	subRules.push_back(sr);
 }
 
+}

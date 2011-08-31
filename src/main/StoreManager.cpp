@@ -21,6 +21,9 @@
 #include "Utils.h"
 #include "StoreManager.h"
 
+namespace bacsy
+{
+
 class StorenameToStorer
 {
 public:
@@ -97,4 +100,6 @@ std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
 	copy.remove_if(notReadyForStoring);
 
 	return copy;
+}
+
 }

@@ -22,6 +22,9 @@
 #include "Poco/Glob.h"
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 class PathGlobExclusionSubRule : public ExclusionSubRule
 {
 public:
@@ -33,4 +36,5 @@ private:
 	const std::string globStr;
 };
 
+}
 #endif

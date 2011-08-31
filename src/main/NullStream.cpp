@@ -17,6 +17,9 @@
 
 #include "NullStream.h"
 
+namespace bacsy
+{
+
 void NullStream::write(const char* const c, std::streamsize size)
 {
 }
@@ -24,4 +27,6 @@ void NullStream::write(const char* const c, std::streamsize size)
 bool NullStream::isOk() const
 {
 	return true;
+}
+
 }

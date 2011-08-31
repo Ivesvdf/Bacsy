@@ -21,6 +21,9 @@
 #include <algorithm>
 #include "BackupEngine.h"
 
+namespace bacsy
+{
+
 class SourceNameToSourcer
 {
 public:
@@ -78,4 +81,6 @@ void BackupEngine::start()
 	{
 		(*it)->start();
 	}
+}
+
 }

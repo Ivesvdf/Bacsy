@@ -24,6 +24,9 @@
 #include "SimpleBufferStream.h"
 #include "PerformDeltaStream.h"
 
+namespace bacsy
+{
+
 TEST( SignatureStreamTest, HelloWorldTest )
 {
 	SimpleBufferStream outputStream;
@@ -151,4 +154,6 @@ TEST( SignatureStreamTest, CompleteSimpleTest )
 	SimpleBufferStream outputStream;
 	PerformDeltaStream deltaStream(outputStream, lss.getSignature());
 	
+}
+
 }

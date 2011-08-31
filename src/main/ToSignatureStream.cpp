@@ -20,9 +20,13 @@
 #include "StringUtils.h"
 #include "woodcutter/woodcutter.h"
 
+namespace bacsy
+{
+
 ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):
 	RsyncStream<1024>(output, rs_sig_begin(RS_DEFAULT_BLOCK_LEN,checksumLength))
 {
 
 }
 
+}

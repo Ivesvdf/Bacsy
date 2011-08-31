@@ -24,6 +24,9 @@
 #include "DatagramHelper.h"
 #include "MulticastResponder.h"
 
+namespace bacsy
+{
+
 void MulticastResponder::start()
 {
 	thread.start(*this);
@@ -81,4 +84,6 @@ void MulticastResponder::run()
 	LOGI("Joined multicast group.");
 	
 	DatagramHelper::receiveMessages<512>(mcSocket, 0, MulticastResponder::respondToMulticast);
+}
+
 }

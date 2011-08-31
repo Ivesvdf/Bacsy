@@ -17,6 +17,9 @@
 
 #include "FileGlobExclusionSubRule.h"
 
+namespace bacsy
+{
+
 FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string iglob, bool negated):
 	ExclusionSubRule(negated),
 	glob(iglob),
@@ -33,4 +36,6 @@ bool FileGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
 ExclusionSubRule* FileGlobExclusionSubRule::clone() const
 {
 	return new FileGlobExclusionSubRule(globStr, getNegated());
+}
+
 }

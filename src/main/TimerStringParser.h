@@ -23,6 +23,9 @@
 #include "Poco/LocalDateTime.h"
 #include "TimeSchedule.h"
 
+namespace bacsy
+{
+
 class TimerStringParser
 {
 public:
@@ -55,4 +58,5 @@ private:
 	std::string extractTime(const std::string& input);
 };
 
+}
 #endif

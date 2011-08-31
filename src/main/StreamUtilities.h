@@ -24,6 +24,8 @@
 #include "Poco/Net/DialogSocket.h"
 #include "StringUtils.h"
 
+namespace bacsy
+{
 
 class SimpleIStream
 {
@@ -158,4 +160,5 @@ private:
 		}
 };
 
+}
 #endif

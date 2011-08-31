@@ -22,6 +22,9 @@
 #include "Poco/File.h"
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 class ExclusionRule
 {
 public:
@@ -42,4 +45,5 @@ private:
 	std::list<ExclusionSubRule*> subRules;
 };
 
+}
 #endif

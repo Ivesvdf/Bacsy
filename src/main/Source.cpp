@@ -37,6 +37,9 @@
 #include "DatagramHelper.h"
 #include "JsonHelper.h"
 
+namespace bacsy
+{
+
 bool Source::isPath(std::string s) const
 {
 	return s.find_first_of("/\\") != std::string::npos;
@@ -319,4 +322,6 @@ bool Source::isExcluded(const Poco::File& path) const
 	}
 	
 	return false;
+}
+
 }

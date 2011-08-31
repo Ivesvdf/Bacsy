@@ -22,6 +22,9 @@
 #include <string>
 #include <vector>
 
+namespace bacsy
+{
+
 class StringUtils
 {
 public:
@@ -53,5 +56,7 @@ public:
 		return t;
 	}
 };
+
+}
 
 #endif

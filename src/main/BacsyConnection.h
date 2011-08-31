@@ -25,6 +25,9 @@
 #include "Poco/Net/TCPServerConnection.h" 
 #include "StoreManager.h"
 
+namespace bacsy
+{
+
 class BacsyConnection : public Poco::Net::TCPServerConnection
 {
 public:
@@ -58,4 +61,5 @@ private:
 	StoreManager& storeManager;
 };
 
+}
 #endif

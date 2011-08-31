@@ -21,6 +21,8 @@
 #include <map>
 #include "Poco/RWLock.h"
 
+namespace bacsy
+{
 
 template<typename K, typename V>
 class ConcurrentMap
@@ -74,4 +76,5 @@ public:
 		std::map<K,V> map;
 };
 
+}
 #endif

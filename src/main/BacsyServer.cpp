@@ -19,11 +19,16 @@
 #include "info.h"
 #include "ConnectionFactory.h"
 
+namespace bacsy
+{
+
 BacsyServer::BacsyServer(StoreManager& storeManager): 
 	Poco::Net::TCPServer(
 			new ConnectionFactory(storeManager),
 			Poco::Net::ServerSocket(BACSYSERVERPORT),
 			0)
 {
+
+}
 
 }

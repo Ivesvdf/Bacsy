@@ -21,10 +21,14 @@
 #include <string>
 #include <list>
 
+namespace bacsy
+{
+
 class ExclusionStringParser
 {
 public:
 	static std::list<std::string> parse(const std::string& input);
 };
 
+}
 #endif

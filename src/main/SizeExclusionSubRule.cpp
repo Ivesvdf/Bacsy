@@ -19,6 +19,8 @@
 #include "StringUtils.h"
 #include "SizeExclusionSubRule.h"
 
+namespace bacsy
+{
 
 SizeExclusionSubRule::SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated):
 	ExclusionSubRule(negated),
@@ -46,4 +48,6 @@ SizeExclusionSubRule::SizeExclusionSubRule(const SizeExclusionSubRule& copy):
 	theOperator(copy.theOperator)
 {
 	
+}
+
 }

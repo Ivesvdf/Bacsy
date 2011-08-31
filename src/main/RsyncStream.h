@@ -23,6 +23,9 @@
 #include "woodcutter/woodcutter.h"
 #include "NullStream.h"
 
+namespace bacsy
+{
+
 template<int buffersize = 1024>
 class RsyncStream : public SimpleOStream
 {
@@ -138,4 +141,5 @@ bool RsyncStream<buffersize>::isOk() const
 	return true;
 }
 
+}
 #endif

@@ -21,6 +21,8 @@
 #include <string>
 #include "json/json.h"
 
+namespace bacsy
+{
 
 class JsonHelper
 {
@@ -29,4 +31,5 @@ public:
 	static Json::Value read(const std::string& input);
 };
 
+}
 #endif

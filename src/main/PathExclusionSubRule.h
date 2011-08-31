@@ -21,6 +21,9 @@
 #include <string>
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 class PathExclusionSubRule : public ExclusionSubRule
 {
 public:
@@ -32,4 +35,5 @@ private:
 	const std::string path;
 };
 
+}
 #endif

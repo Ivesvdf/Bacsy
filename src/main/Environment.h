@@ -20,10 +20,14 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
+namespace bacsy
+{
+
 class Environment
 {
 public:
 	static std::string getDefaultConfigurationDirectory();
 };
 
+}
 #endif

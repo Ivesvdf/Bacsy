@@ -25,6 +25,8 @@
 #include "ArgParsingUtils.h"
 #include "Environment.h"
 
+using namespace bacsy;
+
 
 int main(int argc, char **argv)
 {

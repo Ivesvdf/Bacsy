@@ -20,6 +20,9 @@
 
 #include <functional>
 
+namespace bacsy
+{
+
 template <class S, class A>
 class fun1_ref_t : public std::unary_function<A,S>
 {
@@ -36,5 +39,6 @@ fun1_ref_t<S,A> fun_ref (S (*f)(A))
 	return fun1_ref_t<S,A>(f); 
 }
 
+}
 
 #endif

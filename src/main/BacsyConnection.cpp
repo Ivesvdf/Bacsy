@@ -35,6 +35,8 @@
 #include "info.h"
 #include "JsonHelper.h"
 
+namespace bacsy
+{
 
 BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) : 
 	Poco::Net::TCPServerConnection(socket),
@@ -297,3 +299,5 @@ void BacsyConnection::backupFile(
 	output.close();
 }
 
+
+}

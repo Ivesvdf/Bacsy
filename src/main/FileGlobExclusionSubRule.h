@@ -22,6 +22,9 @@
 #include "Poco/Glob.h"
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 class FileGlobExclusionSubRule : public ExclusionSubRule
 {
 public:
@@ -34,4 +37,5 @@ private:
 		
 };
 
+}
 #endif

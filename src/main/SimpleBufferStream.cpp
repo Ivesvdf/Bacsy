@@ -19,6 +19,9 @@
 #include <algorithm>
 #include "SimpleBufferStream.h"
 
+namespace bacsy
+{
+
 SimpleBufferStream::SimpleBufferStream():
 	maxSize(512),
 	currentSize(0),
@@ -73,3 +76,4 @@ std::streamsize SimpleBufferStream::read(char* c, std::streamsize max)
 	return bytesToCopy;
 }
 
+}

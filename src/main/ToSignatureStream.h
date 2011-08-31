@@ -23,10 +23,14 @@
 #include "librsync.h"
 #include "RsyncStream.h"
 
+namespace bacsy
+{
+
 class ToSignatureStream : public RsyncStream<1024>
 {
 public:
 	ToSignatureStream(SimpleOStream& output, const size_t checksumLength = 16);
 };
 
+}
 #endif

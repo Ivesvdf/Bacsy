@@ -18,6 +18,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+namespace bacsy
+{
+
 class ObjectDeleter 
 {
 public:
@@ -28,4 +31,5 @@ public:
 	}
 };
 
+}
 #endif

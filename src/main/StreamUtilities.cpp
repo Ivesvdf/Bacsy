@@ -21,7 +21,8 @@
 #include "woodcutter/woodcutter.h"
 #include "StreamUtilities.h"
 
-
+namespace bacsy
+{
 
 std::streamsize StreamUtilities::copyStream(
 		std::istream& istr,
@@ -189,4 +190,6 @@ bool MD5OutputStream::isOk() const
 const Poco::MD5Engine& MD5OutputStream::getEngine() const
 {
 	return engine;
+}
+
 }

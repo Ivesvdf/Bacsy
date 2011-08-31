@@ -22,6 +22,9 @@
 #include "Source.h"
 #include "CascadingFileConfiguration.h"
 
+namespace bacsy
+{
+
 class BackupEngine
 {
 	private:
@@ -37,4 +40,5 @@ class BackupEngine
 
 };
 
+}
 #endif

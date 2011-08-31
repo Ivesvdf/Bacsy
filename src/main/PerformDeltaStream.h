@@ -20,6 +20,9 @@
 
 #include "RsyncStream.h" 
 
+namespace bacsy
+{
+
 class PerformDeltaStream : public RsyncStream<1024>
 {
 	public:
@@ -27,5 +30,6 @@ class PerformDeltaStream : public RsyncStream<1024>
 
 };
 
+}
 
 #endif

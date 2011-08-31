@@ -22,10 +22,15 @@
 #include <string>
 #include "ConfigurationFile.h"
 
+namespace bacsy
+{
+
 class ArgParsingUtils
 {
 public:
 	static void processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf);
 };
+
+}
 
 #endif

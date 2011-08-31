@@ -26,6 +26,8 @@
 #include "ConfigurationFile.h"
 #include "ExclusionRule.h"
 
+namespace bacsy
+{
 
 class CascadingFileConfiguration
 {
@@ -120,4 +122,5 @@ class CascadingFileConfiguration
 
 };
 
+}
 #endif

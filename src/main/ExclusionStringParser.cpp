@@ -17,6 +17,9 @@
 
 #include "ExclusionStringParser.h"
 
+namespace bacsy
+{
+
 std::list<std::string> ExclusionStringParser::parse(const std::string& input)
 {
 	size_t pos = 0;
@@ -119,4 +122,6 @@ std::list<std::string> ExclusionStringParser::parse(const std::string& input)
 	}
 
 	return rv;
+}
+
 }

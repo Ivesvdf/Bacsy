@@ -17,6 +17,9 @@
 
 #include "LoadSignatureStream.h"
 
+namespace bacsy
+{
+
 LoadSignatureStream::LoadSignatureStream():
 	RsyncStream<1024>(dumpStream, rs_loadsig_begin(&signature)),
 	dumpStream(std::cerr)
@@ -32,4 +35,6 @@ LoadSignatureStream::~LoadSignatureStream()
 rs_signature_t* LoadSignatureStream::getSignature() const
 {
 	return signature;
+}
+
 }

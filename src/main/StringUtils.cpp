@@ -21,6 +21,8 @@
 #include <functional>
 #include "StringUtils.h"
 
+namespace bacsy
+{
 using std::string;
 
 std::string StringUtils::rstrip(const std::string& source , const std::string& t)
@@ -78,3 +80,4 @@ std::string StringUtils::toLower(const std::string& input)
 	return copy;
 }
 
+}

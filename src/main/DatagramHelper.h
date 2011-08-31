@@ -24,6 +24,9 @@
 #include "info.h"
 #include "JsonHelper.h"
 
+namespace bacsy
+{
+
 class DatagramHelper
 {
 	public:
@@ -71,4 +74,5 @@ class DatagramHelper
 		}
 };
 
+}
 #endif

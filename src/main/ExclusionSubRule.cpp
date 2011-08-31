@@ -17,6 +17,9 @@
 
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 ExclusionSubRule::ExclusionSubRule(bool negated):
 	negated(negated)
 {
@@ -34,4 +37,6 @@ bool ExclusionSubRule::match(const Poco::File& inputFile)
 
 ExclusionSubRule::~ExclusionSubRule()
 {
+}
+
 }

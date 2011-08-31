@@ -22,6 +22,8 @@
 #include "StringUtils.h"
 #include "TimerStringParser.h"
 
+namespace bacsy
+{
 
 TimerStringParser::TimerStringParser():
 	timeRegex("[0-9]{2}(:|h)?[0-9]{2}h?")
@@ -250,4 +252,6 @@ TimeSchedule TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, cons
 	Poco::Timespan wait = correctEverything - now;
 
 	return TimeSchedule(wait, Poco::Timespan(7*Poco::Timespan::DAYS));
+}
+
 }

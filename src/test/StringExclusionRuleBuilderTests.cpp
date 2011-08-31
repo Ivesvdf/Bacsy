@@ -18,9 +18,12 @@
 #include <gtest/gtest.h>
 #include "StringExclusionRuleBuilder.h"
 
+namespace bacsy
+{
 
 TEST( StringExclusionRuleBuilderTests, TestCompilation)
 {
 	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
 }
 
+}

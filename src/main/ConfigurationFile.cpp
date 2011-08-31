@@ -20,6 +20,9 @@
 #include "ConfigurationFile.h"
 #include "StringUtils.h"
 
+namespace bacsy
+{
+
 ConfigurationFile::ConfigurationFile(istream& fromSource)
 {
 	std::string line;
@@ -179,3 +182,4 @@ void ConfigurationFile::merge(const ConfigurationFile& other)
 	}
 }
 
+}

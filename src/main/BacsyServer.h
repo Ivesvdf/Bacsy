@@ -22,6 +22,9 @@
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "BacsyConnection.h"
 
+namespace bacsy
+{
+
 using Poco::Net::TCPServerConnectionFactoryImpl;
 
 class BacsyServer : public Poco::Net::TCPServer
@@ -30,4 +33,5 @@ public:
 	BacsyServer(StoreManager& storeManager);
 };
 
+}
 #endif

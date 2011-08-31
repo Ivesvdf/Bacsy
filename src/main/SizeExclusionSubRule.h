@@ -22,6 +22,9 @@
 #include "Poco/File.h"
 #include "ExclusionSubRule.h"
 
+namespace bacsy
+{
+
 class SizeExclusionSubRule : public ExclusionSubRule
 {
 public:
@@ -34,4 +37,5 @@ private:
 	const char theOperator;
 };
 
+}
 #endif

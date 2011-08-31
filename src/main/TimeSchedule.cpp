@@ -16,3 +16,7 @@
  */
 
 #include "TimeSchedule.h"
+
+namespace bacsy
+{
+}

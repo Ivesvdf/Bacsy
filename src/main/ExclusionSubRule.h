@@ -20,6 +20,9 @@
 
 #include "Poco/File.h"
 
+namespace bacsy
+{
+
 class ExclusionSubRule
 {
 public:
@@ -34,4 +37,5 @@ private:
 	const bool negated;
 };
 
+}
 #endif

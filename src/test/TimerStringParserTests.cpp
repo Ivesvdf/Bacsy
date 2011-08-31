@@ -22,6 +22,9 @@
 #include "Poco/DateTimeFormat.h"
 #include "TimerStringParser.h"
 
+namespace bacsy
+{
+
 std::string format(const Poco::Timespan& timespan)
 {
 	return Poco::DateTimeFormatter::format(timespan, "%dd%Hh%Mm");
@@ -274,4 +277,6 @@ TEST (TimerStringParserTest, CompoundTest )
 
 	ASSERT_EQ("5d06h00m", format((*it).delay));
 	ASSERT_EQ("7d00h00m", format((*it).repeat));
+}
+
 }

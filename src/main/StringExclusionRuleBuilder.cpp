@@ -25,6 +25,9 @@
 #include "PathExclusionSubRule.h"
 #include "ExclusionStringParser.h"
 
+namespace bacsy
+{
+
 ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 {
 	ExclusionRule rule;
@@ -128,4 +131,6 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 bool StringExclusionRuleBuilder::isPath(std::string s)
 {
 	return s.find_first_of("/\\") != std::string::npos;
+}
+
 }

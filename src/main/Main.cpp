@@ -23,7 +23,7 @@
 #include "Source.h"
 #include "ConfigurationFile.h"
 
-
+using namespace bacsy;
 
 int main()
 {

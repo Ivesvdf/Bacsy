@@ -29,6 +29,9 @@
 #include "CascadingFileConfiguration.h"
 #include "Poco/DirectoryIterator.h"
 
+namespace bacsy
+{
+
 class Source
 {
 public:
@@ -134,4 +137,5 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 
 }
 
+}
 #endif

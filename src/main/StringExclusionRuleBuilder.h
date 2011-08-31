@@ -19,6 +19,10 @@
 #define STRING_EXCLUSION_RULE_BUILDER_H
 
 #include "ExclusionRule.h"
+
+namespace bacsy
+{
+
 class StringExclusionRuleBuilder
 {
 public:
@@ -26,4 +30,5 @@ public:
 	static bool isPath(std::string s);
 };
 
+}
 #endif

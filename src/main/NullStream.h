@@ -22,6 +22,9 @@
 #include "StreamUtilities.h"
 #include "librsync.h"
 
+namespace bacsy
+{
+
 class NullStream : public SimpleOStream
 {
 public:
@@ -29,4 +32,5 @@ public:
 	virtual bool isOk() const;
 };
 
+}
 #endif

@@ -24,6 +24,9 @@
 #include "Functional.h"
 #include "Store.h"
 
+namespace bacsy
+{
+
 Store::Store(const std::string storeName, const CascadingFileConfiguration& configuration):
 	storeName(storeName),
 	configuration(configuration),
@@ -122,4 +125,6 @@ std::string Store::toString() const
 		+ "\tMSP=" 
 		+ StringUtils::toString(minPriorityForStoring) 
 		+ ",\t AP=" + StringUtils::toString(alwaysPresent);
+}
+
 }

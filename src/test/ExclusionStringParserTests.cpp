@@ -18,6 +18,9 @@
 #include <gtest/gtest.h>
 #include "ExclusionStringParser.h"
 
+namespace bacsy
+{
+
 typedef std::list<std::string> StringList;
 
 TEST( ExclusionStringParserTests, OnlyLiteralTest)
@@ -125,4 +128,6 @@ TEST( ExclusionStringParserTests, BackslashAtTheEnd)
 	one.push_back("C:\\dir\\");
 
 	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:\\dir\\\\\""));
+}
+
 }

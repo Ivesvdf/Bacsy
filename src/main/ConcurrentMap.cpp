@@ -16,3 +16,7 @@
  */
 
 #include "ConcurrentMap.h"
+
+namespace bacsy
+{
+}

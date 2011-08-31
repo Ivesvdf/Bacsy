@@ -24,6 +24,9 @@
 #include "CascadingFileConfiguration.h"
 #include "StringExclusionRuleBuilder.h"
 
+namespace bacsy
+{
+
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& directory):
 	inputSourceStream((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str()),
 	inputStoreStream((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str()),
@@ -208,4 +211,6 @@ const ConfigurationFile& CascadingFileConfiguration::getSourceConfig() const
 const ConfigurationFile& CascadingFileConfiguration::getStoreConfig() const
 {
 	return storeConfig;
+}
+
 }

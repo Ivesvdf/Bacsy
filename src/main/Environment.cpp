@@ -21,6 +21,9 @@
 #include "woodcutter/woodcutter.h"
 #include "Environment.h"
 
+namespace bacsy
+{
+
 std::string Environment::getDefaultConfigurationDirectory()
 {
 	std::string prefix;
@@ -46,3 +49,4 @@ std::string Environment::getDefaultConfigurationDirectory()
 	return prefix;
 }
 
+}

@@ -17,8 +17,13 @@
 
 #include "PerformDeltaStream.h"
 
+namespace bacsy
+{
+
 PerformDeltaStream::PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature):
 	RsyncStream<1024>(ostream, rs_delta_begin(signature))
 {
+
+}
 
 }

@@ -26,6 +26,9 @@
 #include "JsonStoreIndex.h"
 #include "CascadingFileConfiguration.h"
 
+namespace bacsy
+{
+
 class Store
 {
 public:
@@ -69,4 +72,5 @@ private:
 	Poco::FastMutex storeIndexMutex;
 };
 
+}
 #endif

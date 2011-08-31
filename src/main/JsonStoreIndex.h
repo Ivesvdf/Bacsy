@@ -21,6 +21,9 @@
 #include "Poco/DateTime.h"
 #include "json/json.h"
 
+namespace bacsy
+{
+
 class JsonStoreIndex
 {
 public:
@@ -55,5 +58,5 @@ private:
 	const std::string path;
 };
 
-
+}
 #endif

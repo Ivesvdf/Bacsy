@@ -19,6 +19,9 @@
 #include <gtest/gtest.h>
 #include "ConfigurationFile.h"
 
+namespace bacsy
+{
+
 TEST( ConfigurationTest, NoExceptionsWhenValid )
 {
 	std::stringstream ss;
@@ -179,4 +182,6 @@ TEST( ConfigurationTest, TestNonOverlappingMerge )
 	file1.merge(file2);
 	ASSERT_EQ("5", file1.get<std::string>("anotherSection", "b"));
 	ASSERT_EQ("1", file1.get<std::string>("someSection", "a"));
+}
+
 }

@@ -19,6 +19,9 @@
 #include "Poco/TemporaryFile.h"
 #include "JsonStoreIndex.h"
 
+namespace bacsy
+{
+
 TEST( StoreIndexTest, NoReloadJsonTest )
 {
 	Poco::TemporaryFile tmp;
@@ -97,4 +100,6 @@ TEST( StoreIndexTest, ReloadJsonTest )
 		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
 		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
 	}
+}
+
 }

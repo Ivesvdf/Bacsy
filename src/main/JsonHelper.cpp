@@ -20,6 +20,8 @@
 #include "JsonHelper.h"
 #include "StringUtils.h"
 
+namespace bacsy
+{
 
 std::string JsonHelper::write(const Json::Value& root)
 {
@@ -38,4 +40,6 @@ Json::Value JsonHelper::read(const std::string& input)
 		throw std::runtime_error("Could not parse Json input " + input);
 
 	return root;
+}
+
 }

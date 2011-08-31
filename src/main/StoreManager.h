@@ -22,6 +22,9 @@
 #include "CascadingFileConfiguration.h"
 #include "Store.h"
 
+namespace bacsy
+{
+
 class StoreManager
 {
 public:
@@ -37,4 +40,5 @@ private:
 	std::list<Store*> stores;
 };
 
+}
 #endif

@@ -20,6 +20,9 @@
 
 #include "StreamUtilities.h" 
 
+namespace bacsy
+{
+
 class SimpleBufferStream : public SimpleIOStream
 {
 public:
@@ -37,4 +40,5 @@ private:
 	char* buffer;
 };
 
+}
 #endif

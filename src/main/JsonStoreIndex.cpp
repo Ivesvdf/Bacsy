@@ -19,6 +19,9 @@
 #include "woodcutter/woodcutter.h"
 #include "JsonStoreIndex.h"
 
+namespace bacsy
+{
+
 JsonStoreIndex::JsonStoreIndex(const std::string inputPath):
 	path(inputPath)
 {
@@ -130,4 +133,6 @@ void JsonStoreIndex::store()
 	std::ofstream out(path.c_str());
 	out << newContents;
 	out.close();
+}
+
 }

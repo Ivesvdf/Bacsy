@@ -19,6 +19,9 @@
 #include "StringUtils.h"
 #include "PathExclusionSubRule.h"
 
+namespace bacsy
+{
+
 PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):
 	ExclusionSubRule(negated),
 	path(path)
@@ -40,4 +43,6 @@ PathExclusionSubRule::PathExclusionSubRule(const PathExclusionSubRule& copy):
 	path(copy.path)
 {
 	
+}
+
 }

@@ -18,6 +18,8 @@
 #include "woodcutter/woodcutter.h"
 #include "ArgParsingUtils.h"
 
+namespace bacsy
+{
 
 void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)
 {
@@ -40,4 +42,6 @@ void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definit
 		ConfigurationFile tmp(ss);
 		conf.merge(tmp);
 	}
+}
+
 }
