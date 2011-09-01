@@ -15,31 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef FILE_GLOB_EXCLUSION_SUB_RULE_H
+#define FILE_GLOB_EXCLUSION_SUB_RULE_H
+
+#include "Poco/Path.h"
+#include "Poco/Glob.h"
+#include "Rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class FileGlobExclusionSubRule : public ExclusionSubRule
 {
-	ConcurrentMap<int, string> stringMap;
-
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+public:
+	FileGlobExclusionSubRule(const std::string glob, bool negated);
+	bool matchWithoutNegate(const Poco::File& inputFile);
+	ExclusionSubRule* clone() const;
+private:
+	Poco::Glob glob;
+	const std::string globStr;
+		
+};
 
 }
+#endif

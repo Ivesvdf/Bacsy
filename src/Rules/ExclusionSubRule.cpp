@@ -15,31 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "Rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+ExclusionSubRule::ExclusionSubRule(bool negated):
+	negated(negated)
 {
-	ConcurrentMap<int, string> stringMap;
+}
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+bool ExclusionSubRule::match(const Poco::File& inputFile)
+{
+	const bool result = matchWithoutNegate(inputFile);
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+	if(negated)
+		return !result;
+	else
+		return result;
+}
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+ExclusionSubRule::~ExclusionSubRule()
+{
 }
 
 }

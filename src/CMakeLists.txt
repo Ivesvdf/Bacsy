@@ -9,45 +9,45 @@
 #	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}") 
 #endif() 
 
-configure_file(common/info.h.in common/info.h @ONLY) 
+configure_file(Common/info.h.in Common/info.h @ONLY) 
 include_directories("${PROJECT_BINARY_DIR}/src/common")
 
 set(BACSY_COMMON_SOURCE_FILES
-                 client/BackupEngine
-                 client/CascadingSourceConfiguration
-                 client/Source
-                 client/TimeSchedule
-                 client/TimerStringParser
-                 common/ArgParsingUtils
-                 common/CascadingFileConfiguration
-                 common/ConcurrentMap
-                 common/ConfigurationFile
-                 common/DatagramHelper
-                 common/Environment
-                 common/JsonHelper
-                 common/StringUtils
-                 rules/ExclusionRule
-                 rules/ExclusionStringParser
-                 rules/ExclusionSubRule
-                 rules/FileGlobExclusionSubRule
-                 rules/PathExclusionSubRule
-                 rules/PathGlobExclusionSubRule
-                 rules/SizeExclusionSubRule
-                 rules/StringExclusionRuleBuilder
-                 server/BacsyConnection
-                 server/BacsyServer
-                 server/CascadingStoreConfiguration
-                 server/JsonStoreIndex
-                 server/MulticastResponder
-                 server/Store
-                 server/StoreManager
-                 streams/LoadSignatureStream
-                 streams/NullStream
-                 streams/PerformDeltaStream
-                 streams/RsyncStream
-                 streams/SimpleBufferStream
-                 streams/StreamUtils
-                 streams/ToSignatureStream
+                 Client/BackupEngine
+                 Client/CascadingSourceConfiguration
+                 Client/Source
+                 Client/TimeSchedule
+                 Client/TimerStringParser
+                 Common/ArgParsingUtils
+                 Common/CascadingFileConfiguration
+                 Common/ConcurrentMap
+                 Common/ConfigurationFile
+                 Common/DatagramHelper
+                 Common/Environment
+                 Common/JsonHelper
+                 Common/StringUtils
+                 Rules/ExclusionRule
+                 Rules/ExclusionStringParser
+                 Rules/ExclusionSubRule
+                 Rules/FileGlobExclusionSubRule
+                 Rules/PathExclusionSubRule
+                 Rules/PathGlobExclusionSubRule
+                 Rules/SizeExclusionSubRule
+                 Rules/StringExclusionRuleBuilder
+                 Server/BacsyConnection
+                 Server/BacsyServer
+                 Server/CascadingStoreConfiguration
+                 Server/JsonStoreIndex
+                 Server/MulticastResponder
+                 Server/Store
+                 Server/StoreManager
+                 Streams/LoadSignatureStream
+                 Streams/NullStream
+                 Streams/PerformDeltaStream
+                 Streams/RsyncStream
+                 Streams/SimpleBufferStream
+                 Streams/StreamUtils
+                 Streams/ToSignatureStream
 )
 
 foreach(source_file ${BACSY_COMMON_SOURCE_FILES})
@@ -57,8 +57,8 @@ endforeach()
 add_library(bacsy ${BACSY_BUILD_TYPE} ${BACSY_COMMON_SOURCE_FILES})
 
 # add_executable(bacsyd bacsyd/Main.cpp)
-add_executable(bacsy-server server/BacsyServerMain.cpp)
-add_executable(bacsy-client client/BacsyClientMain.cpp)
+add_executable(bacsy-server Server/BacsyServerMain.cpp)
+add_executable(bacsy-client Client/BacsyClientMain.cpp)
 if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
 	target_link_libraries(bacsy json)
 endif()

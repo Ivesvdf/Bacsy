@@ -20,7 +20,7 @@
 #include <gtest/gtest.h>
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#include "client/TimerStringParser.h"
+#include "Client/TimerStringParser.h"
 
 namespace bacsy
 {

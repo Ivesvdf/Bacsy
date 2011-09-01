@@ -15,31 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef BACKUP_ENGINE_H
+#define BACKUP_ENGINE_H
+
+#include <vector>
+#include "Client/Source.h"
+#include "Client/CascadingSourceConfiguration.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class BackupEngine
 {
-	ConcurrentMap<int, string> stringMap;
+	private:
+		const CascadingSourceConfiguration& configuration;
+		std::vector<Source*> sources;
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+	public: 
+		BackupEngine(const CascadingSourceConfiguration& configuration);
+		~BackupEngine();
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+		void start();
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+
+};
 
 }
+#endif

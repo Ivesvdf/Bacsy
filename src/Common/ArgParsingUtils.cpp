@@ -15,31 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "woodcutter/woodcutter.h"
+#include "Common/ArgParsingUtils.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)
 {
-	ConcurrentMap<int, string> stringMap;
+	for(std::vector<std::string>::const_iterator it = definitions.begin(); 
+			it != definitions.end();
+			++it)
+	{
+		std::stringstream ss;
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+		const size_t bracketPos = it->find_first_of(']');
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+		if(bracketPos == std::string::npos)
+		{
+			LOGE("No bracket found; ignoring definition " + *it);
+			continue;
+		}
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+		ss << it->substr(0, bracketPos + 1) + "\n" + it->substr(bracketPos + 1);
+
+		ConfigurationFile tmp(ss);
+		conf.merge(tmp);
+	}
 }
 
 }

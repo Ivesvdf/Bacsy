@@ -19,10 +19,10 @@
 #include <sstream>
 #include <fstream>
 #include <gtest/gtest.h>
-#include "streams/ToSignatureStream.h"
-#include "streams/LoadSignatureStream.h"
-#include "streams/SimpleBufferStream.h"
-#include "streams/PerformDeltaStream.h"
+#include "Streams/ToSignatureStream.h"
+#include "Streams/LoadSignatureStream.h"
+#include "Streams/SimpleBufferStream.h"
+#include "Streams/PerformDeltaStream.h"
 
 namespace bacsy
 {

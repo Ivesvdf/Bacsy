@@ -15,31 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef SIMPLE_BUFFER_STREAM
+#define SIMPLE_BUFFER_STREAM
+
+#include "Streams/StreamUtils.h" 
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class SimpleBufferStream : public SimpleIOStream
 {
-	ConcurrentMap<int, string> stringMap;
+public:
+	SimpleBufferStream();
+	~SimpleBufferStream();
+	char* getBuffer(unsigned int *n);
+	
+	virtual void write(const char* const c, std::streamsize size);
+	virtual bool isOk() const;
+	virtual std::streamsize read(char* c, std::streamsize max);
+private:
+	size_t maxSize;
+	size_t currentSize;
+	size_t readOffset;
+	char* buffer;
+};
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
 }
-
-}
+#endif

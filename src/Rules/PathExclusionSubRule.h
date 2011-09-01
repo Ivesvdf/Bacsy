@@ -15,31 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef PATH_EXCLUSION_SUB_RULE_H
+#define PATH_EXCLUSION_SUB_RULE_H
+
 #include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "Rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class PathExclusionSubRule : public ExclusionSubRule
 {
-	ConcurrentMap<int, string> stringMap;
-
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+public:
+	PathExclusionSubRule(const std::string path, bool negated);
+	PathExclusionSubRule(const PathExclusionSubRule& copy);
+	bool matchWithoutNegate(const Poco::File& inputFile);
+	virtual ExclusionSubRule* clone() const;
+private:
+	const std::string path;
+};
 
 }
+#endif

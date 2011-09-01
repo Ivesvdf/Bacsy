@@ -15,31 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef EXCLUSION_RULE_H
+#define EXCLUSION_RULE_H
+
+#include <list>
+#include "Poco/File.h"
+#include "Rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class ExclusionRule
 {
-	ConcurrentMap<int, string> stringMap;
+public:
+	ExclusionRule(const ExclusionRule& rule);
+	ExclusionRule();
+	virtual ~ExclusionRule();
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+	bool match(const Poco::File& inputFile) const;
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+	/**
+	 * When adding an ExclusionSubRule, it is owned by the ExclusionRule from
+	 * that moment on and will thus be freed by it. 
+	 */
+	void addSubRule(ExclusionSubRule* sr);
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+	
+private:
+	std::list<ExclusionSubRule*> subRules;
+};
+
 }
-
-}
+#endif

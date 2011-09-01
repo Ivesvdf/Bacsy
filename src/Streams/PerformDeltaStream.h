@@ -15,31 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef PERFORM_DELTA_STREAM_H
+#define PERFORM_DELTA_STREAM_H
+
+#include "Streams/RsyncStream.h" 
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class PerformDeltaStream : public RsyncStream<1024>
 {
-	ConcurrentMap<int, string> stringMap;
+	public:
+		PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature);
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+};
 
 }
+
+#endif

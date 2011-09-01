@@ -15,31 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#ifndef CONNECTION_FACTORY_H
+#define CONNECTION_FACTORY_H
+
+#include "Poco/Net/TCPServerConnectionFactory.h"
+#include "Server/BacsyConnection.h"
+#include "Server/StoreManager.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class ConnectionFactory: public Poco::Net::TCPServerConnectionFactory
 {
-	ConcurrentMap<int, string> stringMap;
+public:
+	ConnectionFactory(StoreManager& manager):
+		manager(manager)
+	{}
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+	virtual Poco::Net::TCPServerConnection* createConnection(const Poco::Net::StreamSocket& socket)
+	{
+		return new BacsyConnection(socket, manager);
+	}	
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+private:
+	StoreManager& manager;
+};
 
 }
+#endif

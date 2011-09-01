@@ -15,31 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "Poco/Buffer.h"
+#include "Streams/ToSignatureStream.h"
+#include "Common/StringUtils.h"
+#include "woodcutter/woodcutter.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):
+	RsyncStream<1024>(output, rs_sig_begin(RS_DEFAULT_BLOCK_LEN,checksumLength))
 {
-	ConcurrentMap<int, string> stringMap;
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
 }
 
 }

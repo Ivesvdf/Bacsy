@@ -15,31 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef SIZE_EXCLUSION_SUB_RULE_H
+#define SIZE_EXCLUSION_SUB_RULE_H
+
 #include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "Poco/File.h"
+#include "Rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+class SizeExclusionSubRule : public ExclusionSubRule
 {
-	ConcurrentMap<int, string> stringMap;
-
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
-
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
-}
+public:
+	SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated);
+	SizeExclusionSubRule(const SizeExclusionSubRule& copy);
+	bool matchWithoutNegate(const Poco::File& inputFile);
+	virtual ExclusionSubRule* clone() const;
+private:
+	const Poco::File::FileSize sizeInBytes;
+	const char theOperator;
+};
 
 }
+#endif

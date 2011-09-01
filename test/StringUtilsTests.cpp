@@ -16,7 +16,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "common/StringUtils.h"
+#include "Common/StringUtils.h"
 
 namespace bacsy
 {

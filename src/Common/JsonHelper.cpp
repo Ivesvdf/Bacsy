@@ -15,31 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include <sstream>
+#include <stdexcept>
+#include "Common/JsonHelper.h"
+#include "Common/StringUtils.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+std::string JsonHelper::write(const Json::Value& root)
 {
-	ConcurrentMap<int, string> stringMap;
+	Json::FastWriter writer;
+	return StringUtils::rstrip(writer.write(root), "\n");	
+}
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+Json::Value JsonHelper::read(const std::string& input)
+{
+	std::stringstream stream;
+	stream << input;
+	Json::Reader reader;
+	Json::Value root;
+	if (!reader.parse(stream, root))
+		throw std::runtime_error("Could not parse Json input " + input);
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+	return root;
 }
 
 }

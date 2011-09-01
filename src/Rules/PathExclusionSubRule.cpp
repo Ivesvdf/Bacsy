@@ -16,30 +16,33 @@
  */
 
 #include <string>
-#include <gtest/gtest.h>
-#include "Common/ConcurrentMap.h"
+#include "Common/StringUtils.h"
+#include "Rules/PathExclusionSubRule.h"
 
 namespace bacsy
 {
 
-using std::string;
-
-TEST( ConcurrentMapTest, SimpleTest )
+PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):
+	ExclusionSubRule(negated),
+	path(path)
 {
-	ConcurrentMap<int, string> stringMap;
+}
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+bool PathExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+{
+	return StringUtils::rstrip(path, "/\\") == StringUtils::rstrip(inputFile.path(), "/\\");
+}
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
+ExclusionSubRule* PathExclusionSubRule::clone() const
+{
+	return new PathExclusionSubRule(*this);
+}
 
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+PathExclusionSubRule::PathExclusionSubRule(const PathExclusionSubRule& copy):
+	ExclusionSubRule(copy.getNegated()),
+	path(copy.path)
+{
+	
 }
 
 }
