@@ -26,6 +26,7 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
+#include "woodcutter/woodcutter.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 #include "Poco/DirectoryIterator.h"
 

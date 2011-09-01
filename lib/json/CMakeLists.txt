@@ -5,4 +5,6 @@ if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
 endif()
 
 add_library(json STATIC json_reader json_value json_writer)
-
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        DESTINATION include/bacsy
+        FILES_MATCHING PATTERN "*.h")

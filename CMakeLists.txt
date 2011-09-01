@@ -66,3 +66,6 @@ endif()
 
 add_subdirectory(Bacsy)
 add_subdirectory(Test)
+
+install(FILES lib/woodcutter/woodcutter.h
+        DESTINATION include/bacsy/woodcutter)
