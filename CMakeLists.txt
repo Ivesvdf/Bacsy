@@ -33,7 +33,7 @@ include(CPack)
 
 
 include_directories(lib/)
-include_directories(src/main)
+include_directories(.)
 
 add_subdirectory(lib/gtest)
 add_subdirectory(lib/json)
@@ -51,7 +51,6 @@ endif()
 
 include_directories(${POCO_INCLUDE_DIRS})
 include_directories(${RSYNC_INCLUDE_DIRS})
-include_directories(src/)
 
 set(bacsy_libraries bacsy
                     ${RSYNC_LIBRARIES}
@@ -65,5 +64,5 @@ else()
 	list(APPEND bacsy_libraries ${PLATFORM_DEPENDENT_LIBS})
 endif()
 
-add_subdirectory(src)
-add_subdirectory(test)
+add_subdirectory(Bacsy)
+add_subdirectory(Test)
