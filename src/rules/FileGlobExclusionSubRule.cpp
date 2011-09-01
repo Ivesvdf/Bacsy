@@ -15,15 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#include "rules/FileGlobExclusionSubRule.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string iglob, bool negated):
+	ExclusionSubRule(negated),
+	glob(iglob),
+	globStr(iglob)
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+}
+
+bool FileGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+{
+	Poco::Path path(inputFile.path());
+	return glob.match(path.getFileName());
+}
+
+ExclusionSubRule* FileGlobExclusionSubRule::clone() const
+{
+	return new FileGlobExclusionSubRule(globStr, getNegated());
 }
 
 }

@@ -15,15 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef STRING_EXCLUSION_RULE_BUILDER_H
+#define STRING_EXCLUSION_RULE_BUILDER_H
+
+#include "rules/ExclusionRule.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class StringExclusionRuleBuilder
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	static ExclusionRule build(const std::string& source);
+	static bool isPath(std::string s);
+};
 
 }
+#endif

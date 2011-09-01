@@ -17,7 +17,7 @@
 
 #include <string>
 #include <gtest/gtest.h>
-#include "ConcurrentMap.h"
+#include "common/ConcurrentMap.h"
 
 namespace bacsy
 {

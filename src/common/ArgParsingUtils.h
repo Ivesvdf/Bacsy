@@ -15,15 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef ARG_PARSING_UTILS_H
+#define ARG_PARSING_UTILS_H
+
+#include <list>
+#include <string>
+#include "common/ConfigurationFile.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class ArgParsingUtils
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	static void processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf);
+};
 
 }
+
+#endif

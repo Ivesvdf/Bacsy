@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef LOADSIGNATURESTREAM_H
+#define LOADSIGNATURESTREAM_H
+
+#include "streams/RsyncStream.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+/**
+ * Loads a Signature to an rs_signature_t object. This object is *owned* by
+ * this LoadSignatureStream. Don't free the little bastard yourself or die
+ * horribly. 
+ */
+class LoadSignatureStream : public RsyncStream<1024>
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	LoadSignatureStream();
+	~LoadSignatureStream();
+
+	rs_signature_t* getSignature() const;
+private:
+	SimpleOStreamStream dumpStream;
+	rs_signature_t* signature;
+};
 
 }
+#endif

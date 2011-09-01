@@ -15,15 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#include <string>
+#include "common/StringUtils.h"
+#include "rules/PathExclusionSubRule.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):
+	ExclusionSubRule(negated),
+	path(path)
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+}
+
+bool PathExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+{
+	return StringUtils::rstrip(path, "/\\") == StringUtils::rstrip(inputFile.path(), "/\\");
+}
+
+ExclusionSubRule* PathExclusionSubRule::clone() const
+{
+	return new PathExclusionSubRule(*this);
+}
+
+PathExclusionSubRule::PathExclusionSubRule(const PathExclusionSubRule& copy):
+	ExclusionSubRule(copy.getNegated()),
+	path(copy.path)
+{
+	
 }
 
 }

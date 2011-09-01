@@ -15,15 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef PERFORM_DELTA_STREAM_H
+#define PERFORM_DELTA_STREAM_H
+
+#include "streams/RsyncStream.h" 
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class PerformDeltaStream : public RsyncStream<1024>
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+	public:
+		PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature);
+
+};
 
 }
+
+#endif

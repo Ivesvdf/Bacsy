@@ -15,15 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#include <sstream>
+#include <stdexcept>
+#include "common/JsonHelper.h"
+#include "common/StringUtils.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+std::string JsonHelper::write(const Json::Value& root)
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+	Json::FastWriter writer;
+	return StringUtils::rstrip(writer.write(root), "\n");	
+}
+
+
+Json::Value JsonHelper::read(const std::string& input)
+{
+	std::stringstream stream;
+	stream << input;
+	Json::Reader reader;
+	Json::Value root;
+	if (!reader.parse(stream, root))
+		throw std::runtime_error("Could not parse Json input " + input);
+
+	return root;
 }
 
 }

@@ -16,7 +16,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "ExclusionStringParser.h"
+#include "rules/ExclusionStringParser.h"
 
 namespace bacsy
 {

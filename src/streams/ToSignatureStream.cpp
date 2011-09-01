@@ -15,15 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#include "Poco/Buffer.h"
+#include "streams/ToSignatureStream.h"
+#include "common/StringUtils.h"
+#include "woodcutter/woodcutter.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):
+	RsyncStream<1024>(output, rs_sig_begin(RS_DEFAULT_BLOCK_LEN,checksumLength))
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+
 }
 
 }

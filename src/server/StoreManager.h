@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef STORE_MANAGER_H
+#define STORE_MANAGER_H
+
+#include <list>
+#include "server/CascadingStoreConfiguration.h"
+#include "server/Store.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class StoreManager
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	StoreManager(const CascadingStoreConfiguration& configuration);
+	~StoreManager();
+
+	size_t getStoreCount() const;
+	std::list<Store*> getStores(unsigned int minPriority) const;
+private:
+	static std::list<Store*> buildStores(const CascadingStoreConfiguration& configuration);
+	static bool notReadyForStoring(const Store* store);
+	const CascadingStoreConfiguration& configuration;
+	std::list<Store*> stores;
+};
 
 }
+#endif

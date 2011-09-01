@@ -17,7 +17,7 @@
 
 #include <sstream>
 #include <gtest/gtest.h>
-#include "ConfigurationFile.h"
+#include "common/ConfigurationFile.h"
 
 namespace bacsy
 {

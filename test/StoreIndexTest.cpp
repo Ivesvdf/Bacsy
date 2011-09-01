@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 #include "Poco/TemporaryFile.h"
-#include "JsonStoreIndex.h"
+#include "server/JsonStoreIndex.h"
 
 namespace bacsy
 {

@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef BACKUP_ENGINE_H
+#define BACKUP_ENGINE_H
+
+#include <vector>
+#include "client/Source.h"
+#include "client/CascadingSourceConfiguration.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class BackupEngine
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+	private:
+		const CascadingSourceConfiguration& configuration;
+		std::vector<Source*> sources;
+
+	public: 
+		BackupEngine(const CascadingSourceConfiguration& configuration);
+		~BackupEngine();
+
+		void start();
+
+
+};
 
 }
+#endif

@@ -15,15 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef SIZE_EXCLUSION_SUB_RULE_H
+#define SIZE_EXCLUSION_SUB_RULE_H
+
+#include <string>
+#include "Poco/File.h"
+#include "rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class SizeExclusionSubRule : public ExclusionSubRule
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated);
+	SizeExclusionSubRule(const SizeExclusionSubRule& copy);
+	bool matchWithoutNegate(const Poco::File& inputFile);
+	virtual ExclusionSubRule* clone() const;
+private:
+	const Poco::File::FileSize sizeInBytes;
+	const char theOperator;
+};
 
 }
+#endif

@@ -15,15 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef EXCLUSION_RULE_H
+#define EXCLUSION_RULE_H
+
+#include <list>
+#include "Poco/File.h"
+#include "rules/ExclusionSubRule.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class ExclusionRule
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	ExclusionRule(const ExclusionRule& rule);
+	ExclusionRule();
+	virtual ~ExclusionRule();
+
+	bool match(const Poco::File& inputFile) const;
+
+	/**
+	 * When adding an ExclusionSubRule, it is owned by the ExclusionRule from
+	 * that moment on and will thus be freed by it. 
+	 */
+	void addSubRule(ExclusionSubRule* sr);
+
+	
+private:
+	std::list<ExclusionSubRule*> subRules;
+};
 
 }
+#endif

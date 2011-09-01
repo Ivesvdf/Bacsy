@@ -15,15 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
+#include <fstream>
+#include <functional>
+#include <algorithm>
+#include "Poco/Environment.h"
+#include <Poco/String.h>
+#include "common/StringUtils.h"
+#include "common/CascadingFileConfiguration.h"
 #include "rules/StringExclusionRuleBuilder.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+CascadingFileConfiguration::CascadingFileConfiguration():
+	globalSectionName("global")
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+
+}
+
+bool CascadingFileConfiguration::toBool(const std::string& input)
+{
+	const std::string lowered = Poco::toLower(input);
+
+	return (lowered == "true" || lowered == "1");
 }
 
 }

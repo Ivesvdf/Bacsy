@@ -15,15 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#include "woodcutter/woodcutter.h"
+#include "common/ArgParsingUtils.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+	for(std::vector<std::string>::const_iterator it = definitions.begin(); 
+			it != definitions.end();
+			++it)
+	{
+		std::stringstream ss;
+
+		const size_t bracketPos = it->find_first_of(']');
+
+		if(bracketPos == std::string::npos)
+		{
+			LOGE("No bracket found; ignoring definition " + *it);
+			continue;
+		}
+
+		ss << it->substr(0, bracketPos + 1) + "\n" + it->substr(bracketPos + 1);
+
+		ConfigurationFile tmp(ss);
+		conf.merge(tmp);
+	}
 }
 
 }

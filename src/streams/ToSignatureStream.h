@@ -15,15 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef TOSIGNATURESTREAM_H
+#define TOSIGNATURESTREAM_H
+
+#include <iostream>
+#include "streams/StreamUtilities.h"
+#include "librsync.h"
+#include "streams/RsyncStream.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class ToSignatureStream : public RsyncStream<1024>
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	ToSignatureStream(SimpleOStream& output, const size_t checksumLength = 16);
+};
 
 }
+#endif

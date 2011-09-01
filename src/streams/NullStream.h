@@ -15,15 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef NULLSTREAM_H
+#define NULLSTREAM_H
+
+#include <iostream>
+#include "streams/StreamUtilities.h"
+#include "librsync.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class NullStream : public SimpleOStream
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	virtual void write(const char* const c, std::streamsize size);
+	virtual bool isOk() const;
+};
 
 }
+#endif

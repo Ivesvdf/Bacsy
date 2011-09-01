@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef SIMPLE_BUFFER_STREAM
+#define SIMPLE_BUFFER_STREAM
+
+#include "streams/StreamUtilities.h" 
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+class SimpleBufferStream : public SimpleIOStream
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	SimpleBufferStream();
+	~SimpleBufferStream();
+	char* getBuffer(unsigned int *n);
+	
+	virtual void write(const char* const c, std::streamsize size);
+	virtual bool isOk() const;
+	virtual std::streamsize read(char* c, std::streamsize max);
+private:
+	size_t maxSize;
+	size_t currentSize;
+	size_t readOffset;
+	char* buffer;
+};
 
 }
+#endif

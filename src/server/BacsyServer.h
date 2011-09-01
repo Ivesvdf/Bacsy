@@ -15,15 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtest/gtest.h>
-#include "rules/StringExclusionRuleBuilder.h"
+#ifndef BACSYSERVER_H
+#define BACSYSERVER_H
+
+#include "Poco/Net/TCPServer.h"
+#include "Poco/Net/TCPServerConnectionFactory.h"
+#include "server/BacsyConnection.h"
 
 namespace bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+using Poco::Net::TCPServerConnectionFactoryImpl;
+
+class BacsyServer : public Poco::Net::TCPServer
 {
-	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
-}
+public:
+	BacsyServer(StoreManager& storeManager);
+};
 
 }
+#endif

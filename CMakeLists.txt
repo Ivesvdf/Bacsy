@@ -51,6 +51,7 @@ endif()
 
 include_directories(${POCO_INCLUDE_DIRS})
 include_directories(${RSYNC_INCLUDE_DIRS})
+include_directories(src/)
 
 set(bacsy_libraries bacsy
                     ${RSYNC_LIBRARIES}
