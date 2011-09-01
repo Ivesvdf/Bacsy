@@ -5,13 +5,6 @@ if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
 endif()
 
 add_library(json STATIC json_reader json_value json_writer)
-install(FILES       autolink.h
-                    config.h
-                    features.h
-                    forwards.h
-                    json_batchallocator.h
-                    json.h
-                    reader.h
-                    value.h
-                    writer.h
-        DESTINATION include/bacsy/json)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        DESTINATION include/bacsy
+        FILES_MATCHING PATTERN "*.h")
