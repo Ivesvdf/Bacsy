@@ -9,8 +9,8 @@
 #	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}") 
 #endif() 
 
-configure_file(Common/info.h.in Common/info.h @ONLY) 
-include_directories("${PROJECT_BINARY_DIR}/Bacsy/Common")
+configure_file(Common/Info.h.in Common/Info.h @ONLY) 
+include_directories("${PROJECT_BINARY_DIR}")
 
 set(BACSY_COMMON_SOURCE_FILES
                  Client/BackupEngine
@@ -73,5 +73,5 @@ install(TARGETS bacsy
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         DESTINATION include/bacsy
         FILES_MATCHING PATTERN "*.h")
-install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/Common/info.h
-        DESTINATION include/bacsy/Bacsy/Common)
+install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/Common/Info.h
+        DESTINATION include/Bacsy/Common)

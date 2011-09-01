@@ -22,7 +22,7 @@
 #include "Bacsy/Server/MulticastResponder.h"
 #include "Bacsy/Server/CascadingStoreConfiguration.h"
 #include "Bacsy/Common/ConfigurationFile.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/ArgParsingUtils.h"
 #include "Bacsy/Common/Environment.h"
 

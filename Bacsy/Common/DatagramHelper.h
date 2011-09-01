@@ -21,7 +21,7 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Exception.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/JsonHelper.h"
 
 namespace bacsy

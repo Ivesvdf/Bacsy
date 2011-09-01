@@ -32,7 +32,7 @@
 #include "Bacsy/Server/BacsyConnection.h"
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Streams/StreamUtils.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/JsonHelper.h"
 
 namespace bacsy

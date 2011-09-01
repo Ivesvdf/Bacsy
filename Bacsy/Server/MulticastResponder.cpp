@@ -20,7 +20,7 @@
 #include "woodcutter/woodcutter.h"
 #include "json/json.h"
 #include "Bacsy/Common/StringUtils.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Server/MulticastResponder.h"
 
