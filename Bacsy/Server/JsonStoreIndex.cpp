@@ -19,7 +19,7 @@
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 JsonStoreIndex::JsonStoreIndex(const std::string inputPath):

@@ -24,7 +24,7 @@
 #include "Poco/Net/DialogSocket.h"
 #include "Bacsy/Common/StringUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class SimpleIStream

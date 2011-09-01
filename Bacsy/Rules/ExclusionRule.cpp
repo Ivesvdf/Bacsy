@@ -19,7 +19,7 @@
 #include "Bacsy/Common/Utils.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 ExclusionRule::ExclusionRule(const ExclusionRule& rule)

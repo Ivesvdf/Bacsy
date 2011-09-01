@@ -22,7 +22,7 @@
 #include "Bacsy/Server/CascadingStoreConfiguration.h"
 #include "Bacsy/Server/Store.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class StoreManager

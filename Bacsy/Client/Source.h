@@ -29,7 +29,7 @@
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 #include "Poco/DirectoryIterator.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class Source

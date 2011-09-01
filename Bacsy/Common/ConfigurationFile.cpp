@@ -20,7 +20,7 @@
 #include "Bacsy/Common/ConfigurationFile.h"
 #include "Bacsy/Common/StringUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 ConfigurationFile::ConfigurationFile(istream& fromSource)

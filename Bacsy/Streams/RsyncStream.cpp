@@ -17,6 +17,6 @@
 
 #include "Bacsy/Streams/RsyncStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 }

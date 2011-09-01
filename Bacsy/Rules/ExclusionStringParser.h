@@ -21,7 +21,7 @@
 #include <string>
 #include <list>
 
-namespace bacsy
+namespace Bacsy
 {
 
 class ExclusionStringParser

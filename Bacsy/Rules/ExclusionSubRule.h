@@ -20,7 +20,7 @@
 
 #include "Poco/File.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class ExclusionSubRule

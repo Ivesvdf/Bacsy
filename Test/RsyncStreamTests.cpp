@@ -24,7 +24,7 @@
 #include "Bacsy/Streams/SimpleBufferStream.h"
 #include "Bacsy/Streams/PerformDeltaStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TEST( SignatureStreamTest, HelloWorldTest )

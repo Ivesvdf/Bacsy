@@ -25,7 +25,7 @@
 #include <stdexcept>
 #include "Bacsy/Common/StringUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 using std::istream;

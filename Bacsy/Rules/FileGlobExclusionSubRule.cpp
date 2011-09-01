@@ -17,7 +17,7 @@
 
 #include "Bacsy/Rules/FileGlobExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string iglob, bool negated):

@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TEST( StringExclusionRuleBuilderTests, TestCompilation)

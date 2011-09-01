@@ -37,7 +37,7 @@
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Common/JsonHelper.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 bool Source::isPath(std::string s) const

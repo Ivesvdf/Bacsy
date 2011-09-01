@@ -27,7 +27,7 @@
 #include "Bacsy/Rules/ExclusionRule.h"
 #include "Bacsy/Common/CascadingFileConfiguration.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class CascadingSourceConfiguration : public CascadingFileConfiguration

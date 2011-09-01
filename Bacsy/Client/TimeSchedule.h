@@ -20,7 +20,7 @@
 
 #include "Poco/Timespan.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class TimeSchedule

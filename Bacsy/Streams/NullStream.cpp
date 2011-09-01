@@ -17,7 +17,7 @@
 
 #include "Bacsy/Streams/NullStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 void NullStream::write(const char* const c, std::streamsize size)

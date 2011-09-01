@@ -23,7 +23,7 @@
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Streams/NullStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 template<int buffersize = 1024>

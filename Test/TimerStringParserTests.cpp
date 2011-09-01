@@ -22,7 +22,7 @@
 #include "Poco/DateTimeFormat.h"
 #include "Bacsy/Client/TimerStringParser.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 std::string format(const Poco::Timespan& timespan)

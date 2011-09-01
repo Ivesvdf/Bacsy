@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Common/StringUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TEST( StringUtilsTest, SimpleStripTest )

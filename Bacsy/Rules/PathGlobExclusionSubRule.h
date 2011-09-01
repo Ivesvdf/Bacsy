@@ -22,7 +22,7 @@
 #include "Poco/Glob.h"
 #include "Bacsy/Rules/ExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class PathGlobExclusionSubRule : public ExclusionSubRule

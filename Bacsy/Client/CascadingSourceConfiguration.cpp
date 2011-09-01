@@ -24,7 +24,7 @@
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& directory):

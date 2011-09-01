@@ -19,7 +19,7 @@
 #include "Poco/TemporaryFile.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TEST( StoreIndexTest, NoReloadJsonTest )

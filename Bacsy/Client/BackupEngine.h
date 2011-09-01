@@ -22,7 +22,7 @@
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class BackupEngine

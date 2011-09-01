@@ -20,7 +20,7 @@
 
 #include <functional>
 
-namespace bacsy
+namespace Bacsy
 {
 
 template <class S, class A>

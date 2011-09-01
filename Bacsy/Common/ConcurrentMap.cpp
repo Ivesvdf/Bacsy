@@ -17,6 +17,6 @@
 
 #include "Bacsy/Common/ConcurrentMap.h"
 
-namespace bacsy
+namespace Bacsy
 {
 }

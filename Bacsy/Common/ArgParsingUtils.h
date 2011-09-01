@@ -22,7 +22,7 @@
 #include <string>
 #include "Bacsy/Common/ConfigurationFile.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class ArgParsingUtils

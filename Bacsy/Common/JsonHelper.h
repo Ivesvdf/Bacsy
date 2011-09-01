@@ -21,7 +21,7 @@
 #include <string>
 #include "json/json.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class JsonHelper

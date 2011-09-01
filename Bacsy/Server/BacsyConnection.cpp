@@ -35,7 +35,7 @@
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/JsonHelper.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) : 

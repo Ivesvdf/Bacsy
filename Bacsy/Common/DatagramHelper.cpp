@@ -17,6 +17,6 @@
 
 #include "Bacsy/Common/DatagramHelper.h"
 
-namespace bacsy
+namespace Bacsy
 {
 }

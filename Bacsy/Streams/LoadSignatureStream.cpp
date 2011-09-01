@@ -17,7 +17,7 @@
 
 #include "Bacsy/Streams/LoadSignatureStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 LoadSignatureStream::LoadSignatureStream():

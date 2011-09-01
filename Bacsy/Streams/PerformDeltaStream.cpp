@@ -17,7 +17,7 @@
 
 #include "Bacsy/Streams/PerformDeltaStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 PerformDeltaStream::PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature):

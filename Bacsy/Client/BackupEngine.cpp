@@ -21,7 +21,7 @@
 #include <algorithm>
 #include "Bacsy/Client/BackupEngine.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class SourceNameToSourcer

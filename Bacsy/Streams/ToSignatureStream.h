@@ -23,7 +23,7 @@
 #include "librsync.h"
 #include "Bacsy/Streams/RsyncStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class ToSignatureStream : public RsyncStream<1024>

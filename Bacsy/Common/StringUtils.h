@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-namespace bacsy
+namespace Bacsy
 {
 
 class StringUtils

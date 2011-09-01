@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Common/ConfigurationFile.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TEST( ConfigurationTest, NoExceptionsWhenValid )

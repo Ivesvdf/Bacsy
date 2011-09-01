@@ -20,7 +20,7 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-namespace bacsy
+namespace Bacsy
 {
 
 class Environment

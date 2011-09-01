@@ -19,7 +19,7 @@
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Rules/PathExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):

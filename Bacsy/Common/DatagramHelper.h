@@ -24,7 +24,7 @@
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/JsonHelper.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class DatagramHelper

@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Rules/ExclusionStringParser.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 typedef std::list<std::string> StringList;

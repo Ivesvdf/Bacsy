@@ -21,7 +21,7 @@
 #include "Bacsy/Common/Utils.h"
 #include "Bacsy/Server/StoreManager.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class StorenameToStorer

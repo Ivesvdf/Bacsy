@@ -23,7 +23,7 @@
 #include "Poco/Runnable.h"
 #include "Poco/Net/SocketAddress.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class MulticastResponder : public Poco::Runnable

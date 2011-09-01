@@ -26,7 +26,7 @@
 #include "Bacsy/Server/JsonStoreIndex.h"
 #include "Bacsy/Server/CascadingStoreConfiguration.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class Store

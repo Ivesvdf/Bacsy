@@ -23,7 +23,7 @@
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Common/ConfigurationFile.h"
 
-using namespace bacsy;
+using namespace Bacsy;
 
 int main()
 {

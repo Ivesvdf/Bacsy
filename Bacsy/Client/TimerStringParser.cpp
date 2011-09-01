@@ -22,7 +22,7 @@
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Client/TimerStringParser.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 TimerStringParser::TimerStringParser():

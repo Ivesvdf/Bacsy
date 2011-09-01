@@ -21,7 +21,7 @@
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Common/Environment.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 std::string Environment::getDefaultConfigurationDirectory()

@@ -24,7 +24,7 @@
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Server/MulticastResponder.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 void MulticastResponder::start()

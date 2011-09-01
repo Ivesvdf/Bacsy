@@ -24,7 +24,7 @@
 #include "Bacsy/Common/CascadingFileConfiguration.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& filename):

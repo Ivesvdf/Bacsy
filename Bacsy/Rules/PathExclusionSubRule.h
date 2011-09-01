@@ -21,7 +21,7 @@
 #include <string>
 #include "Bacsy/Rules/ExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class PathExclusionSubRule : public ExclusionSubRule

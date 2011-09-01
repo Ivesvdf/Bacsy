@@ -19,7 +19,7 @@
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Rules/SizeExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 SizeExclusionSubRule::SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated):

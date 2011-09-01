@@ -21,7 +21,7 @@
 #include "Poco/DateTime.h"
 #include "json/json.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class JsonStoreIndex

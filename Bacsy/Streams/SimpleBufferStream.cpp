@@ -19,7 +19,7 @@
 #include <algorithm>
 #include "Bacsy/Streams/SimpleBufferStream.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 SimpleBufferStream::SimpleBufferStream():

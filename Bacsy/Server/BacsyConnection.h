@@ -25,7 +25,7 @@
 #include "Poco/Net/TCPServerConnection.h" 
 #include "Bacsy/Server/StoreManager.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class BacsyConnection : public Poco::Net::TCPServerConnection

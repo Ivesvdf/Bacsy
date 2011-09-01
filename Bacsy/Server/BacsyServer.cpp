@@ -19,7 +19,7 @@
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Server/ConnectionFactory.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 BacsyServer::BacsyServer(StoreManager& storeManager): 

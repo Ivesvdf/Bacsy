@@ -21,7 +21,7 @@
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Streams/StreamUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 std::streamsize StreamUtilities::copyStream(

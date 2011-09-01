@@ -17,7 +17,7 @@
 
 #include "Bacsy/Rules/ExclusionStringParser.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 std::list<std::string> ExclusionStringParser::parse(const std::string& input)

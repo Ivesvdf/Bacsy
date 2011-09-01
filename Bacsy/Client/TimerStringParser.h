@@ -23,7 +23,7 @@
 #include "Poco/LocalDateTime.h"
 #include "Bacsy/Client/TimeSchedule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class TimerStringParser

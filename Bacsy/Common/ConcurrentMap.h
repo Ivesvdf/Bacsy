@@ -21,7 +21,7 @@
 #include <map>
 #include "Poco/RWLock.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 template<typename K, typename V>

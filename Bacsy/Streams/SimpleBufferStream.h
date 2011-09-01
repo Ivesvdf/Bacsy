@@ -20,7 +20,7 @@
 
 #include "Bacsy/Streams/StreamUtils.h" 
 
-namespace bacsy
+namespace Bacsy
 {
 
 class SimpleBufferStream : public SimpleIOStream

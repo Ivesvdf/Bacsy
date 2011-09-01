@@ -18,7 +18,7 @@
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Common/ArgParsingUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)

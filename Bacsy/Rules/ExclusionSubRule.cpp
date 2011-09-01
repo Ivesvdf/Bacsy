@@ -17,7 +17,7 @@
 
 #include "Bacsy/Rules/ExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 ExclusionSubRule::ExclusionSubRule(bool negated):

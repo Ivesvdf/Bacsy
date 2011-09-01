@@ -18,7 +18,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-namespace bacsy
+namespace Bacsy
 {
 
 class ObjectDeleter 

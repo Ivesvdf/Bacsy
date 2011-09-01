@@ -25,7 +25,7 @@
 #include "Bacsy/Rules/PathExclusionSubRule.h"
 #include "Bacsy/Rules/ExclusionStringParser.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)

@@ -22,7 +22,7 @@
 #include "Bacsy/Streams/StreamUtils.h"
 #include "librsync.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class NullStream : public SimpleOStream

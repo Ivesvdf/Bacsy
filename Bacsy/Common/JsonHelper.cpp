@@ -20,7 +20,7 @@
 #include "Bacsy/Common/JsonHelper.h"
 #include "Bacsy/Common/StringUtils.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 std::string JsonHelper::write(const Json::Value& root)

@@ -17,6 +17,6 @@
 
 #include "Bacsy/Client/TimeSchedule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 }

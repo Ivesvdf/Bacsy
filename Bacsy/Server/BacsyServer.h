@@ -22,7 +22,7 @@
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "Bacsy/Server/BacsyConnection.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 using Poco::Net::TCPServerConnectionFactoryImpl;

@@ -20,7 +20,7 @@
 #include "Bacsy/Common/StringUtils.h"
 #include "woodcutter/woodcutter.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):

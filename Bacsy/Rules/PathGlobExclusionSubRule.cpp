@@ -17,7 +17,7 @@
 
 #include "Bacsy/Rules/PathGlobExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string iglob, bool negated):

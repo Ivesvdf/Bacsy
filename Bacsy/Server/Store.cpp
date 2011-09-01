@@ -24,7 +24,7 @@
 #include "Bacsy/Common/Functional.h"
 #include "Bacsy/Server/Store.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 Store::Store(const std::string storeName, const CascadingStoreConfiguration& configuration):

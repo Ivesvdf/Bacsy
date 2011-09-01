@@ -22,7 +22,7 @@
 #include "Poco/File.h"
 #include "Bacsy/Rules/ExclusionSubRule.h"
 
-namespace bacsy
+namespace Bacsy
 {
 
 class SizeExclusionSubRule : public ExclusionSubRule
