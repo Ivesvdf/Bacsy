@@ -13,41 +13,42 @@ configure_file(common/info.h.in common/info.h @ONLY)
 include_directories("${PROJECT_BINARY_DIR}/src/common")
 
 set(BACSY_COMMON_SOURCE_FILES
-                 common/ConfigurationFile
-                 common/StringUtils
-                 server/BacsyConnection
-                 server/BacsyServer
-                 client/Source
-                 client/TimerStringParser
-                 client/TimeSchedule
                  client/BackupEngine
+                 client/CascadingSourceConfiguration
+                 client/Source
+                 client/TimeSchedule
+                 client/TimerStringParser
+                 common/ArgParsingUtils
                  common/CascadingFileConfiguration
-				 client/CascadingSourceConfiguration
-				 server/CascadingStoreConfiguration
-                 server/JsonStoreIndex
-                 common/DatagramHelper
-                 server/MulticastResponder
-                 server/StoreManager
-                 server/Store
-                 common/JsonHelper
-                 streams/StreamUtils
                  common/ConcurrentMap
-                 streams/ToSignatureStream
-                 streams/SimpleBufferStream
-                 streams/RsyncStream
-                 streams/NullStream
-                 streams/LoadSignatureStream
-                 streams/PerformDeltaStream
-                 rules/ExclusionStringParser
+                 common/ConfigurationFile
+                 common/DatagramHelper
+                 common/Environment
+                 common/JsonHelper
+                 common/StringUtils
                  rules/ExclusionRule
+                 rules/ExclusionStringParser
                  rules/ExclusionSubRule
-                 rules/PathExclusionSubRule
                  rules/FileGlobExclusionSubRule
+                 rules/PathExclusionSubRule
                  rules/PathGlobExclusionSubRule
                  rules/SizeExclusionSubRule
                  rules/StringExclusionRuleBuilder
-				 common/ArgParsingUtils
-				 common/Environment
+                 server/BacsyConnection
+                 server/BacsyServer
+                 server/CascadingStoreConfiguration
+                 server/JsonStoreIndex
+                 server/MulticastResponder
+                 server/Store
+                 server/StoreManager
+                 streams/LoadSignatureStream
+                 streams/NullStream
+                 streams/PerformDeltaStream
+                 streams/RsyncStream
+                 streams/SimpleBufferStream
+                 streams/StreamUtils
+                 streams/ToSignatureStream
+)
 )
 foreach(source_file ${BACSY_COMMON_SOURCE_FILES})
 	list(APPEND BACSY_COMMON_HEADER_FILES "${source_file}.h")
