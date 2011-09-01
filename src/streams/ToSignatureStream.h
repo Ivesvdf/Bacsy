@@ -19,7 +19,7 @@
 #define TOSIGNATURESTREAM_H
 
 #include <iostream>
-#include "streams/StreamUtilities.h"
+#include "streams/StreamUtils.h"
 #include "librsync.h"
 #include "streams/RsyncStream.h"
 

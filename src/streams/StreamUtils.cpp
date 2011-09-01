@@ -19,7 +19,7 @@
 #include <istream>
 #include <ostream>
 #include "woodcutter/woodcutter.h"
-#include "streams/StreamUtilities.h"
+#include "streams/StreamUtils.h"
 
 namespace bacsy
 {

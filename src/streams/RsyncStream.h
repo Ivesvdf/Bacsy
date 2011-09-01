@@ -18,7 +18,7 @@
 #ifndef RSYNC_STREAM_H
 #define RSYNC_STREAM_H
 
-#include "streams/StreamUtilities.h"
+#include "streams/StreamUtils.h"
 #include "librsync.h"
 #include "woodcutter/woodcutter.h"
 #include "streams/NullStream.h"

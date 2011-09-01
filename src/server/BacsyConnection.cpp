@@ -31,7 +31,7 @@
 #include "common/Functional.h"
 #include "server/BacsyConnection.h"
 #include "common/StringUtils.h"
-#include "streams/StreamUtilities.h"
+#include "streams/StreamUtils.h"
 #include "info.h"
 #include "common/JsonHelper.h"
 

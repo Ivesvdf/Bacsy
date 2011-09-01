@@ -19,7 +19,7 @@
 #define NULLSTREAM_H
 
 #include <iostream>
-#include "streams/StreamUtilities.h"
+#include "streams/StreamUtils.h"
 #include "librsync.h"
 
 namespace bacsy

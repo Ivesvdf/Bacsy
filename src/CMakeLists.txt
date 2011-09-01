@@ -30,7 +30,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  server/StoreManager
                  server/Store
                  common/JsonHelper
-                 streams/StreamUtilities
+                 streams/StreamUtils
                  common/ConcurrentMap
                  streams/ToSignatureStream
                  streams/SimpleBufferStream
