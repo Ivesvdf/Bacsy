@@ -27,7 +27,10 @@
 namespace bacsy
 {
 
-CascadingFileConfiguration::CascadingFileConfiguration():
+CascadingFileConfiguration::CascadingFileConfiguration(const std::string& filename):
+	inputStream(filename),
+	configIsLoaded(inputStream),
+	config(inputStream),
 	globalSectionName("global")
 {
 
@@ -38,6 +41,21 @@ bool CascadingFileConfiguration::toBool(const std::string& input)
 	const std::string lowered = Poco::toLower(input);
 
 	return (lowered == "true" || lowered == "1");
+}
+
+const ConfigurationFile& CascadingFileConfiguration::getConfig() const
+{
+	return storeConfig;
+}
+
+ConfigurationFile& CascadingFileConfiguration::getConfig()
+{
+	return storeConfig;
+}
+
+bool ConfigurationFile::isLoaded() const
+{
+	return iconfigIsLoaded;
 }
 
 }

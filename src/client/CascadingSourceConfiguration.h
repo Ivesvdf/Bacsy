@@ -47,12 +47,6 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 		bool getEnabled(const std::string& source) const;
 		bool getDryPrintRun(const std::string& source) const;
 		std::string getHostIdentification(const std::string& source) const;
-		bool isLoaded() const;
-
-		const ConfigurationFile& getConfig() const;
-		ConfigurationFile& getConfig();
-
-		ConfigurationFile& getSourceConfig();
 	private:
 		template<typename T>
 		T getCascadingSourceValue( 
@@ -61,18 +55,11 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 				const T& defaultValue = T()) const
 		{
 			return getCascadingValue(
-					sourceConfig,
+					config,
 					section,
 					keyname,
 					defaultValue);
 		}
-
-		std::ifstream inputSourceStream;	
-
-		const bool isSourceFileLoaded;
-
-		ConfigurationFile sourceConfig;
-		const std::string globalSectionName;
 };
 
 }

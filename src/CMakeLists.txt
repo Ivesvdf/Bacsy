@@ -49,7 +49,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  streams/StreamUtils
                  streams/ToSignatureStream
 )
-)
+
 foreach(source_file ${BACSY_COMMON_SOURCE_FILES})
 	list(APPEND BACSY_COMMON_HEADER_FILES "${source_file}.h")
 endforeach()

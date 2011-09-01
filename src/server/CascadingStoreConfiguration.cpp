@@ -28,10 +28,7 @@ namespace bacsy
 {
 
 CascadingStoreConfiguration::CascadingStoreConfiguration(const std::string& directory):
-	inputStoreStream((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str()),
-	isStoresFileLoaded(inputStoreStream),
-	storeConfig(inputStoreStream),
-	globalSectionName("global")
+	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str())
 {
 
 }
@@ -66,19 +63,5 @@ unsigned int CascadingStoreConfiguration::getMinPriorityForStoring(const std::st
 			10);
 }
 
-bool CascadingStoreConfiguration::isLoaded() const
-{
-	return isStoresFileLoaded;
-}
-
-ConfigurationFile& CascadingStoreConfiguration::getConfig()
-{
-	return storeConfig;
-}
-
-const ConfigurationFile& CascadingStoreConfiguration::getConfig() const
-{
-	return storeConfig;
-}
 
 }

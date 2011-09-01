@@ -28,10 +28,7 @@ namespace bacsy
 {
 
 CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& directory):
-	inputSourceStream((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str()),
-	isSourceFileLoaded(inputSourceStream),
-	sourceConfig(inputSourceStream),
-	globalSectionName("global")
+	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str())
 {
 
 }
@@ -140,21 +137,6 @@ std::string CascadingSourceConfiguration::getHostIdentification(const std::strin
 			source,
 			"HostIdentification",
 			Poco::Environment::nodeName());
-}
-
-bool CascadingSourceConfiguration::isLoaded() const
-{
-	return isSourceFileLoaded;
-}
-
-ConfigurationFile& CascadingSourceConfiguration::getConfig()
-{
-	return sourceConfig;
-}
-
-const ConfigurationFile& CascadingSourceConfiguration::getConfig() const
-{
-	return sourceConfig;
 }
 
 }

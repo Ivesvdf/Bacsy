@@ -41,9 +41,6 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 
 		std::string getLocation(const std::string& store) const;
 		bool getAlwaysPresent(const std::string& store) const;
-
-		ConfigurationFile& getConfig();
-		const ConfigurationFile& getConfig() const;
 	private:
 		template<typename T>
 		T getCascadingStoreValue( 
@@ -52,19 +49,11 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 				const T& defaultValue = T()) const
 		{
 			return getCascadingValue(
-					storeConfig,
+					config,
 					section,
 					keyname,
 					defaultValue);
 		}
-
-		std::ifstream inputStoreStream;	
-
-		const bool isStoresFileLoaded;
-
-		ConfigurationFile storeConfig;
-		const std::string globalSectionName;
-
 };
 
 }

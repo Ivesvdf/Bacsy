@@ -32,7 +32,10 @@ namespace bacsy
 class CascadingFileConfiguration
 {
 	public:
-		CascadingFileConfiguration();
+		CascadingFileConfiguration(const std::string& filename);
+
+		ConfigurationFile& getConfig();
+		const ConfigurationFile& getConfig() const;	
 
 	protected:
 		template<typename T>
@@ -59,8 +62,10 @@ class CascadingFileConfiguration
 
 		static bool toBool(const std::string& input);
 
+		std::ifstream inputStream;	
+		const bool configIsLoaded;
+		ConfigurationFile config;
 		const std::string globalSectionName;
-
 };
 
 }
