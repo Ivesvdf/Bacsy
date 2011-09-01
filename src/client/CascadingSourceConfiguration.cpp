@@ -28,14 +28,14 @@ namespace bacsy
 {
 
 CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& directory):
-	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/sources.config")).c_str())
+	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/sources.config")))
 {
 
 }
 
 std::list<std::string> CascadingSourceConfiguration::getSources() const
 {
-	std::list<std::string> sourceNames = sourceConfig.sections();
+	std::list<std::string> sourceNames = getConfig().sections();
 	sourceNames.remove_if(std::bind2nd(std::equal_to<std::string>(), globalSectionName));
 	return sourceNames;
 }

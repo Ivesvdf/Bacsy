@@ -37,8 +37,6 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 
 		std::list<std::string> getStores() const;
 		unsigned int getMinPriorityForStoring(const std::string& input) const;
-		bool isLoaded() const;
-
 		std::string getLocation(const std::string& store) const;
 		bool getAlwaysPresent(const std::string& store) const;
 	private:

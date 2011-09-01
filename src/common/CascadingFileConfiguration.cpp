@@ -28,7 +28,7 @@ namespace bacsy
 {
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& filename):
-	inputStream(filename),
+	inputStream(filename.c_str()),
 	configIsLoaded(inputStream),
 	config(inputStream),
 	globalSectionName("global")
@@ -45,17 +45,17 @@ bool CascadingFileConfiguration::toBool(const std::string& input)
 
 const ConfigurationFile& CascadingFileConfiguration::getConfig() const
 {
-	return storeConfig;
+	return config;
 }
 
 ConfigurationFile& CascadingFileConfiguration::getConfig()
 {
-	return storeConfig;
+	return config;
 }
 
-bool ConfigurationFile::isLoaded() const
+bool CascadingFileConfiguration::isLoaded() const
 {
-	return iconfigIsLoaded;
+	return configIsLoaded;
 }
 
 }

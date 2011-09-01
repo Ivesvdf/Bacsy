@@ -28,14 +28,14 @@ namespace bacsy
 {
 
 CascadingStoreConfiguration::CascadingStoreConfiguration(const std::string& directory):
-	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/stores.config")).c_str())
+	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/stores.config")))
 {
 
 }
 
 std::list<std::string> CascadingStoreConfiguration::getStores() const
 {
-	std::list<std::string> storeNames = storeConfig.sections();
+	std::list<std::string> storeNames = getConfig().sections();
 	storeNames.remove_if(std::bind2nd(std::equal_to<std::string>(), globalSectionName));
 	return storeNames;
 }

@@ -36,6 +36,7 @@ class CascadingFileConfiguration
 
 		ConfigurationFile& getConfig();
 		const ConfigurationFile& getConfig() const;	
+		bool isLoaded() const;
 
 	protected:
 		template<typename T>
