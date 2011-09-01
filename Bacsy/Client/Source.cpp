@@ -33,7 +33,7 @@
 #include "json/json.h"
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Client/TimerStringParser.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Common/JsonHelper.h"
 

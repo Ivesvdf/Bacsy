@@ -16,7 +16,7 @@
  */
 
 #include "Bacsy/Server/BacsyServer.h"
-#include "info.h"
+#include "Bacsy/Common/Info.h"
 #include "Bacsy/Server/ConnectionFactory.h"
 
 namespace bacsy
