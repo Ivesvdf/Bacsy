@@ -74,5 +74,8 @@ install(TARGETS bacsy
         ARCHIVE DESTINATION lib/static
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
-install(FILES ${BACSY_COMMON_HEADER_FILES}
-        DESTINATION include/bacsy)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
+install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/Common/info.h
+        DESTINATION include/Bacsy/Common)
