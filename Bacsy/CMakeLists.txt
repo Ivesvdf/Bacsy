@@ -50,10 +50,6 @@ set(BACSY_COMMON_SOURCE_FILES
                  Streams/ToSignatureStream
 )
 
-foreach(source_file ${BACSY_COMMON_SOURCE_FILES})
-	list(APPEND BACSY_COMMON_HEADER_FILES "${source_file}.h")
-endforeach()
-
 add_library(bacsy ${BACSY_BUILD_TYPE} ${BACSY_COMMON_SOURCE_FILES})
 
 # add_executable(bacsyd bacsyd/Main.cpp)
