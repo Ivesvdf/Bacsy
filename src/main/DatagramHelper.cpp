@@ -17,9 +17,3 @@
 
 #include "DatagramHelper.h"
 
-#include "JsonHelper.h"
-
-std::string DatagramHelper::toMessage(Json::Value& root)
-{
-	return bacsyProtocolString + "\n" + JsonHelper::write(root);
-}

@@ -23,9 +23,8 @@
 #include "Poco/Path.h"
 #include "Poco/Mutex.h"
 #include "Poco/File.h"
+#include "JsonStoreIndex.h"
 #include "CascadingFileConfiguration.h"
-
-class JsonStoreIndex;
 
 class Store
 {
