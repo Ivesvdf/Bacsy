@@ -22,7 +22,7 @@
 #include <fstream>
 #include <limits>
 #include <string>
-#include "woodcutter/woodcutter.h"
+
 #include "Bacsy/Common/ConfigurationFile.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 #include "Bacsy/Common/CascadingFileConfiguration.h"

@@ -17,6 +17,7 @@
 
 #include <tclap/CmdLine.h>
 #include "Poco/Thread.h"
+#include "woodcutter/woodcutter.h"
 #include "Bacsy/Server/BacsyServer.h"
 #include "Bacsy/Server/MulticastResponder.h"
 #include "Bacsy/Server/CascadingStoreConfiguration.h"
