@@ -74,4 +74,4 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         DESTINATION include/bacsy
         FILES_MATCHING PATTERN "*.h")
 install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/Common/Info.h
-        DESTINATION include/Bacsy/Common)
+        DESTINATION include/bacsy/Bacsy/Common)
