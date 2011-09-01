@@ -69,3 +69,26 @@ add_subdirectory(Test)
 
 install(FILES lib/woodcutter/woodcutter.h
         DESTINATION include/bacsy/woodcutter)
+
+find_package(Sphinx QUIET)
+if(NOT SPHINX_FOUND)
+  message(WARNING "Unable to find Sphinx documentation generator")
+  set(GENERATE_DOC FALSE)
+endif(NOT SPHINX_FOUND)
+
+if(SPHINX_FOUND)
+	add_custom_target(docs 
+	  ${SPHINX_EXECUTABLE}
+		-b man
+		"${CMAKE_CURRENT_SOURCE_DIR}/docs/source"
+		"${CMAKE_CURRENT_BINARY_DIR}/man"
+	  COMMENT "Building man pages")
+endif()
+
+if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/man/bacsy.1)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/man/bacsy.1"
+	  DESTINATION "share/man/man1")
+else()
+	message(WARNING "Man-pages were not built and will not be included. They "
+	" can be built by executing 'make docs'")
+endif()
