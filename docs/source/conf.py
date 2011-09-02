@@ -212,5 +212,9 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'bacsy', u'Bacsy Documentation',
-     [u'Ives van der Flaas'], 1)
+     [u'Ives van der Flaas'], 1),
+	('sources-config', 'bacsy-sources.config', 'Bacsy Sources configuration'
+		+ 'file', [u'Ives van der Flaas'], 5),
+	('stores-config', 'bacsy-stores.config', 'Bacsy Stores configuration'
+		+ 'file', [u'Ives van der Flaas'], 5)
 ]

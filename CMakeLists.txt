@@ -88,6 +88,10 @@ endif()
 if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/man/bacsy.1)
 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/man/bacsy.1"
 	  DESTINATION "share/man/man1")
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/man/bacsy-sources.config.5"
+	  DESTINATION "share/man/man5")
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/man/bacsy-stores.config.5"
+	  DESTINATION "share/man/man5")
 else()
 	message(WARNING "Man-pages were not built and will not be included. They "
 	" can be built by executing 'make docs'")
