@@ -32,6 +32,15 @@
 namespace Bacsy
 {
 
+class NoSuchSourceException: public runtime_error
+{
+public:
+	NoSuchSourceException(string sourceName): runtime_error(string("No source by the name of " + sourceName + " exists. ")) {}
+	virtual ~NoSuchSourceException() throw() {}
+
+};
+
+
 class CascadingSourceConfiguration : public CascadingFileConfiguration
 {
 	public:

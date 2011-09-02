@@ -83,6 +83,11 @@ void ConfigurationFile::registerSection(const std::string& section)
 	sectionMap[section] = Section();
 }
 
+bool ConfigurationFile::hasSection(const std::string& section) const
+{
+	return sectionMap.count(section) != 0;
+}
+
 void ConfigurationFile::Section::put(const string& inputKey, const string& val)
 {
 	string key = inputKey;

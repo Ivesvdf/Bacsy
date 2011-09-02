@@ -43,7 +43,14 @@ std::list<std::string> CascadingSourceConfiguration::getSources() const
 
 const ISourceConfiguration& CascadingSourceConfiguration::getSource(const std::string& name) const
 {
-	return Section(name, *this);
+	if (config.hasSection(name))
+	{
+		return Section(name, *this);
+	}
+	else
+	{
+		throw NoSuchSourceException(name);
+	}
 }
 
 CascadingSourceConfiguration::Section::Section(const std::string& name,

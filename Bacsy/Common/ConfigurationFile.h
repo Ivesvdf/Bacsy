@@ -126,6 +126,7 @@ public:
 	void put(const string& section, const string& key, const string& val);
 
 	void registerSection(const string& section);
+	bool hasSection(const string& section) const;
 };
 
 template<typename T>
