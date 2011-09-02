@@ -70,19 +70,6 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			std::string name;
 			const CascadingSourceConfiguration& sourceFile;
 		};
-
-		template<typename T>
-		T getCascadingSourceValue( 
-				const std::string& section,
-				const std::string& keyname, 
-				const T& defaultValue = T()) const
-		{
-			return getCascadingValue(
-					config,
-					section,
-					keyname,
-					defaultValue);
-		}
 };
 
 }

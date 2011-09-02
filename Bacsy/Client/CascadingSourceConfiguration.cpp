@@ -68,7 +68,7 @@ std::string CascadingSourceConfiguration::Section::getName() const
 
 std::vector<std::string> CascadingSourceConfiguration::Section::getIncludes() const
 {
-	return StringUtils::split(sourceFile.getCascadingSourceValue<std::string>(
+	return StringUtils::split(sourceFile.getCascadingValue<std::string>(
 				name,
 				"Include"), 
 			'\n'); 
@@ -77,7 +77,7 @@ std::vector<std::string> CascadingSourceConfiguration::Section::getIncludes() co
 std::list<ExclusionRule> CascadingSourceConfiguration::Section::getExcludes() const
 {
 	std::list<ExclusionRule> rv;
-	const std::vector<std::string> stringExcludes = StringUtils::split(sourceFile.getCascadingSourceValue<std::string>(
+	const std::vector<std::string> stringExcludes = StringUtils::split(sourceFile.getCascadingValue<std::string>(
 				name,
 				"Exclude"), 
 			'\n'); 
@@ -94,7 +94,7 @@ std::list<ExclusionRule> CascadingSourceConfiguration::Section::getExcludes() co
 
 unsigned int CascadingSourceConfiguration::Section::getPriority() const
 {
-	return sourceFile.getCascadingSourceValue<unsigned int>(
+	return sourceFile.getCascadingValue<unsigned int>(
 			name,
 			"Priority",
 			5);
@@ -102,7 +102,7 @@ unsigned int CascadingSourceConfiguration::Section::getPriority() const
 
 unsigned int CascadingSourceConfiguration::Section::getMinBackups() const
 {
-	return sourceFile.getCascadingSourceValue<unsigned int>(
+	return sourceFile.getCascadingValue<unsigned int>(
 			name,
 			"MinBackups",
 			1);
@@ -110,7 +110,7 @@ unsigned int CascadingSourceConfiguration::Section::getMinBackups() const
 
 unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 {
-	return sourceFile.getCascadingSourceValue<unsigned int>(
+	return sourceFile.getCascadingValue<unsigned int>(
 			name,
 			"MaxBackups",
 			std::numeric_limits<unsigned int>::max());
@@ -118,7 +118,7 @@ unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 
 bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 {
-	return sourceFile.toBool(sourceFile.getCascadingSourceValue<std::string>(
+	return sourceFile.toBool(sourceFile.getCascadingValue<std::string>(
 			name,
 			"DryPrintRun",
 			"False"));
@@ -126,7 +126,7 @@ bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 
 bool CascadingSourceConfiguration::Section::getEnabled() const
 {
-	return toBool(sourceFile.getCascadingSourceValue<std::string>(
+	return toBool(sourceFile.getCascadingValue<std::string>(
 			name,
 			"Enabled",
 			"True"));
@@ -142,7 +142,7 @@ ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getP
 
 ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDistribution() const
 {
-	std::string distribution = sourceFile.getCascadingSourceValue<std::string>(
+	std::string distribution = sourceFile.getCascadingValue<std::string>(
 			name,
 			"Distribution",
 			"focus");
@@ -163,7 +163,7 @@ ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDis
 
 ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTable() const
 {
-	std::string timerString = sourceFile.getCascadingSourceValue<std::string>(
+	std::string timerString = sourceFile.getCascadingValue<std::string>(
 			name,
 			"ExecuteAt",
 			"at start");
@@ -174,7 +174,7 @@ ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTa
 
 std::string CascadingSourceConfiguration::Section::getHostIdentification() const
 {
-	return sourceFile.getCascadingSourceValue<std::string>(
+	return sourceFile.getCascadingValue<std::string>(
 			name,
 			"HostIdentification",
 			Poco::Environment::nodeName());

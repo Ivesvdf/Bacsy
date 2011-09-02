@@ -67,14 +67,14 @@ std::string CascadingStoreConfiguration::Section::getName() const
 
 std::string CascadingStoreConfiguration::Section::getLocation() const
 {
-	return storeConfig.getCascadingStoreValue<std::string>(
+	return storeConfig.getCascadingValue<std::string>(
 			name,
 			"Location");
 }
 
 bool CascadingStoreConfiguration::Section::getAlwaysPresent() const
 {
-	return toBool(storeConfig.getCascadingStoreValue<std::string>(
+	return toBool(storeConfig.getCascadingValue<std::string>(
 			name,
 			"AlwaysPresent",
 			"True"));
@@ -82,7 +82,7 @@ bool CascadingStoreConfiguration::Section::getAlwaysPresent() const
 
 unsigned int CascadingStoreConfiguration::Section::getMinPriorityForStoring() const
 {
-	return storeConfig.getCascadingStoreValue<unsigned int>(
+	return storeConfig.getCascadingValue<unsigned int>(
 			name,
 			"MinPriorityForStoring",
 			10);

@@ -62,19 +62,6 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 			std::string name;
 			const CascadingStoreConfiguration& storeConfig;
 		};
-
-		template<typename T>
-		T getCascadingStoreValue( 
-				const std::string& section,
-				const std::string& keyname, 
-				const T& defaultValue = T()) const
-		{
-			return getCascadingValue(
-					config,
-					section,
-					keyname,
-					defaultValue);
-		}
 };
 
 }
