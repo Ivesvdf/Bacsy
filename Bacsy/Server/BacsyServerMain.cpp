@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 		TCLAP::MultiArg<std::string> defArg(
 				"D",
 				"definition",
-				"Add a definition to the sources configuration. Format: [section]key=value",
+				"Add a definition to the stores configuration. Format: [section]key=value",
 				false,
 				"string");
 
