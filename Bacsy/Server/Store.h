@@ -24,7 +24,7 @@
 #include "Poco/Mutex.h"
 #include "Poco/File.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
-#include "Bacsy/Server/CascadingStoreConfiguration.h"
+#include "Bacsy/Server/IStoreConfiguration.h"
 
 namespace Bacsy
 {
@@ -32,7 +32,7 @@ namespace Bacsy
 class Store
 {
 public:
-	Store(const std::string storeName, const CascadingStoreConfiguration& configuration);
+	Store(const IStoreConfiguration& configuration);
 	~Store();
 
 	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
@@ -60,7 +60,6 @@ private:
 			const std::string& runID);
 
 	const std::string storeName;
-	const CascadingStoreConfiguration& configuration;
 
 	const std::string location;
 	const bool alwaysPresent;

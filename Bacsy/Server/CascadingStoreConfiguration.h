@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +27,18 @@
 #include "Bacsy/Common/ConfigurationFile.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 #include "Bacsy/Common/CascadingFileConfiguration.h"
+#include "Bacsy/Server/IStoreConfiguration.h"
 
 namespace Bacsy
 {
+
+class NoSuchStoreException: public runtime_error
+{
+public:
+	NoSuchStoreException(string storeName): runtime_error(string("No store by the name of " + storeName + " exists. ")) {}
+	virtual ~NoSuchStoreException() throw() {}
+
+};
 
 class CascadingStoreConfiguration : public CascadingFileConfiguration
 {
@@ -36,10 +46,23 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 		CascadingStoreConfiguration(const std::string& directory);
 
 		std::list<std::string> getStores() const;
-		unsigned int getMinPriorityForStoring(const std::string& input) const;
-		std::string getLocation(const std::string& store) const;
-		bool getAlwaysPresent(const std::string& store) const;
+		const IStoreConfiguration& getStore(const std::string& name) const;
 	private:
+		class Section : public IStoreConfiguration
+		{
+		public:
+			Section(const std::string& name,
+			        const CascadingStoreConfiguration& config);
+
+			std::string getName() const;
+			unsigned int getMinPriorityForStoring() const;
+			std::string getLocation() const;
+			bool getAlwaysPresent() const;
+		private:
+			std::string name;
+			const CascadingStoreConfiguration& storeConfig;
+		};
+
 		template<typename T>
 		T getCascadingStoreValue( 
 				const std::string& section,
