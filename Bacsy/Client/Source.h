@@ -61,7 +61,6 @@ public:
 private:
 	const std::string name;
 	const std::vector<std::string> includes;
-	const std::vector<std::string> excludes;
 	const unsigned int priority;
 	const unsigned int minBackups;
 	const unsigned int maxBackups;
