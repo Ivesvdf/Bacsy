@@ -61,7 +61,7 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			unsigned int getMinBackups() const;
 			unsigned int getMaxBackups() const;
 			PreferredOrder getPreferredOrder() const;
-			std::string getDistribution() const;
+			Distribution getDistribution() const;
 			std::string getTimerString() const;
 			bool getEnabled() const;
 			bool getDryPrintRun() const;

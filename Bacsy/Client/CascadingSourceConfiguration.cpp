@@ -139,12 +139,25 @@ ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getP
 	return preferred_order;
 }
 
-std::string CascadingSourceConfiguration::Section::getDistribution() const
+ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDistribution() const
 {
-	return sourceFile.getCascadingSourceValue<std::string>(
+	std::string distribution = sourceFile.getCascadingSourceValue<std::string>(
 			name,
 			"Distribution",
 			"focus");
+	distribution = StringUtils::strip(distribution, " \t");
+	if (distribution == "spread")
+	{
+		return ISourceConfiguration::DISTRIBUTION_SPREAD;
+	}
+	else if (distribution == "focus")
+	{
+		return ISourceConfiguration::DISTRIBUTION_FOCUS;
+	}
+	else
+	{
+		throw runtime_error("Distribution value is not valid.");
+	}
 }
 
 std::string CascadingSourceConfiguration::Section::getTimerString() const

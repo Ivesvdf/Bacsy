@@ -53,7 +53,7 @@ private:
 	const unsigned int minBackups;
 	const unsigned int maxBackups;
 	const ISourceConfiguration::PreferredOrder preferredOrder;
-	const std::string distribution;
+	const ISourceConfiguration::Distribution distribution;
 	const std::string timerString;
 	const std::string hostIdentification;
 	const bool dryPrintRun;

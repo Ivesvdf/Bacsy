@@ -36,6 +36,12 @@ public:
 
 	typedef std::vector<PreferredOrderValue> PreferredOrder;
 
+	enum Distribution
+	{
+		DISTRIBUTION_FOCUS,
+		DISTRIBUTION_SPREAD,
+	};
+
 	virtual ~ISourceConfiguration() {
 	}
 
@@ -46,7 +52,7 @@ public:
 	virtual unsigned int getMinBackups() const = 0;
 	virtual unsigned int getMaxBackups() const = 0;
 	virtual PreferredOrder getPreferredOrder() const = 0;
-	virtual std::string getDistribution() const = 0;
+	virtual Distribution getDistribution() const = 0;
 	virtual std::string getTimerString() const = 0;
 	virtual bool getEnabled() const = 0;
 	virtual bool getDryPrintRun() const = 0;
