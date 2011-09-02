@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,6 +126,26 @@ std::string Store::toString() const
 		+ "\tMSP=" 
 		+ StringUtils::toString(minPriorityForStoring) 
 		+ ",\t AP=" + StringUtils::toString(alwaysPresent);
+}
+
+std::string Store::getName() const
+{
+	return storeName;
+}
+
+unsigned int Store::getMinPriorityForStoring() const
+{
+	return minPriorityForStoring;
+}
+
+std::string Store::getLocation() const
+{
+	return location;
+}
+
+bool Store::getAlwaysPresent() const
+{
+	return alwaysPresent;
 }
 
 }

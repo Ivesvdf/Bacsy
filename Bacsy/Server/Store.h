@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +30,12 @@
 namespace Bacsy
 {
 
-class Store
+class Store : public IStoreConfiguration
 {
 public:
 	Store(const IStoreConfiguration& configuration);
 	~Store();
 
-	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
 	std::string getAncestorForNewRun(const std::string& ancestor);
 
 	Poco::File getOutputForCompleteFile(
@@ -53,6 +53,11 @@ public:
 	bool readyForStoring() const;
 
 	std::string toString() const;
+
+	std::string getName() const;
+	unsigned int getMinPriorityForStoring() const;
+	std::string getLocation() const;
+	bool getAlwaysPresent() const;
 private:
 	std::string getRunDirectory(
 			const std::string& host,
