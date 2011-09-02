@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +25,17 @@
 #include "Poco/Mutex.h"
 #include "Poco/File.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
-#include "Bacsy/Server/CascadingStoreConfiguration.h"
+#include "Bacsy/Server/IStoreConfiguration.h"
 
 namespace Bacsy
 {
 
-class Store
+class Store : public IStoreConfiguration
 {
 public:
-	Store(const std::string storeName, const CascadingStoreConfiguration& configuration);
+	Store(const IStoreConfiguration& configuration);
 	~Store();
 
-	unsigned int getMinPriorityForStoring() const { return minPriorityForStoring; }
 	std::string getAncestorForNewRun(const std::string& ancestor);
 
 	Poco::File getOutputForCompleteFile(
@@ -53,6 +53,11 @@ public:
 	bool readyForStoring() const;
 
 	std::string toString() const;
+
+	std::string getName() const;
+	unsigned int getMinPriorityForStoring() const;
+	std::string getLocation() const;
+	bool getAlwaysPresent() const;
 private:
 	std::string getRunDirectory(
 			const std::string& host,
@@ -60,7 +65,6 @@ private:
 			const std::string& runID);
 
 	const std::string storeName;
-	const CascadingStoreConfiguration& configuration;
 
 	const std::string location;
 	const bool alwaysPresent;

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,25 +41,49 @@ std::list<std::string> CascadingStoreConfiguration::getStores() const
 	return storeNames;
 }
 
-std::string CascadingStoreConfiguration::getLocation(const std::string& store) const
+CascadingStoreConfiguration::Section::Section(const std::string& name,
+                                     const CascadingStoreConfiguration& config):
+ name(name),
+ storeConfig(config)
 {
-	return getCascadingStoreValue<std::string>(
-			store,
+}
+
+const IStoreConfiguration& CascadingStoreConfiguration::getStore(const std::string& name) const
+{
+	if (config.hasSection(name))
+	{
+		return Section(name, *this);
+	}
+	else
+	{
+		throw NoSuchStoreException(name);
+	}
+}
+
+std::string CascadingStoreConfiguration::Section::getName() const
+{
+	return name;
+}
+
+std::string CascadingStoreConfiguration::Section::getLocation() const
+{
+	return storeConfig.getCascadingValue<std::string>(
+			name,
 			"Location");
 }
 
-bool CascadingStoreConfiguration::getAlwaysPresent(const std::string& store) const
+bool CascadingStoreConfiguration::Section::getAlwaysPresent() const
 {
-	return toBool(getCascadingStoreValue<std::string>(
-			store,
+	return toBool(storeConfig.getCascadingValue<std::string>(
+			name,
 			"AlwaysPresent",
 			"True"));
 }
 
-unsigned int CascadingStoreConfiguration::getMinPriorityForStoring(const std::string& store) const
+unsigned int CascadingStoreConfiguration::Section::getMinPriorityForStoring() const
 {
-	return getCascadingStoreValue<unsigned int>(
-			store,
+	return storeConfig.getCascadingValue<unsigned int>(
+			name,
 			"MinPriorityForStoring",
 			10);
 }

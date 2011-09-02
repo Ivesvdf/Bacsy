@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,19 +46,20 @@ bool Source::isPath(std::string s) const
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Source::Source(std::string section, const CascadingSourceConfiguration& config):
-	name(section),
-	includes(config.getIncludes(section)),
-	priority(config.getPriority(section)),
-	minBackups(config.getMinBackups(section)),
-	maxBackups(config.getMaxBackups(section)),
-	preferredOrder(config.getPreferredOrder(section)),
-	distribution(config.getDistribution(section)),
-	hostIdentification(config.getHostIdentification(section)),
-	dryPrintRun(config.getDryPrintRun(section)),
-	enabled(config.getEnabled(section)),
-	exclusionRules(config.getExcludes(section)),
-	timers(createTimers(config.getTimerString(section)))
+Source::Source(const ISourceConfiguration& config):
+	name(config.getName()),
+	includes(config.getIncludes()),
+	priority(config.getPriority()),
+	minBackups(config.getMinBackups()),
+	maxBackups(config.getMaxBackups()),
+	preferredOrder(config.getPreferredOrder()),
+	distribution(config.getDistribution()),
+	timeTable(config.getTimeTable()),
+	hostIdentification(config.getHostIdentification()),
+	dryPrintRun(config.getDryPrintRun()),
+	enabled(config.getEnabled()),
+	exclusionRules(config.getExcludes()),
+	timers()
 {
 }
 
@@ -76,13 +78,11 @@ void Source::startTimers()
 	}
 }
 
-std::list<Poco::Timer*> Source::createTimers(const std::string& timerString)
+std::list<Poco::Timer*> Source::createTimers()
 {
 	std::list<Poco::Timer*> theTimers;
-	TimerStringParser parser;
-	std::list<TimeSchedule> schedules = parser.parse(Poco::LocalDateTime(), timerString);
-	for(std::list<TimeSchedule>::const_iterator it = schedules.begin();
-			it != schedules.end();
+	for(ISourceConfiguration::TimeTable::const_iterator it = timeTable.begin();
+			it != timeTable.end();
 			it++)
 	{
 		// Execute all timers that normally fire immediately after 1 second
@@ -158,6 +158,66 @@ void Source::run(Poco::Timer& timer)
 	LOGI("Source " + name + " is finished.");
 }
 
+
+std::string Source::getName() const
+{
+	return name;
+}
+
+std::vector<std::string> Source::getIncludes() const
+{
+	return includes;
+}
+
+std::list<ExclusionRule>  Source::getExcludes() const
+{
+	return exclusionRules;
+}
+
+unsigned int Source::getPriority() const
+{
+	return priority;
+}
+
+unsigned int Source::getMinBackups() const
+{
+	return minBackups;
+}
+
+unsigned int Source::getMaxBackups() const
+{
+	return maxBackups;
+}
+
+ISourceConfiguration::PreferredOrder Source::getPreferredOrder() const
+{
+	return preferredOrder;
+}
+
+ISourceConfiguration::Distribution Source::getDistribution() const
+{
+	return distribution;
+}
+
+ISourceConfiguration::TimeTable Source::getTimeTable() const
+{
+	return timeTable;
+}
+
+bool Source::getEnabled() const
+{
+	return enabled;
+}
+
+bool Source::getDryPrintRun() const
+{
+	return dryPrintRun;
+}
+
+std::string Source::getHostIdentification() const
+{
+	return hostIdentification;
+}
 
 class DoNothingFileSender
 {

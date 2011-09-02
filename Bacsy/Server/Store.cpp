@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,17 +23,17 @@
 #include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
 #include "Bacsy/Common/Functional.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Server/Store.h"
 
 namespace Bacsy
 {
 
-Store::Store(const std::string storeName, const CascadingStoreConfiguration& configuration):
-	storeName(storeName),
-	configuration(configuration),
-	location(StringUtils::rstrip(configuration.getLocation(storeName), "/\\") + "/"),
-	alwaysPresent(configuration.getAlwaysPresent(storeName)),
-	minPriorityForStoring(configuration.getMinPriorityForStoring(storeName)),
+Store::Store(const IStoreConfiguration& configuration):
+	storeName(configuration.getName()),
+	location(StringUtils::rstrip(configuration.getLocation(), "/\\") + "/"),
+	alwaysPresent(configuration.getAlwaysPresent()),
+	minPriorityForStoring(configuration.getMinPriorityForStoring()),
 	baseLocation(location)
 
 {
@@ -125,6 +126,26 @@ std::string Store::toString() const
 		+ "\tMSP=" 
 		+ StringUtils::toString(minPriorityForStoring) 
 		+ ",\t AP=" + StringUtils::toString(alwaysPresent);
+}
+
+std::string Store::getName() const
+{
+	return storeName;
+}
+
+unsigned int Store::getMinPriorityForStoring() const
+{
+	return minPriorityForStoring;
+}
+
+std::string Store::getLocation() const
+{
+	return location;
+}
+
+bool Store::getAlwaysPresent() const
+{
+	return alwaysPresent;
 }
 
 }

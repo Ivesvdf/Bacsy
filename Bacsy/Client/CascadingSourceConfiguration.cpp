@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@
 #include <Poco/String.h>
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
+#include "Bacsy/Client/TimerStringParser.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
 namespace Bacsy
@@ -40,19 +42,43 @@ std::list<std::string> CascadingSourceConfiguration::getSources() const
 	return sourceNames;
 }
 
-std::vector<std::string> CascadingSourceConfiguration::getIncludes(const std::string& source) const 
+const ISourceConfiguration& CascadingSourceConfiguration::getSource(const std::string& name) const
 {
-	return StringUtils::split(getCascadingSourceValue<std::string>(
-				source,
+	if (config.hasSection(name))
+	{
+		return Section(name, *this);
+	}
+	else
+	{
+		throw NoSuchSourceException(name);
+	}
+}
+
+CascadingSourceConfiguration::Section::Section(const std::string& name,
+                                      const CascadingSourceConfiguration& config):
+	name(name),
+	sourceFile(config)
+{
+}
+
+std::string CascadingSourceConfiguration::Section::getName() const
+{
+	return name;
+}
+
+std::vector<std::string> CascadingSourceConfiguration::Section::getIncludes() const
+{
+	return StringUtils::split(sourceFile.getCascadingValue<std::string>(
+				name,
 				"Include"), 
 			'\n'); 
 }
 
-std::list<ExclusionRule> CascadingSourceConfiguration::getExcludes(const std::string& source) const 
+std::list<ExclusionRule> CascadingSourceConfiguration::Section::getExcludes() const
 {
 	std::list<ExclusionRule> rv;
-	const std::vector<std::string> stringExcludes = StringUtils::split(getCascadingSourceValue<std::string>(
-				source,
+	const std::vector<std::string> stringExcludes = StringUtils::split(sourceFile.getCascadingValue<std::string>(
+				name,
 				"Exclude"), 
 			'\n'); 
 
@@ -66,75 +92,90 @@ std::list<ExclusionRule> CascadingSourceConfiguration::getExcludes(const std::st
 	return rv;
 }
 
-unsigned int CascadingSourceConfiguration::getPriority(const std::string& source) const 
+unsigned int CascadingSourceConfiguration::Section::getPriority() const
 {
-	return getCascadingSourceValue<unsigned int>(
-			source,
+	return sourceFile.getCascadingValue<unsigned int>(
+			name,
 			"Priority",
 			5);
 }
 
-unsigned int CascadingSourceConfiguration::getMinBackups(const std::string& source) const
+unsigned int CascadingSourceConfiguration::Section::getMinBackups() const
 {
-	return getCascadingSourceValue<unsigned int>(
-			source,
+	return sourceFile.getCascadingValue<unsigned int>(
+			name,
 			"MinBackups",
 			1);
 }
 
-unsigned int CascadingSourceConfiguration::getMaxBackups(const std::string& source) const
+unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 {
-	return getCascadingSourceValue<unsigned int>(
-			source,
+	return sourceFile.getCascadingValue<unsigned int>(
+			name,
 			"MaxBackups",
 			std::numeric_limits<unsigned int>::max());
 }
 
-bool CascadingSourceConfiguration::getDryPrintRun(const std::string& source) const
+bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 {
-	return toBool(getCascadingSourceValue<std::string>(
-			source,
+	return sourceFile.toBool(sourceFile.getCascadingValue<std::string>(
+			name,
 			"DryPrintRun",
 			"False"));
 }
 
-bool CascadingSourceConfiguration::getEnabled(const std::string& source) const
+bool CascadingSourceConfiguration::Section::getEnabled() const
 {
-	return toBool(getCascadingSourceValue<std::string>(
-			source,
+	return toBool(sourceFile.getCascadingValue<std::string>(
+			name,
 			"Enabled",
 			"True"));
 }
 
-std::string CascadingSourceConfiguration::getPreferredOrder(const std::string& source) const
+ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getPreferredOrder() const
 {
-	return getCascadingSourceValue<std::string>(
-			source,
-			"PreferredOrder",
-			"this, other");
+	ISourceConfiguration::PreferredOrder preferred_order;
+	preferred_order.push_back(ISourceConfiguration::PREFER_OTHER);
+	preferred_order.push_back(ISourceConfiguration::PREFER_THIS);
+	return preferred_order;
 }
 
-std::string CascadingSourceConfiguration::getDistribution(const std::string& source) const
+ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDistribution() const
 {
-	return getCascadingSourceValue<std::string>(
-			source,
+	std::string distribution = sourceFile.getCascadingValue<std::string>(
+			name,
 			"Distribution",
 			"focus");
+	distribution = StringUtils::strip(distribution, " \t");
+	if (distribution == "spread")
+	{
+		return ISourceConfiguration::DISTRIBUTION_SPREAD;
+	}
+	else if (distribution == "focus")
+	{
+		return ISourceConfiguration::DISTRIBUTION_FOCUS;
+	}
+	else
+	{
+		throw runtime_error("Distribution value is not valid.");
+	}
 }
 
-std::string CascadingSourceConfiguration::getTimerString(const std::string& source) const
+ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTable() const
 {
-	return getCascadingSourceValue<std::string>(
-			source,
+	std::string timerString = sourceFile.getCascadingValue<std::string>(
+			name,
 			"ExecuteAt",
 			"at start");
+	TimerStringParser parser;
+	return parser.parse(Poco::LocalDateTime(), timerString);
 }
 
 
-std::string CascadingSourceConfiguration::getHostIdentification(const std::string& source) const
+std::string CascadingSourceConfiguration::Section::getHostIdentification() const
 {
-	return getCascadingSourceValue<std::string>(
-			source,
+	return sourceFile.getCascadingValue<std::string>(
+			name,
 			"HostIdentification",
 			Poco::Environment::nodeName());
 }

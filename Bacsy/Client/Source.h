@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,32 +28,45 @@
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
 #include "woodcutter/woodcutter.h"
-#include "Bacsy/Client/CascadingSourceConfiguration.h"
+#include "Bacsy/Client/ISourceConfiguration.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Poco/DirectoryIterator.h"
 
 namespace Bacsy
 {
 
-class Source
+class Source : public ISourceConfiguration
 {
 public:
-	Source(std::string sectionName, const CascadingSourceConfiguration& config);
+	Source(const ISourceConfiguration& config);
 	~Source();
 
 	void start();
 
 	void run(Poco::Timer& timer);
 
+	std::string getName() const;
+	std::vector<std::string> getIncludes() const;
+	std::list<ExclusionRule>  getExcludes() const;
+	unsigned int getPriority() const;
+	unsigned int getMinBackups() const;
+	unsigned int getMaxBackups() const;
+	PreferredOrder getPreferredOrder() const;
+	Distribution getDistribution() const;
+	TimeTable getTimeTable() const;
+	bool getEnabled() const;
+	bool getDryPrintRun() const;
+	std::string getHostIdentification() const;
+
 private:
 	const std::string name;
 	const std::vector<std::string> includes;
-	const std::vector<std::string> excludes;
 	const unsigned int priority;
 	const unsigned int minBackups;
 	const unsigned int maxBackups;
-	const std::string preferredOrder;
-	const std::string distribution;
-	const std::string timerString;
+	const ISourceConfiguration::PreferredOrder preferredOrder;
+	const ISourceConfiguration::Distribution distribution;
+	const ISourceConfiguration::TimeTable timeTable;
 	const std::string hostIdentification;
 	const bool dryPrintRun;
 	const bool enabled;
@@ -64,7 +78,7 @@ private:
 
 	bool isPath(std::string s) const;
 
-	std::list<Poco::Timer*> createTimers(const std::string& timerString);
+	std::list<Poco::Timer*> createTimers();
 	void startTimers();
 
 	std::vector<Poco::Net::SocketAddress> findOutWhoToContact();

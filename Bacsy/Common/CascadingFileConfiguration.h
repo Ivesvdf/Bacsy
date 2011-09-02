@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,8 +41,7 @@ class CascadingFileConfiguration
 
 	protected:
 		template<typename T>
-		T getCascadingValue( 
-				const ConfigurationFile& config,
+		T getCascadingValue(
 				const std::string& section,
 				const std::string& keyname, 
 				const T& defaultValue = T()) const
