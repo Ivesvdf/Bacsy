@@ -28,7 +28,8 @@
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
 #include "woodcutter/woodcutter.h"
-#include "Bacsy/Client/CascadingSourceConfiguration.h"
+#include "Bacsy/Client/ISourceConfiguration.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Poco/DirectoryIterator.h"
 
 namespace Bacsy

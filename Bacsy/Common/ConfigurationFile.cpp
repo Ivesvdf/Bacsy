@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +83,7 @@ void ConfigurationFile::registerSection(const std::string& section)
 	sectionMap[section] = Section();
 }
 
-void Section::put(const string& inputKey, const string& val)
+void ConfigurationFile::Section::put(const string& inputKey, const string& val)
 {
 	string key = inputKey;
 	const int len = key.length();
@@ -105,7 +106,7 @@ void Section::put(const string& inputKey, const string& val)
 	}
 }
 
-string Section::get(const string& key) const 
+string ConfigurationFile::Section::get(const string& key) const
 {
 	KeyValMap::const_iterator it = kvMap.find(key);
 
@@ -115,7 +116,7 @@ string Section::get(const string& key) const
 	return it->second;
 }
 
-list<string> Section::keys() const
+list<string> ConfigurationFile::Section::keys() const
 {
 	std::list<std::string> rv;
 

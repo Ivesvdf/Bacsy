@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,18 +57,6 @@ public:
 
 };
 
-class Section
-{
-private:
-	typedef map<string, string> KeyValMap;
-	KeyValMap kvMap;
-
-public:
-	void put(const string& key, const string& val);
-	string get(const string& key) const;
-	list<string> keys() const;
-};
-
 template<typename S>
 class Converter
 {
@@ -96,6 +85,18 @@ public:
 class ConfigurationFile
 {
 private:
+	class Section
+	{
+	private:
+		typedef map<string, string> KeyValMap;
+		KeyValMap kvMap;
+
+	public:
+		void put(const string& key, const string& val);
+		string get(const string& key) const;
+		list<string> keys() const;
+	};
+
 	typedef map<string, Section> SectionMap;	
 	typedef SectionMap::iterator iterator;
 	typedef SectionMap::const_iterator const_iterator;
