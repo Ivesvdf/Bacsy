@@ -60,7 +60,7 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			unsigned int getPriority() const;
 			unsigned int getMinBackups() const;
 			unsigned int getMaxBackups() const;
-			std::string getPreferredOrder() const;
+			PreferredOrder getPreferredOrder() const;
 			std::string getDistribution() const;
 			std::string getTimerString() const;
 			bool getEnabled() const;

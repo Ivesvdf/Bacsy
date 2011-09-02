@@ -131,12 +131,12 @@ bool CascadingSourceConfiguration::Section::getEnabled() const
 			"True"));
 }
 
-std::string CascadingSourceConfiguration::Section::getPreferredOrder() const
+ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getPreferredOrder() const
 {
-	return sourceFile.getCascadingSourceValue<std::string>(
-			name,
-			"PreferredOrder",
-			"this, other");
+	ISourceConfiguration::PreferredOrder preferred_order;
+	preferred_order.push_back(ISourceConfiguration::PREFER_OTHER);
+	preferred_order.push_back(ISourceConfiguration::PREFER_THIS);
+	return preferred_order;
 }
 
 std::string CascadingSourceConfiguration::Section::getDistribution() const

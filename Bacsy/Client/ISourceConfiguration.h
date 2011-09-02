@@ -18,6 +18,8 @@
 #ifndef ISOURCECONFIGURATION_H
 #define ISOURCECONFIGURATION_H
 
+#include <vector>
+
 #include "Bacsy/Rules/ExclusionRule.h"
 
 namespace Bacsy
@@ -26,6 +28,14 @@ namespace Bacsy
 class ISourceConfiguration
 {
 public:
+	enum PreferredOrderValue
+	{
+		PREFER_OTHER,
+		PREFER_THIS,
+	};
+
+	typedef std::vector<PreferredOrderValue> PreferredOrder;
+
 	virtual ~ISourceConfiguration() {
 	}
 
@@ -35,7 +45,7 @@ public:
 	virtual unsigned int getPriority() const = 0;
 	virtual unsigned int getMinBackups() const = 0;
 	virtual unsigned int getMaxBackups() const = 0;
-	virtual std::string getPreferredOrder() const = 0;
+	virtual PreferredOrder getPreferredOrder() const = 0;
 	virtual std::string getDistribution() const = 0;
 	virtual std::string getTimerString() const = 0;
 	virtual bool getEnabled() const = 0;

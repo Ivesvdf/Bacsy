@@ -52,7 +52,7 @@ private:
 	const unsigned int priority;
 	const unsigned int minBackups;
 	const unsigned int maxBackups;
-	const std::string preferredOrder;
+	const ISourceConfiguration::PreferredOrder preferredOrder;
 	const std::string distribution;
 	const std::string timerString;
 	const std::string hostIdentification;
