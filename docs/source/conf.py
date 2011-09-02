@@ -211,10 +211,12 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'bacsy', u'Bacsy Documentation',
-     [u'Ives van der Flaas'], 1),
 	('sources-config', 'bacsy-sources.config', 'Bacsy Sources configuration'
 		+ 'file', [u'Ives van der Flaas'], 5),
 	('stores-config', 'bacsy-stores.config', 'Bacsy Stores configuration'
-		+ 'file', [u'Ives van der Flaas'], 5)
+		+ 'file', [u'Ives van der Flaas'], 5),
+	('bacsy-client', 'bacsy-client', 'Bacsy Client', [u'Ives van der Flaas'],
+		1),
+	('bacsy-server', 'bacsy-server', 'Bacsy Server', [u'Ives van der Flaas'],
+		1)
 ]

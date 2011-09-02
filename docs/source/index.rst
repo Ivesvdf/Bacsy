@@ -29,19 +29,12 @@ Bacsy is made up out of two components:
 
 Client
 ------
-A client has a number of *sources*. Each source specifies what files should be
-backed up, how often they should be backed up, how important they are, etc. 
+.. include:: client-description.rst
 
-When the client has a backup it needs stored, it will ask qualifying
-servers if they can store this backup. If the servers respond they can, the
-backup will be sent to them.
 
 Server
 ------
-A Bacsy server stores backups. Each server has one or more *stores*. A *store*
-is a location where backups can be stored, usually some directory on some
-drive. Backups will often be stored to multiple stores on the same server, for
-redundancy purposes. 
+.. include:: server-description.rst
 
  
 Contents
