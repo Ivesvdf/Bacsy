@@ -56,7 +56,7 @@ const ISourceConfiguration& CascadingSourceConfiguration::getSource(const std::s
 
 CascadingSourceConfiguration::Section::Section(const std::string& name,
                                       const CascadingSourceConfiguration& config):
-    name(name),
+	name(name),
 	sourceFile(config)
 {
 }

@@ -159,6 +159,66 @@ void Source::run(Poco::Timer& timer)
 }
 
 
+std::string Source::getName() const
+{
+	return name;
+}
+
+std::vector<std::string> Source::getIncludes() const
+{
+	return includes;
+}
+
+std::list<ExclusionRule>  Source::getExcludes() const
+{
+	return exclusionRules;
+}
+
+unsigned int Source::getPriority() const
+{
+	return priority;
+}
+
+unsigned int Source::getMinBackups() const
+{
+	return minBackups;
+}
+
+unsigned int Source::getMaxBackups() const
+{
+	return maxBackups;
+}
+
+ISourceConfiguration::PreferredOrder Source::getPreferredOrder() const
+{
+	return preferredOrder;
+}
+
+ISourceConfiguration::Distribution Source::getDistribution() const
+{
+	return distribution;
+}
+
+ISourceConfiguration::TimeTable Source::getTimeTable() const
+{
+	return timeTable;
+}
+
+bool Source::getEnabled() const
+{
+	return enabled;
+}
+
+bool Source::getDryPrintRun() const
+{
+	return dryPrintRun;
+}
+
+std::string Source::getHostIdentification() const
+{
+	return hostIdentification;
+}
+
 class DoNothingFileSender
 {
 public:

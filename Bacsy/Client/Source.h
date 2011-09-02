@@ -35,7 +35,7 @@
 namespace Bacsy
 {
 
-class Source
+class Source : public ISourceConfiguration
 {
 public:
 	Source(const ISourceConfiguration& config);
@@ -44,6 +44,19 @@ public:
 	void start();
 
 	void run(Poco::Timer& timer);
+
+	std::string getName() const;
+	std::vector<std::string> getIncludes() const;
+	std::list<ExclusionRule>  getExcludes() const;
+	unsigned int getPriority() const;
+	unsigned int getMinBackups() const;
+	unsigned int getMaxBackups() const;
+	PreferredOrder getPreferredOrder() const;
+	Distribution getDistribution() const;
+	TimeTable getTimeTable() const;
+	bool getEnabled() const;
+	bool getDryPrintRun() const;
+	std::string getHostIdentification() const;
 
 private:
 	const std::string name;
