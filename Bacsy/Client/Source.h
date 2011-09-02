@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +37,7 @@ namespace Bacsy
 class Source
 {
 public:
-	Source(std::string sectionName, const CascadingSourceConfiguration& config);
+	Source(const ISourceConfiguration& config);
 	~Source();
 
 	void start();

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,19 +46,19 @@ bool Source::isPath(std::string s) const
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Source::Source(std::string section, const CascadingSourceConfiguration& config):
-	name(section),
-	includes(config.getIncludes(section)),
-	priority(config.getPriority(section)),
-	minBackups(config.getMinBackups(section)),
-	maxBackups(config.getMaxBackups(section)),
-	preferredOrder(config.getPreferredOrder(section)),
-	distribution(config.getDistribution(section)),
-	hostIdentification(config.getHostIdentification(section)),
-	dryPrintRun(config.getDryPrintRun(section)),
-	enabled(config.getEnabled(section)),
-	exclusionRules(config.getExcludes(section)),
-	timers(createTimers(config.getTimerString(section)))
+Source::Source(const ISourceConfiguration& config):
+	name(config.getName()),
+	includes(config.getIncludes()),
+	priority(config.getPriority()),
+	minBackups(config.getMinBackups()),
+	maxBackups(config.getMaxBackups()),
+	preferredOrder(config.getPreferredOrder()),
+	distribution(config.getDistribution()),
+	hostIdentification(config.getHostIdentification()),
+	dryPrintRun(config.getDryPrintRun()),
+	enabled(config.getEnabled()),
+	exclusionRules(config.getExcludes()),
+	timers(createTimers(config.getTimerString()))
 {
 }
 

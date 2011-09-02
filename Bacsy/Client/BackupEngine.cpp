@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +31,7 @@ public:
 	SourceNameToSourcer(const CascadingSourceConfiguration& configuration): configuration(configuration) {}
 	Source* operator()(const std::string& sourceName)
 	{
-		return new Source(sourceName, configuration);
+		return new Source(configuration.getSource(sourceName));
 	}
 
 private:

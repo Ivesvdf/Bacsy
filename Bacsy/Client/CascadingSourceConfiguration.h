@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2011  Nathan Samson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,7 @@
 #include <limits>
 #include <string>
 
+#include "Bacsy/Client/ISourceConfiguration.h"
 #include "Bacsy/Common/ConfigurationFile.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 #include "Bacsy/Common/CascadingFileConfiguration.h"
@@ -36,18 +38,30 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 		CascadingSourceConfiguration(const std::string& directory);
 
 		std::list<std::string> getSources() const;
-		std::vector<std::string> getIncludes(const std::string& source) const;
-		std::list<ExclusionRule>  getExcludes(const std::string& source) const;
-		unsigned int getPriority(const std::string& source) const;
-		unsigned int getMinBackups(const std::string& source) const;
-		unsigned int getMaxBackups(const std::string& source) const;
-		std::string getPreferredOrder(const std::string& source) const;
-		std::string getDistribution(const std::string& source) const;
-		std::string getTimerString(const std::string& source) const;
-		bool getEnabled(const std::string& source) const;
-		bool getDryPrintRun(const std::string& source) const;
-		std::string getHostIdentification(const std::string& source) const;
+		const ISourceConfiguration& getSource(const std::string& name) const;
 	private:
+		class Section : public ISourceConfiguration
+		{
+		public:
+			Section(const std::string& name, const CascadingSourceConfiguration& config);
+
+			std::string getName() const;
+			std::vector<std::string> getIncludes() const;
+			std::list<ExclusionRule>  getExcludes() const;
+			unsigned int getPriority() const;
+			unsigned int getMinBackups() const;
+			unsigned int getMaxBackups() const;
+			std::string getPreferredOrder() const;
+			std::string getDistribution() const;
+			std::string getTimerString() const;
+			bool getEnabled() const;
+			bool getDryPrintRun() const;
+			std::string getHostIdentification() const;
+		private:
+			std::string name;
+			const CascadingSourceConfiguration& sourceFile;
+		};
+
 		template<typename T>
 		T getCascadingSourceValue( 
 				const std::string& section,

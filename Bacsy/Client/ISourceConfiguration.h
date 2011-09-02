@@ -18,6 +18,7 @@
 #ifndef ISOURCECONFIGURATION_H
 #define ISOURCECONFIGURATION_H
 
+#include "Bacsy/Rules/ExclusionRule.h"
 
 namespace Bacsy
 {
