@@ -48,7 +48,7 @@ CascadingStoreConfiguration::Section::Section(const std::string& name,
 {
 }
 
-const IStoreConfiguration& CascadingStoreConfiguration::getStore(const std::string& name) const
+const CascadingStoreConfiguration::Section CascadingStoreConfiguration::getStore(const std::string& name) const
 {
 	if (config.hasSection(name))
 	{

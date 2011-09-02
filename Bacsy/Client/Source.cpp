@@ -59,7 +59,7 @@ Source::Source(const ISourceConfiguration& config):
 	dryPrintRun(config.getDryPrintRun()),
 	enabled(config.getEnabled()),
 	exclusionRules(config.getExcludes()),
-	timers()
+	timers(createTimers())
 {
 }
 

@@ -47,8 +47,7 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 		CascadingSourceConfiguration(const std::string& directory);
 
 		std::list<std::string> getSources() const;
-		const ISourceConfiguration& getSource(const std::string& name) const;
-	private:
+
 		class Section : public ISourceConfiguration
 		{
 		public:
@@ -70,6 +69,8 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			std::string name;
 			const CascadingSourceConfiguration& sourceFile;
 		};
+
+		const Section getSource(const std::string& name) const;
 };
 
 }

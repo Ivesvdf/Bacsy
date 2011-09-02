@@ -42,7 +42,7 @@ std::list<std::string> CascadingSourceConfiguration::getSources() const
 	return sourceNames;
 }
 
-const ISourceConfiguration& CascadingSourceConfiguration::getSource(const std::string& name) const
+const CascadingSourceConfiguration::Section CascadingSourceConfiguration::getSource(const std::string& name) const
 {
 	if (config.hasSection(name))
 	{

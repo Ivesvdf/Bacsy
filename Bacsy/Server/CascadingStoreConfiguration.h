@@ -46,8 +46,7 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 		CascadingStoreConfiguration(const std::string& directory);
 
 		std::list<std::string> getStores() const;
-		const IStoreConfiguration& getStore(const std::string& name) const;
-	private:
+
 		class Section : public IStoreConfiguration
 		{
 		public:
@@ -62,6 +61,8 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 			std::string name;
 			const CascadingStoreConfiguration& storeConfig;
 		};
+
+		const Section getStore(const std::string& name) const;
 };
 
 }
