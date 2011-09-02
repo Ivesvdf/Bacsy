@@ -15,6 +15,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 set(BACSY_COMMON_SOURCE_FILES
                  Client/BackupEngine
                  Client/CascadingSourceConfiguration
+                 Client/ISourceConfiguration
                  Client/Source
                  Client/TimeSchedule
                  Client/TimerStringParser
