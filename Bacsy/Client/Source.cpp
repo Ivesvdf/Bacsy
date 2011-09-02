@@ -54,11 +54,12 @@ Source::Source(const ISourceConfiguration& config):
 	maxBackups(config.getMaxBackups()),
 	preferredOrder(config.getPreferredOrder()),
 	distribution(config.getDistribution()),
+	timeTable(config.getTimeTable()),
 	hostIdentification(config.getHostIdentification()),
 	dryPrintRun(config.getDryPrintRun()),
 	enabled(config.getEnabled()),
 	exclusionRules(config.getExcludes()),
-	timers(createTimers(config.getTimerString()))
+	timers()
 {
 }
 
@@ -77,13 +78,11 @@ void Source::startTimers()
 	}
 }
 
-std::list<Poco::Timer*> Source::createTimers(const std::string& timerString)
+std::list<Poco::Timer*> Source::createTimers()
 {
 	std::list<Poco::Timer*> theTimers;
-	TimerStringParser parser;
-	std::list<TimeSchedule> schedules = parser.parse(Poco::LocalDateTime(), timerString);
-	for(std::list<TimeSchedule>::const_iterator it = schedules.begin();
-			it != schedules.end();
+	for(ISourceConfiguration::TimeTable::const_iterator it = timeTable.begin();
+			it != timeTable.end();
 			it++)
 	{
 		// Execute all timers that normally fire immediately after 1 second

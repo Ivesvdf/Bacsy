@@ -54,7 +54,7 @@ private:
 	const unsigned int maxBackups;
 	const ISourceConfiguration::PreferredOrder preferredOrder;
 	const ISourceConfiguration::Distribution distribution;
-	const std::string timerString;
+	const ISourceConfiguration::TimeTable timeTable;
 	const std::string hostIdentification;
 	const bool dryPrintRun;
 	const bool enabled;
@@ -66,7 +66,7 @@ private:
 
 	bool isPath(std::string s) const;
 
-	std::list<Poco::Timer*> createTimers(const std::string& timerString);
+	std::list<Poco::Timer*> createTimers();
 	void startTimers();
 
 	std::vector<Poco::Net::SocketAddress> findOutWhoToContact();

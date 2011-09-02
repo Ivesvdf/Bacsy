@@ -23,6 +23,7 @@
 #include <Poco/String.h>
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
+#include "Bacsy/Client/TimerStringParser.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
 namespace Bacsy
@@ -160,12 +161,14 @@ ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDis
 	}
 }
 
-std::string CascadingSourceConfiguration::Section::getTimerString() const
+ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTable() const
 {
-	return sourceFile.getCascadingSourceValue<std::string>(
+	std::string timerString = sourceFile.getCascadingSourceValue<std::string>(
 			name,
 			"ExecuteAt",
 			"at start");
+	TimerStringParser parser;
+	return parser.parse(Poco::LocalDateTime(), timerString);
 }
 
 

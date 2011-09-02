@@ -19,7 +19,9 @@
 #define ISOURCECONFIGURATION_H
 
 #include <vector>
+#include <list>
 
+#include "Bacsy/Client/TimeSchedule.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
 namespace Bacsy
@@ -42,6 +44,8 @@ public:
 		DISTRIBUTION_SPREAD,
 	};
 
+	typedef std::list<TimeSchedule> TimeTable;
+
 	virtual ~ISourceConfiguration() {
 	}
 
@@ -53,7 +57,7 @@ public:
 	virtual unsigned int getMaxBackups() const = 0;
 	virtual PreferredOrder getPreferredOrder() const = 0;
 	virtual Distribution getDistribution() const = 0;
-	virtual std::string getTimerString() const = 0;
+	virtual TimeTable getTimeTable() const = 0;
 	virtual bool getEnabled() const = 0;
 	virtual bool getDryPrintRun() const = 0;
 	virtual std::string getHostIdentification() const = 0;
