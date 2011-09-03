@@ -119,6 +119,19 @@ void Source::start()
 	startTimers();
 }
 
+class PrintFileSender
+{
+public:
+	PrintFileSender()
+	{}
+
+	inline void operator()(const Poco::File& file)
+	{
+		std::cout << file.path() << std::endl;
+	}
+};
+
+
 void Source::run(Poco::Timer& timer)
 {
 	LOGI("Starting source " 
@@ -147,16 +160,25 @@ void Source::run(Poco::Timer& timer)
 		return;
 	}
 
-	std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
-
-	for(std::vector<Poco::Net::SocketAddress>::const_iterator it = peopleToContact.begin();
-			it != peopleToContact.end();
-			it++)
+	if(dryPrintRun)
 	{
-		Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
-		LOGI("Contacting " + contact.toString());
+		LOGI("Executing Dry Print Run");
+		PrintFileSender sender;
+		sendAll(sender);
+	}
+	else
+	{
+		std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
 
-		sendTo(contact);
+		for(std::vector<Poco::Net::SocketAddress>::const_iterator it = peopleToContact.begin();
+				it != peopleToContact.end();
+				it++)
+		{
+			Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
+			LOGI("Contacting " + contact.toString());
+
+			sendTo(contact);
+		}
 	}
 
 	mutex.unlock();
@@ -225,18 +247,6 @@ std::string Source::getHostIdentification() const
 	return hostIdentification;
 }
 
-class DoNothingFileSender
-{
-public:
-	DoNothingFileSender()
-	{}
-
-	inline void operator()(const Poco::File& file)
-	{
-		std::cout << file.path() << std::endl;
-	}
-};
-
 class FileSender
 {
 public:
@@ -265,31 +275,23 @@ private:
 
 void Source::sendTo(const Poco::Net::SocketAddress& who)
 {
-	if(dryPrintRun)
-	{
-		DoNothingFileSender sender;
-		sendAll(sender);
-	}
-	else
-	{
-		Poco::Net::DialogSocket socket(who);
-		socket.sendMessage(bacsyProtocolString);
-		Json::Value root;
-		root["type"] = "store";
-		root["host"] = hostIdentification;
-		root["source"] = name;
-		root["priority"] = priority;
-		root["runID"] = Poco::DateTimeFormatter::format(
-				Poco::Timestamp(),
-				"%Y-%m-%dT%H.%M.%S%z");
-		// TODO: Change this to an actual limit...
-		root["maxStoreTimes"] = maxBackups;
+	Poco::Net::DialogSocket socket(who);
+	socket.sendMessage(bacsyProtocolString);
+	Json::Value root;
+	root["type"] = "store";
+	root["host"] = hostIdentification;
+	root["source"] = name;
+	root["priority"] = priority;
+	root["runID"] = Poco::DateTimeFormatter::format(
+			Poco::Timestamp(),
+			"%Y-%m-%dT%H.%M.%S%z");
+	// TODO: Change this to an actual limit...
+	root["maxStoreTimes"] = maxBackups;
 
-		socket.sendMessage(JsonHelper::write(root));
+	socket.sendMessage(JsonHelper::write(root));
 
-		FileSender sender(socket);
-		sendAll(sender);
-	}
+	FileSender sender(socket);
+	sendAll(sender);
 }
 
 void Source::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
