@@ -19,8 +19,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Common/ConcurrentMap.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Common;
 
 using std::string;
 
@@ -40,6 +39,4 @@ TEST( ConcurrentMapTest, SimpleTest )
 	ASSERT_EQ(0u, stringMap.count(6));
 	ASSERT_EQ("", stringMap.get(6));
 	ASSERT_EQ(1u, stringMap.count(6));
-}
-
 }

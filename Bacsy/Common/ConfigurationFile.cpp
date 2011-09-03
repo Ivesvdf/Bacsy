@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 ConfigurationFile::ConfigurationFile(istream& fromSource)
 {
@@ -188,4 +190,5 @@ void ConfigurationFile::merge(const ConfigurationFile& other)
 	}
 }
 
+}
 }

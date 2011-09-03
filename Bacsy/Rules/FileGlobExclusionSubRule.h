@@ -24,6 +24,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class FileGlobExclusionSubRule : public ExclusionSubRule
 {
@@ -37,5 +42,6 @@ private:
 		
 };
 
+}
 }
 #endif

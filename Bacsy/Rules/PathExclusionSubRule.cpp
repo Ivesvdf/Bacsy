@@ -21,6 +21,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated):
 	ExclusionSubRule(negated),
@@ -45,4 +50,5 @@ PathExclusionSubRule::PathExclusionSubRule(const PathExclusionSubRule& copy):
 	
 }
 
+}
 }

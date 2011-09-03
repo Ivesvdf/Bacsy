@@ -19,5 +19,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
+}
 }

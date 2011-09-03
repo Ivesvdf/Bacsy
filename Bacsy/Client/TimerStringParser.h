@@ -25,6 +25,8 @@
 
 namespace Bacsy
 {
+namespace Client
+{
 
 class TimerStringParser
 {
@@ -58,5 +60,6 @@ private:
 	std::string extractTime(const std::string& input);
 };
 
+}
 }
 #endif

@@ -27,6 +27,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 CascadingStoreConfiguration::CascadingStoreConfiguration(const std::string& directory):
 	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/stores.config")))
@@ -89,4 +93,5 @@ unsigned int CascadingStoreConfiguration::Section::getMinPriorityForStoring() co
 }
 
 
+}
 }

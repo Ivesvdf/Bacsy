@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class JsonHelper
 {
@@ -31,5 +33,6 @@ public:
 	static Json::Value read(const std::string& input);
 };
 
+}
 }
 #endif

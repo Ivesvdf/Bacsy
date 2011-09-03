@@ -27,6 +27,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 {
@@ -135,4 +140,5 @@ bool StringExclusionRuleBuilder::isPath(std::string s)
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
+}
 }

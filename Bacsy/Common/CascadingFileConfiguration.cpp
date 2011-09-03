@@ -26,6 +26,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 CascadingFileConfiguration::CascadingFileConfiguration(const std::string& filename):
 	inputStream(filename.c_str()),
@@ -58,4 +60,5 @@ bool CascadingFileConfiguration::isLoaded() const
 	return configIsLoaded;
 }
 
+}
 }

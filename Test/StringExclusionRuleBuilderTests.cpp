@@ -21,8 +21,8 @@
 #include "Bacsy/Common/DummyFile.h"
 #include "Bacsy/Rules/SizeExclusionSubRule.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Rules;
+using namespace Bacsy::Common;
 
 TEST( StringExclusionRuleBuilderTests, TestUnaryAndPath)
 {
@@ -96,6 +96,4 @@ TEST( StringExclusionRuleBuilderTests, TestDoubleNegation)
 	ASSERT_EQ(rule1.match(f), rule2.match(f));
 	f.setSize(501);
 	ASSERT_EQ(rule1.match(f), rule2.match(f));
-}
-
 }

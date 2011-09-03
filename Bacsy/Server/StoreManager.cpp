@@ -23,6 +23,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class StorenameToStorer
 {
@@ -102,4 +106,5 @@ std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
 	return copy;
 }
 
+}
 }

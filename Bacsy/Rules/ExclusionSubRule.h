@@ -23,6 +23,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class ExclusionSubRule
 {
@@ -38,5 +43,6 @@ private:
 	const bool negated;
 };
 
+}
 }
 #endif

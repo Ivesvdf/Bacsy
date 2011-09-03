@@ -24,6 +24,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 class NullStream : public SimpleOStream
 {
@@ -32,5 +37,6 @@ public:
 	virtual bool isOk() const;
 };
 
+}
 }
 #endif

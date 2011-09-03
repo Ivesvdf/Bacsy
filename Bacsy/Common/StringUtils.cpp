@@ -23,6 +23,9 @@
 
 namespace Bacsy
 {
+namespace Common
+{
+
 using std::string;
 
 StringUtils::Stripper::Stripper(const std::string& toStrip) 
@@ -90,4 +93,5 @@ std::string StringUtils::toLower(const std::string& input)
 	return copy;
 }
 
+}
 }

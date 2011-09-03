@@ -22,6 +22,9 @@
 
 namespace Bacsy
 {
+namespace Common
+{
+
 class IFile
 {
 public:
@@ -54,5 +57,6 @@ public:
 		/// to truncate a file.
 };
 
+}
 }
 #endif

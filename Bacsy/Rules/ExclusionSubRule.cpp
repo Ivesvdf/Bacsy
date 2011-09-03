@@ -19,6 +19,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 ExclusionSubRule::ExclusionSubRule(bool negated):
 	negated(negated)
@@ -39,4 +44,5 @@ ExclusionSubRule::~ExclusionSubRule()
 {
 }
 
+}
 }

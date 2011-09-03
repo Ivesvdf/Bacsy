@@ -19,6 +19,8 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
 
 std::list<std::string> ExclusionStringParser::parse(const std::string& input)
 {
@@ -124,4 +126,5 @@ std::list<std::string> ExclusionStringParser::parse(const std::string& input)
 	return rv;
 }
 
+}
 }

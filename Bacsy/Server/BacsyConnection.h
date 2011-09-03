@@ -27,6 +27,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class BacsyConnection : public Poco::Net::TCPServerConnection
 {
@@ -61,5 +65,6 @@ private:
 	StoreManager& storeManager;
 };
 
+}
 }
 #endif

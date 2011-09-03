@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 std::string Environment::getDefaultConfigurationDirectory()
 {
@@ -49,4 +51,5 @@ std::string Environment::getDefaultConfigurationDirectory()
 	return prefix;
 }
 
+}
 }

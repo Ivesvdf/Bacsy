@@ -26,8 +26,8 @@
 #include "Bacsy/Common/ArgParsingUtils.h"
 #include "Bacsy/Common/Environment.h"
 
-using namespace Bacsy;
-
+using namespace Bacsy::Common;
+using namespace Bacsy::Server;
 
 int main(int argc, char **argv)
 {

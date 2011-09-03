@@ -24,6 +24,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class ArgParsingUtils
 {
@@ -31,6 +33,7 @@ public:
 	static void processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf);
 };
 
+}
 }
 
 #endif

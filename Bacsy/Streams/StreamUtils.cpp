@@ -23,6 +23,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 std::streamsize StreamUtilities::copyStream(
 		std::istream& istr,
@@ -192,4 +197,5 @@ const Poco::MD5Engine& MD5OutputStream::getEngine() const
 	return engine;
 }
 
+}
 }

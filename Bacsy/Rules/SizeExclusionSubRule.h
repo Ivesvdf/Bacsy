@@ -24,6 +24,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class SizeExclusionSubRule : public ExclusionSubRule
 {
@@ -42,5 +47,6 @@ private:
 	const Operator theOperator;
 };
 
+}
 }
 #endif

@@ -21,6 +21,8 @@
 
 namespace Bacsy
 {
+namespace Server
+{
 
 JsonStoreIndex::JsonStoreIndex(const std::string inputPath):
 	path(inputPath)
@@ -135,4 +137,5 @@ void JsonStoreIndex::store()
 	out.close();
 }
 
+}
 }

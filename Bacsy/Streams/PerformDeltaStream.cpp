@@ -19,6 +19,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 PerformDeltaStream::PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* signature):
 	RsyncStream<1024>(ostream, rs_delta_begin(signature))
@@ -26,4 +31,5 @@ PerformDeltaStream::PerformDeltaStream(SimpleOStream& ostream, rs_signature_t* s
 
 }
 
+}
 }

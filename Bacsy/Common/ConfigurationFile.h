@@ -28,6 +28,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 using std::istream;
 using std::list;
@@ -155,5 +157,6 @@ T ConfigurationFile::get(string section, string key, const T& defaultVal) const
 	}
 }
 
+}
 }
 #endif

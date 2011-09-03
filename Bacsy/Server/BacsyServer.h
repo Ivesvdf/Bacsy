@@ -24,6 +24,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 using Poco::Net::TCPServerConnectionFactoryImpl;
 
@@ -33,5 +37,6 @@ public:
 	BacsyServer(StoreManager& storeManager);
 };
 
+}
 }
 #endif

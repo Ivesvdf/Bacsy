@@ -19,8 +19,7 @@
 #include "Poco/TemporaryFile.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Server;
 
 TEST( StoreIndexTest, NoReloadJsonTest )
 {
@@ -100,6 +99,4 @@ TEST( StoreIndexTest, ReloadJsonTest )
 		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
 		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
 	}
-}
-
 }

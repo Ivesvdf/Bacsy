@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
 
 class ExclusionStringParser
 {
@@ -30,5 +32,6 @@ public:
 	static std::list<std::string> parse(const std::string& input);
 };
 
+}
 }
 #endif

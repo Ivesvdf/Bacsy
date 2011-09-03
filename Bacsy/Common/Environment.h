@@ -22,6 +22,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class Environment
 {
@@ -29,5 +31,6 @@ public:
 	static std::string getDefaultConfigurationDirectory();
 };
 
+}
 }
 #endif

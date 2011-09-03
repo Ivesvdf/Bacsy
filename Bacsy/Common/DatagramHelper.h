@@ -26,6 +26,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class DatagramHelper
 {
@@ -74,5 +76,6 @@ class DatagramHelper
 		}
 };
 
+}
 }
 #endif

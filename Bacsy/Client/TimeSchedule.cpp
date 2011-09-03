@@ -19,4 +19,7 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+}
 }

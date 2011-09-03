@@ -31,6 +31,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class NoSuchStoreException: public runtime_error
 {
@@ -65,5 +69,6 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 		const Section getStore(const std::string& name) const;
 };
 
+}
 }
 #endif

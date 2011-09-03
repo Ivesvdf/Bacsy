@@ -18,8 +18,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Common/StringUtils.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Common;
 
 TEST( StringUtilsTest, SimpleStripTest )
 {
@@ -95,6 +94,4 @@ TEST( StringUtilsTest, ToLowerTest)
 	ASSERT_EQ("bla", StringUtils::toLower("blA"));
 	ASSERT_EQ("bla", StringUtils::toLower("BLA"));
 	ASSERT_EQ("one two three", StringUtils::toLower("one Two three"));
-}
-
 }

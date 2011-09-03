@@ -23,6 +23,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class PathExclusionSubRule : public ExclusionSubRule
 {
@@ -35,5 +40,6 @@ private:
 	const std::string path;
 };
 
+}
 }
 #endif

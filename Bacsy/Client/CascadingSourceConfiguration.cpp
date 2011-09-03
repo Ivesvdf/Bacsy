@@ -28,6 +28,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
+using namespace Rules;
 
 CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& directory):
 	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/sources.config")))
@@ -206,4 +211,5 @@ std::string CascadingSourceConfiguration::Section::getHostIdentification() const
 			Poco::Environment::nodeName());
 }
 
+}
 }

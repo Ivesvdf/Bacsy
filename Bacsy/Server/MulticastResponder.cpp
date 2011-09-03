@@ -26,6 +26,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 void MulticastResponder::start()
 {
@@ -86,4 +90,5 @@ void MulticastResponder::run()
 	DatagramHelper::receiveMessages<512>(mcSocket, 0, MulticastResponder::respondToMulticast);
 }
 
+}
 }

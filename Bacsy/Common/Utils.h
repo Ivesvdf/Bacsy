@@ -20,6 +20,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class ObjectDeleter 
 {
@@ -31,5 +33,6 @@ public:
 	}
 };
 
+}
 }
 #endif

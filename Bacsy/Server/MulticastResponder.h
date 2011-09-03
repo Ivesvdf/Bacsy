@@ -25,6 +25,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class MulticastResponder : public Poco::Runnable
 {
@@ -38,5 +42,6 @@ class MulticastResponder : public Poco::Runnable
 		static void respondToMulticast(Poco::Net::SocketAddress address, const std::string& what);
 };
 
+}
 }
 #endif

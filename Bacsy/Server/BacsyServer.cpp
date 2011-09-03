@@ -21,6 +21,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 BacsyServer::BacsyServer(StoreManager& storeManager): 
 	Poco::Net::TCPServer(
@@ -31,4 +35,5 @@ BacsyServer::BacsyServer(StoreManager& storeManager):
 
 }
 
+}
 }

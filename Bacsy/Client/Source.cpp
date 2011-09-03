@@ -41,6 +41,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
+using namespace Rules;
 
 bool Source::isPath(std::string s) const
 {
@@ -385,4 +390,5 @@ bool Source::isExcluded(const Poco::File& path) const
 	return false;
 }
 
+}
 }

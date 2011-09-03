@@ -23,6 +23,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class IStoreConfiguration
 {
@@ -36,6 +40,7 @@ public:
 	virtual bool getAlwaysPresent() const = 0;
 };
 
+}
 }
 
 #endif

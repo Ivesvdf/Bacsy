@@ -31,6 +31,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
+using namespace Rules;
 
 class NoSuchSourceException: public runtime_error
 {
@@ -73,5 +78,6 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 		const Section getSource(const std::string& name) const;
 };
 
+}
 }
 #endif

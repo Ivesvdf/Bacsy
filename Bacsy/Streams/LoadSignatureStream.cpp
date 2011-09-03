@@ -19,6 +19,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 LoadSignatureStream::LoadSignatureStream():
 	RsyncStream<1024>(dumpStream, rs_loadsig_begin(&signature)),
@@ -37,4 +42,5 @@ rs_signature_t* LoadSignatureStream::getSignature() const
 	return signature;
 }
 
+}
 }

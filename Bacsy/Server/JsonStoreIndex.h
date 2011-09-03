@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Server
+{
 
 class JsonStoreIndex
 {
@@ -58,5 +60,6 @@ private:
 	const std::string path;
 };
 
+}
 }
 #endif

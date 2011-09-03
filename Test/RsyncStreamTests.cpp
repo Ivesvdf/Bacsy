@@ -24,8 +24,7 @@
 #include "Bacsy/Streams/SimpleBufferStream.h"
 #include "Bacsy/Streams/PerformDeltaStream.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Streams;
 
 TEST( SignatureStreamTest, HelloWorldTest )
 {
@@ -154,6 +153,4 @@ TEST( SignatureStreamTest, CompleteSimpleTest )
 	SimpleBufferStream outputStream;
 	PerformDeltaStream deltaStream(outputStream, lss.getSignature());
 	
-}
-
 }

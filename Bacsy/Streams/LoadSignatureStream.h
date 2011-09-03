@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 /**
  * Loads a Signature to an rs_signature_t object. This object is *owned* by
@@ -40,5 +45,6 @@ private:
 	rs_signature_t* signature;
 };
 
+}
 }
 #endif

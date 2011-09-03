@@ -19,6 +19,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 void NullStream::write(const char* const c, std::streamsize size)
 {
@@ -29,4 +34,5 @@ bool NullStream::isOk() const
 	return true;
 }
 
+}
 }

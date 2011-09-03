@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 class PerformDeltaStream : public RsyncStream<1024>
 {
@@ -30,6 +35,7 @@ class PerformDeltaStream : public RsyncStream<1024>
 
 };
 
+}
 }
 
 #endif

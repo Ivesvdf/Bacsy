@@ -29,6 +29,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class Store : public IStoreConfiguration
 {
@@ -76,5 +80,6 @@ private:
 	Poco::FastMutex storeIndexMutex;
 };
 
+}
 }
 #endif

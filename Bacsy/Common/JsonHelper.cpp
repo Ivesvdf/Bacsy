@@ -22,6 +22,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 std::string JsonHelper::write(const Json::Value& root)
 {
@@ -42,4 +44,5 @@ Json::Value JsonHelper::read(const std::string& input)
 	return root;
 }
 
+}
 }

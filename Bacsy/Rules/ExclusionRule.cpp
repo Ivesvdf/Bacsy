@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 ExclusionRule::ExclusionRule(const ExclusionRule& rule)
 {
@@ -81,4 +86,5 @@ const std::list<ExclusionSubRule*>& ExclusionRule::getSubRules() const
 	return subRules;
 }
 
+}
 }

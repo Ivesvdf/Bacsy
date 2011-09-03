@@ -26,6 +26,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Rules;
+
 
 class ISourceConfiguration
 {
@@ -63,6 +68,7 @@ public:
 	virtual std::string getHostIdentification() const = 0;
 };
 
+}
 }
 
 #endif

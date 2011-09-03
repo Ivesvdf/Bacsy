@@ -20,6 +20,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)
 {
@@ -44,4 +46,5 @@ void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definit
 	}
 }
 
+}
 }

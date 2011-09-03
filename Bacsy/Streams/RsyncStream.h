@@ -25,6 +25,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 template<int buffersize = 1024>
 class RsyncStream : public SimpleOStream
@@ -141,5 +146,6 @@ bool RsyncStream<buffersize>::isOk() const
 	return true;
 }
 
+}
 }
 #endif

@@ -22,6 +22,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class DummyFile : public IFile
 {
@@ -77,5 +79,6 @@ private:
 	Poco::File::FileSize size;
 };
 
+}
 }
 #endif

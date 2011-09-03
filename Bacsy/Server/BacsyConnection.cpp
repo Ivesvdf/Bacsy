@@ -37,6 +37,12 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
+using namespace Streams;
+
 
 BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) : 
 	Poco::Net::TCPServerConnection(socket),
@@ -300,4 +306,5 @@ void BacsyConnection::backupFile(
 }
 
 
+}
 }

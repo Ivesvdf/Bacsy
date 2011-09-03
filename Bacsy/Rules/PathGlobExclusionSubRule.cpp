@@ -19,6 +19,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 PathGlobExclusionSubRule::PathGlobExclusionSubRule(const std::string iglob, bool negated):
 	ExclusionSubRule(negated),
@@ -37,4 +42,5 @@ ExclusionSubRule* PathGlobExclusionSubRule::clone() const
 	return new PathGlobExclusionSubRule(globStr, getNegated());
 }
 
+}
 }

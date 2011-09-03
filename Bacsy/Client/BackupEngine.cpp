@@ -24,6 +24,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
+using namespace Rules;
 
 class SourceNameToSourcer
 {
@@ -84,4 +89,5 @@ void BackupEngine::start()
 	}
 }
 
+}
 }

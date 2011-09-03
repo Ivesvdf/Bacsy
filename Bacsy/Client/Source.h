@@ -35,6 +35,11 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
+using namespace Rules;
 
 class Source : public ISourceConfiguration
 {
@@ -153,5 +158,6 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 
 }
 
+}
 }
 #endif

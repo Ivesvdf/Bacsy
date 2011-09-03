@@ -22,6 +22,8 @@
 
 namespace Bacsy
 {
+namespace Client
+{
 
 class TimeSchedule
 {
@@ -34,5 +36,6 @@ public:
 	Poco::Timespan repeat;
 };
 
+}
 }
 #endif

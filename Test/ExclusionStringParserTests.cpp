@@ -18,8 +18,7 @@
 #include <gtest/gtest.h>
 #include "Bacsy/Rules/ExclusionStringParser.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Rules;
 
 typedef std::list<std::string> StringList;
 
@@ -128,6 +127,4 @@ TEST( ExclusionStringParserTests, BackslashAtTheEnd)
 	one.push_back("C:\\dir\\");
 
 	ASSERT_EQ(one, ExclusionStringParser::parse("\"C:\\dir\\\\\""));
-}
-
 }

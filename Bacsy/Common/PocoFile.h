@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class PocoFile : public IFile
 {
@@ -60,5 +62,6 @@ private:
 	Poco::File file;
 };
 
+}
 }
 #endif

@@ -22,8 +22,7 @@
 #include "Poco/DateTimeFormat.h"
 #include "Bacsy/Client/TimerStringParser.h"
 
-namespace Bacsy
-{
+using namespace Bacsy::Client;
 
 std::string format(const Poco::Timespan& timespan)
 {
@@ -277,6 +276,4 @@ TEST (TimerStringParserTest, CompoundTest )
 
 	ASSERT_EQ("5d06h00m", format((*it).delay));
 	ASSERT_EQ("7d00h00m", format((*it).repeat));
-}
-
 }

@@ -28,6 +28,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 Store::Store(const IStoreConfiguration& configuration):
 	storeName(configuration.getName()),
@@ -148,4 +152,5 @@ bool Store::getAlwaysPresent() const
 	return alwaysPresent;
 }
 
+}
 }

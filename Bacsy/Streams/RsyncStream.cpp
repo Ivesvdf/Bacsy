@@ -19,4 +19,10 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
+}
 }

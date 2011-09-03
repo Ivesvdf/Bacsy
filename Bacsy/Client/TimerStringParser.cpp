@@ -24,6 +24,10 @@
 
 namespace Bacsy
 {
+namespace Client
+{
+
+using namespace Common;
 
 TimerStringParser::TimerStringParser():
 	timeRegex("[0-9]{2}(:|h)?[0-9]{2}h?")
@@ -254,4 +258,5 @@ TimeSchedule TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, cons
 	return TimeSchedule(wait, Poco::Timespan(7*Poco::Timespan::DAYS));
 }
 
+}
 }

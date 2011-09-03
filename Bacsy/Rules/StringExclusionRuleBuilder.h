@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class StringExclusionRuleBuilder
 {
@@ -30,5 +35,6 @@ public:
 	static bool isPath(std::string s);
 };
 
+}
 }
 #endif

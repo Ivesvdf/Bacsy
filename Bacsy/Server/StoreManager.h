@@ -24,6 +24,10 @@
 
 namespace Bacsy
 {
+namespace Server
+{
+
+using namespace Common;
 
 class StoreManager
 {
@@ -40,5 +44,6 @@ private:
 	std::list<Store*> stores;
 };
 
+}
 }
 #endif

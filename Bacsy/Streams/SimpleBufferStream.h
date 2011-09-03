@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 class SimpleBufferStream : public SimpleIOStream
 {
@@ -40,5 +45,6 @@ private:
 	char* buffer;
 };
 
+}
 }
 #endif

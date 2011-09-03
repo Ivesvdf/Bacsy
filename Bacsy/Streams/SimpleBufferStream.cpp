@@ -21,6 +21,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 SimpleBufferStream::SimpleBufferStream():
 	maxSize(512),
@@ -76,4 +81,5 @@ std::streamsize SimpleBufferStream::read(char* c, std::streamsize max)
 	return bytesToCopy;
 }
 
+}
 }

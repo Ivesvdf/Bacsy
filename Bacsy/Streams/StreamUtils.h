@@ -26,6 +26,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 class SimpleIStream
 {
@@ -160,5 +165,6 @@ private:
 		}
 };
 
+}
 }
 #endif

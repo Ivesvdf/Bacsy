@@ -29,6 +29,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 class CascadingFileConfiguration
 {
@@ -69,5 +71,6 @@ class CascadingFileConfiguration
 		const std::string globalSectionName;
 };
 
+}
 }
 #endif

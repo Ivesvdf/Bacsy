@@ -23,6 +23,8 @@
 
 namespace Bacsy
 {
+namespace Common
+{
 
 template<typename K, typename V>
 class ConcurrentMap
@@ -76,5 +78,6 @@ public:
 		std::map<K,V> map;
 };
 
+}
 }
 #endif

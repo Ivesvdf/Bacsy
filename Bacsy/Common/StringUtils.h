@@ -24,6 +24,9 @@
 
 namespace Bacsy
 {
+namespace Common
+{
+
 
 class StringUtils
 {
@@ -66,6 +69,7 @@ public:
 	}
 };
 
+}
 }
 
 #endif

@@ -24,6 +24,11 @@
 
 namespace Bacsy
 {
+namespace Rules
+{
+
+using namespace Common;
+
 
 class ExclusionRule
 {
@@ -47,5 +52,6 @@ private:
 	void deleteSubRules();
 };
 
+}
 }
 #endif

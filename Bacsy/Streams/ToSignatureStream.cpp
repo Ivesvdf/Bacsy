@@ -22,6 +22,11 @@
 
 namespace Bacsy
 {
+namespace Streams
+{
+
+using namespace Common;
+
 
 ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksumLength):
 	RsyncStream<1024>(output, rs_sig_begin(RS_DEFAULT_BLOCK_LEN,checksumLength))
@@ -29,4 +34,5 @@ ToSignatureStream::ToSignatureStream(SimpleOStream& output, const size_t checksu
 
 }
 
+}
 }
