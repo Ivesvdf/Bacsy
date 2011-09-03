@@ -30,7 +30,7 @@ public:
 	StorenameToStorer(const CascadingStoreConfiguration& configuration): configuration(configuration) {}
 	Store* operator()(const std::string& storeName)
 	{
-		return new Store(storeName, configuration);
+		return new Store(configuration.getStore(storeName));
 	}
 
 private:
