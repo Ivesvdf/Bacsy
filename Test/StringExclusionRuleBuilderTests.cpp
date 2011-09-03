@@ -16,26 +16,73 @@
  */
 
 #include <gtest/gtest.h>
+#include "Poco/Types.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 #include "Bacsy/Common/DummyFile.h"
+#include "Bacsy/Rules/SizeExclusionSubRule.h"
 
 namespace Bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestBasicStuff)
+TEST( StringExclusionRuleBuilderTests, TestUnaryAndPath)
 {
 	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
 
 	ASSERT_TRUE(rule.match(DummyFile("/home/ives/.vimrc")));
 	ASSERT_FALSE(rule.match(DummyFile("/home/ives/.imrc")));
-
-	
-	rule = StringExclusionRuleBuilder::build("/home/ives/.* & !/home/ives/.vimrc");
+}
+TEST( StringExclusionRuleBuilderTests, TestNAryAndNegation)
+{
+	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.* & !/home/ives/.vimrc");
 
 	ASSERT_FALSE(rule.match(DummyFile("/home/ives/.vimrc")));
 	ASSERT_FALSE(rule.match(DummyFile("/home/ives/vimrc")));
 	ASSERT_TRUE(rule.match(DummyFile("/home/ives/.imrc")));
+}
 	
+TEST( StringExclusionRuleBuilderTests, TestSizes)
+{
+	ExclusionRule rule = StringExclusionRuleBuilder::build("<500B");
+	DummyFile f("bla");
+	f.setSize(499);
+	ASSERT_TRUE(rule.match(f));
+	f.setSize(500);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(501);
+	ASSERT_FALSE(rule.match(f));
+
+	rule = StringExclusionRuleBuilder::build(">500B");
+	f.setSize(499);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(500);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(501);
+	ASSERT_TRUE(rule.match(f));
+
+	rule = StringExclusionRuleBuilder::build(">1kB");
+	f.setSize(1023);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(1024);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(1025);
+	ASSERT_TRUE(rule.match(f));
+
+	rule = StringExclusionRuleBuilder::build(">14MB");
+	f.setSize(14*1024*1024-1);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024+1);
+	ASSERT_TRUE(rule.match(f));
+
+	rule = StringExclusionRuleBuilder::build(">4GB");
+	Poco::UInt64 fourGig = Poco::UInt64(4*1024) * Poco::UInt64(1024*1024);
+	f.setSize(fourGig-1);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(fourGig);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(fourGig+1);
+	ASSERT_TRUE(rule.match(f));
 }
 
 }
