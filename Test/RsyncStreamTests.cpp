@@ -136,7 +136,7 @@ TEST( SignatureStreamTest, DumbSignatureLoadTest )
 TEST( SignatureStreamTest, CompleteSimpleTest )
 {
 	char newStr[] = "Hello world!";
-	char oldStr[] = "Hello to the world?";
+	//char oldStr[] = "Hello to the world?";
 
 	SimpleBufferStream tempStream;
 
