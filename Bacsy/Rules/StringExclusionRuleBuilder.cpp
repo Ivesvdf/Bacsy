@@ -56,15 +56,15 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 		else if(subject.size() > 3 && (subject[0] == '>' || subject[0] == '<'))
 		{
 			const char theOperator = subject[0];
-			const std::string numberString = subject.substr(1, subject.length()-3);
 
-			const Poco::File::FileSize sizeInUnit = StringUtils::fromString<size_t>(numberString);
 
 			const char possiblePrefix = subject[subject.length()-2];
 
 			using Poco::Ascii;
 
 			const char prefix = Poco::Ascii::isDigit(possiblePrefix) ? 0 : possiblePrefix;
+			const std::string numberString = subject.substr(1, subject.length()-2 - (prefix ? 1 : 0));
+			const Poco::File::FileSize sizeInUnit = StringUtils::fromString<size_t>(numberString);
 
 			if(!Poco::Ascii::isAlpha(prefix) && prefix != 0)
 			{
