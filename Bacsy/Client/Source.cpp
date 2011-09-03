@@ -37,6 +37,7 @@
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Common/JsonHelper.h"
+#include "Bacsy/Common/IFile.h"
 
 namespace Bacsy
 {
@@ -375,7 +376,7 @@ bool Source::isExcluded(const Poco::File& path) const
 			it != exclusionRules.end();
 			++it)
 	{
-		if(it->match(path))
+		if(it->match(PocoFile(path)))
 		{
 			return true;
 		}

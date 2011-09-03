@@ -41,7 +41,7 @@ ExclusionRule::~ExclusionRule()
 	std::for_each(subRules.begin(), subRules.end(), ObjectDeleter());
 }
 
-bool ExclusionRule::match(const Poco::File& inputFile) const
+bool ExclusionRule::match(const IFile& inputFile) const
 {
 	for(std::list<ExclusionSubRule*>::const_iterator it = subRules.begin();
 			it != subRules.end();

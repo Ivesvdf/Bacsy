@@ -30,7 +30,7 @@ class SizeExclusionSubRule : public ExclusionSubRule
 public:
 	SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated);
 	SizeExclusionSubRule(const SizeExclusionSubRule& copy);
-	bool matchWithoutNegate(const Poco::File& inputFile);
+	bool matchWithoutNegate(const IFile& inputFile);
 	virtual ExclusionSubRule* clone() const;
 private:
 	const Poco::File::FileSize sizeInBytes;

@@ -28,7 +28,7 @@ PathExclusionSubRule::PathExclusionSubRule(const std::string path, bool negated)
 {
 }
 
-bool PathExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+bool PathExclusionSubRule::matchWithoutNegate(const IFile& inputFile)
 {
 	return StringUtils::rstrip(path, "/\\") == StringUtils::rstrip(inputFile.path(), "/\\");
 }

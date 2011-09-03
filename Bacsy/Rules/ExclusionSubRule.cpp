@@ -25,7 +25,7 @@ ExclusionSubRule::ExclusionSubRule(bool negated):
 {
 }
 
-bool ExclusionSubRule::match(const Poco::File& inputFile)
+bool ExclusionSubRule::match(const IFile& inputFile)
 {
 	const bool result = matchWithoutNegate(inputFile);
 

@@ -15,25 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PATH_EXCLUSION_SUB_RULE_H
-#define PATH_EXCLUSION_SUB_RULE_H
-
-#include <string>
-#include "Bacsy/Rules/ExclusionSubRule.h"
+#include "Bacsy/Common/PocoFile.h"
 
 namespace Bacsy
 {
-
-class PathExclusionSubRule : public ExclusionSubRule
-{
-public:
-	PathExclusionSubRule(const std::string path, bool negated);
-	PathExclusionSubRule(const PathExclusionSubRule& copy);
-	bool matchWithoutNegate(const IFile& inputFile);
-	virtual ExclusionSubRule* clone() const;
-private:
-	const std::string path;
-};
-
 }
-#endif

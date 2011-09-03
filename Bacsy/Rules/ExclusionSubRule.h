@@ -19,6 +19,7 @@
 #define EXCLUSION_SUB_RULE_H
 
 #include "Poco/File.h"
+#include "Bacsy/Common/IFile.h"
 
 namespace Bacsy
 {
@@ -28,8 +29,8 @@ class ExclusionSubRule
 public:
 	ExclusionSubRule(bool negated);
 	virtual ~ExclusionSubRule();
-	virtual bool matchWithoutNegate(const Poco::File& inputFile)=0;
-	bool match(const Poco::File& inputFile);
+	virtual bool matchWithoutNegate(const IFile& inputFile)=0;
+	bool match(const IFile& inputFile);
 	virtual ExclusionSubRule* clone() const=0;
 	bool getNegated() const { return negated; }
 

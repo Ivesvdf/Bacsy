@@ -27,10 +27,11 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
 #include "Poco/Timer.h"
+#include "Poco/DirectoryIterator.h"
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Client/ISourceConfiguration.h"
 #include "Bacsy/Common/StringUtils.h"
-#include "Poco/DirectoryIterator.h"
+#include "Bacsy/Common/PocoFile.h"
 
 namespace Bacsy
 {

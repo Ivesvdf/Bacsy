@@ -27,7 +27,7 @@ FileGlobExclusionSubRule::FileGlobExclusionSubRule(const std::string iglob, bool
 {
 }
 
-bool FileGlobExclusionSubRule::matchWithoutNegate(const Poco::File& inputFile)
+bool FileGlobExclusionSubRule::matchWithoutNegate(const IFile& inputFile)
 {
 	Poco::Path path(inputFile.path());
 	return glob.match(path.getFileName());

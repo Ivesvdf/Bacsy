@@ -29,7 +29,7 @@ class FileGlobExclusionSubRule : public ExclusionSubRule
 {
 public:
 	FileGlobExclusionSubRule(const std::string glob, bool negated);
-	bool matchWithoutNegate(const Poco::File& inputFile);
+	bool matchWithoutNegate(const IFile& inputFile);
 	ExclusionSubRule* clone() const;
 private:
 	Poco::Glob glob;

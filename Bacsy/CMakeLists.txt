@@ -25,7 +25,9 @@ set(BACSY_COMMON_SOURCE_FILES
                  Common/ConfigurationFile
                  Common/DatagramHelper
                  Common/Environment
+				 Common/IFile
                  Common/JsonHelper
+				 Common/PocoFile
                  Common/StringUtils
                  Rules/ExclusionRule
                  Rules/ExclusionStringParser

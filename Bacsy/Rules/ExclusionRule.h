@@ -32,7 +32,7 @@ public:
 	ExclusionRule();
 	virtual ~ExclusionRule();
 
-	bool match(const Poco::File& inputFile) const;
+	bool match(const IFile& inputFile) const;
 
 	/**
 	 * When adding an ExclusionSubRule, it is owned by the ExclusionRule from
