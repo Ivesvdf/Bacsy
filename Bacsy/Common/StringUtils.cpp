@@ -25,6 +25,16 @@ namespace Bacsy
 {
 using std::string;
 
+StringUtils::Stripper::Stripper(const std::string& toStrip) 
+	: toStrip(toStrip) 
+{
+}
+
+std::string StringUtils::Stripper::operator()(const std::string& input)
+{
+	return strip(input, toStrip); 
+}
+
 std::string StringUtils::rstrip(const std::string& source , const std::string& t)
 {
 	std::string str = source;

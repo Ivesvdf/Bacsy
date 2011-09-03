@@ -28,6 +28,15 @@ namespace Bacsy
 class StringUtils
 {
 public:
+	class Stripper
+	{
+	public:
+		Stripper(const std::string& toStrip = " ");
+		std::string operator()(const std::string& input);
+	private:
+		const std::string toStrip;
+	};
+
 	static std::string lstrip(const std::string& input, const std::string& stripChars = " ");
 	static std::string rstrip(const std::string& input, const std::string& stripChars = " ");
 	static std::string strip(const std::string& input, const std::string& stripChars = " ");

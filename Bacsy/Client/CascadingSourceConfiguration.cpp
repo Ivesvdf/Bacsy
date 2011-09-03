@@ -134,10 +134,36 @@ bool CascadingSourceConfiguration::Section::getEnabled() const
 
 ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getPreferredOrder() const
 {
-	ISourceConfiguration::PreferredOrder preferred_order;
-	preferred_order.push_back(ISourceConfiguration::PREFER_OTHER);
-	preferred_order.push_back(ISourceConfiguration::PREFER_THIS);
-	return preferred_order;
+	const std::string preferredOrderString = sourceFile.getCascadingValue<std::string>(
+			name,
+			"PreferredOrder",
+			"this, other");
+	std::vector<std::string> parts = StringUtils::split(preferredOrderString, ',');
+
+	// Strip whitespace
+	std::transform(parts.begin(), parts.end(), parts.begin(), StringUtils::Stripper(" "));
+	std::transform(parts.begin(), parts.end(), parts.begin(), StringUtils::toLower);
+
+	ISourceConfiguration::PreferredOrder preferredOrder;
+	for(std::vector<std::string>::const_iterator it = parts.begin(); 
+			it != parts.end();
+			++it)
+	{
+		if(*it == "this")
+		{
+			preferredOrder.push_back(ISourceConfiguration::PREFER_THIS);
+		}
+		else if(*it == "other")
+		{
+			preferredOrder.push_back(ISourceConfiguration::PREFER_OTHER);
+		}
+		else
+		{
+			throw std::runtime_error("Unrecognized PreferredOrder part " + *it
+					+ " in PreferredOrder " + preferredOrderString);
+		}
+	}
+	return preferredOrder;
 }
 
 ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDistribution() const
