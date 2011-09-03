@@ -24,6 +24,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  Common/ConcurrentMap
                  Common/ConfigurationFile
                  Common/DatagramHelper
+				 Common/DummyFile
                  Common/Environment
 				 Common/IFile
                  Common/JsonHelper

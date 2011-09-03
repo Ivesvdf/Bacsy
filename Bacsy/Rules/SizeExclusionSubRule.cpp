@@ -22,7 +22,7 @@
 namespace Bacsy
 {
 
-SizeExclusionSubRule::SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const char theOperator, bool negated):
+SizeExclusionSubRule::SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const Operator theOperator, bool negated):
 	ExclusionSubRule(negated),
 	sizeInBytes(sizeInBytes),
 	theOperator(theOperator)
@@ -48,6 +48,16 @@ SizeExclusionSubRule::SizeExclusionSubRule(const SizeExclusionSubRule& copy):
 	theOperator(copy.theOperator)
 {
 	
+}
+
+Poco::File::FileSize SizeExclusionSubRule::getSizeInBytes() const
+{
+	return sizeInBytes;
+}
+
+SizeExclusionSubRule::Operator SizeExclusionSubRule::getOperator() const
+{
+	return theOperator;
 }
 
 }

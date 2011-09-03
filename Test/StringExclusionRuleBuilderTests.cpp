@@ -17,13 +17,25 @@
 
 #include <gtest/gtest.h>
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
+#include "Bacsy/Common/DummyFile.h"
 
 namespace Bacsy
 {
 
-TEST( StringExclusionRuleBuilderTests, TestCompilation)
+TEST( StringExclusionRuleBuilderTests, TestBasicStuff)
 {
 	ExclusionRule rule = StringExclusionRuleBuilder::build("/home/ives/.vimrc");
+
+	ASSERT_TRUE(rule.match(DummyFile("/home/ives/.vimrc")));
+	ASSERT_FALSE(rule.match(DummyFile("/home/ives/.imrc")));
+
+	
+	rule = StringExclusionRuleBuilder::build("/home/ives/.* & !/home/ives/.vimrc");
+
+	ASSERT_FALSE(rule.match(DummyFile("/home/ives/.vimrc")));
+	ASSERT_FALSE(rule.match(DummyFile("/home/ives/vimrc")));
+	ASSERT_TRUE(rule.match(DummyFile("/home/ives/.imrc")));
+	
 }
 
 }

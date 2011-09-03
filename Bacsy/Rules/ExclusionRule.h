@@ -31,6 +31,7 @@ public:
 	ExclusionRule(const ExclusionRule& rule);
 	ExclusionRule();
 	virtual ~ExclusionRule();
+	ExclusionRule& operator=(const ExclusionRule& rule);
 
 	bool match(const IFile& inputFile) const;
 
@@ -40,9 +41,10 @@ public:
 	 */
 	void addSubRule(ExclusionSubRule* sr);
 
-	
+	const std::list<ExclusionSubRule*>& getSubRules() const;
 private:
 	std::list<ExclusionSubRule*> subRules;
+	void deleteSubRules();
 };
 
 }

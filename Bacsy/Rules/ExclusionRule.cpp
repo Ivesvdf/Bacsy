@@ -16,6 +16,7 @@
  */
 
 #include <algorithm>
+#include "woodcutter/woodcutter.h"
 #include "Bacsy/Common/Utils.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
@@ -24,12 +25,7 @@ namespace Bacsy
 
 ExclusionRule::ExclusionRule(const ExclusionRule& rule)
 {
-	for(std::list<ExclusionSubRule*>::const_iterator it = rule.subRules.begin();
-			it != rule.subRules.end();
-			++it)
-	{
-		addSubRule((*it)->clone());
-	}
+	operator=(rule);
 }
 
 ExclusionRule::ExclusionRule()
@@ -38,7 +34,7 @@ ExclusionRule::ExclusionRule()
 
 ExclusionRule::~ExclusionRule()
 {
-	std::for_each(subRules.begin(), subRules.end(), ObjectDeleter());
+	deleteSubRules();
 }
 
 bool ExclusionRule::match(const IFile& inputFile) const
@@ -55,10 +51,34 @@ bool ExclusionRule::match(const IFile& inputFile) const
 
 	return true;
 }
+void ExclusionRule::deleteSubRules()
+{
+	std::for_each(subRules.begin(), subRules.end(), ObjectDeleter());
+	subRules.clear();
+}
+
+ExclusionRule& ExclusionRule::operator=(const ExclusionRule& rule)
+{
+	deleteSubRules();
+
+	for(std::list<ExclusionSubRule*>::const_iterator it = rule.subRules.begin();
+			it != rule.subRules.end();
+			++it)
+	{
+		addSubRule((*it)->clone());
+	}
+
+	return *this;
+}
 
 void ExclusionRule::addSubRule(ExclusionSubRule* sr)
 {
 	subRules.push_back(sr);
+}
+
+const std::list<ExclusionSubRule*>& ExclusionRule::getSubRules() const
+{
+	return subRules;
 }
 
 }

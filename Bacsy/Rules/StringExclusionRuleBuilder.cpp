@@ -56,8 +56,6 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 		else if(subject.size() > 3 && (subject[0] == '>' || subject[0] == '<'))
 		{
 			const char theOperator = subject[0];
-
-
 			const char possiblePrefix = subject[subject.length()-2];
 
 			using Poco::Ascii;
@@ -100,7 +98,11 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 			}
 
 
-			rule.addSubRule(new SizeExclusionSubRule(sizeInBytes, theOperator, negated));
+			rule.addSubRule(new SizeExclusionSubRule(sizeInBytes,
+						theOperator == '>' ? 
+							SizeExclusionSubRule::GREATER_THAN :
+							SizeExclusionSubRule::LESS_THAN, 
+						negated));
 		}
 		else if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
 		{

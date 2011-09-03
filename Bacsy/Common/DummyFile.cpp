@@ -15,32 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIZE_EXCLUSION_SUB_RULE_H
-#define SIZE_EXCLUSION_SUB_RULE_H
-
-#include <string>
-#include "Poco/File.h"
-#include "Bacsy/Rules/ExclusionSubRule.h"
+#include "Bacsy/Common/DummyFile.h"
 
 namespace Bacsy
 {
 
-class SizeExclusionSubRule : public ExclusionSubRule
-{
-public:
-	enum Operator { GREATER_THAN, LESS_THAN };
-
-	SizeExclusionSubRule(const Poco::File::FileSize sizeInBytes, const Operator theOperator, bool negated);
-	SizeExclusionSubRule(const SizeExclusionSubRule& copy);
-	bool matchWithoutNegate(const IFile& inputFile);
-	virtual ExclusionSubRule* clone() const;
-
-	Poco::File::FileSize getSizeInBytes() const;
-	Operator getOperator() const;
-private:
-	const Poco::File::FileSize sizeInBytes;
-	const Operator theOperator;
-};
-
 }
-#endif
