@@ -85,4 +85,17 @@ TEST( StringExclusionRuleBuilderTests, TestSizes)
 	ASSERT_TRUE(rule.match(f));
 }
 
+TEST( StringExclusionRuleBuilderTests, TestDoubleNegation)
+{
+	ExclusionRule rule1 = StringExclusionRuleBuilder::build("!!<500B");
+	ExclusionRule rule2 = StringExclusionRuleBuilder::build("<500B");
+	DummyFile f("bla");
+	f.setSize(499);
+	ASSERT_EQ(rule1.match(f), rule2.match(f));
+	f.setSize(500);
+	ASSERT_EQ(rule1.match(f), rule2.match(f));
+	f.setSize(501);
+	ASSERT_EQ(rule1.match(f), rule2.match(f));
+}
+
 }

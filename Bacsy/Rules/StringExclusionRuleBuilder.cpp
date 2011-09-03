@@ -49,7 +49,7 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 		}
 		else if(subject == "!")
 		{
-			negated = true;
+			negated = !negated;
 			continue;
 		}
 		// Test for size subrule
