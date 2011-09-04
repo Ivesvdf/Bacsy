@@ -105,7 +105,7 @@ ExecuteAt
   a.m. 
 
 
-.. _priority:
+.. _Priority:
 
 Priority
   **Default Value:** ?
@@ -120,7 +120,7 @@ Priority
   this way, so it would have been confusing either way. 
 
   A run will only be accepted by a store when the source's Priority is higher
-  (thus the number is lower) than the store's `MinPriorityForStoring`_. 
+  (thus the number is lower) than the store's *MinPriorityForStoring*. 
 
   Use this key and the associated store key MinPriorityForStoring to make sure
   really important sources take precedence over less important sources when

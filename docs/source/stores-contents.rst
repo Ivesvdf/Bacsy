@@ -15,7 +15,7 @@ Location
   Will store all backups this store accepts in
   ``/media/external_drive/backups``.
 
-.. _minpriorityforstoring:
+.. _MinPriorityForStoring:
 
 MinPriorityForStoring
   **Default Value:** ?
@@ -23,7 +23,7 @@ MinPriorityForStoring
   **Domain:** [0,10]
 
   **Semantics:** Determines how high a source's priority must be before it is
-  accepted by this store. Only runs from sources with a `Priority`_ higher
+  accepted by this store. Only runs from sources with a *Priority* higher
   than or equal to (and thus a number that is smaller than or equal to) this
   store's MinPriorityForStoring will be stored. 
 
