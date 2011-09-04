@@ -95,3 +95,20 @@ TEST( StringUtilsTest, ToLowerTest)
 	ASSERT_EQ("bla", StringUtils::toLower("BLA"));
 	ASSERT_EQ("one two three", StringUtils::toLower("one Two three"));
 }
+
+TEST(StringUtilsTest, IsTextTest)
+{
+	ASSERT_EQ(true, StringUtils::isLetters("foo"));
+	ASSERT_EQ(false, StringUtils::isLetters("foo bar"));
+	ASSERT_EQ(false, StringUtils::isLetters("foo9"));
+	ASSERT_EQ(false, StringUtils::isLetters("9"));
+}
+
+TEST(StringUtilsTest, IsNumberTest)
+{
+	ASSERT_EQ(true, StringUtils::isInteger("5"));
+	ASSERT_EQ(true, StringUtils::isInteger("1993"));
+	ASSERT_EQ(false, StringUtils::isInteger("foo9"));
+	ASSERT_EQ(false, StringUtils::isInteger("15foo"));
+	ASSERT_EQ(false, StringUtils::isInteger("fo1o"));
+}

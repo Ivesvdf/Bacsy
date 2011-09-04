@@ -47,6 +47,8 @@ public:
 	static std::vector<std::string> split(const std::string& input, const char delim);
 	static std::vector<std::string> split(const std::string& input, const std::string& delim);
 	
+	static bool isInteger(const std::string& input);
+	static bool isLetters(const std::string& input);
 
 	static std::string toLower(const std::string& input);
 

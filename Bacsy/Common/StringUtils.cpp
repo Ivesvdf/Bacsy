@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <locale>
 #include <functional>
+#include "Poco/Ascii.h"
 #include "Bacsy/Common/StringUtils.h"
 
 namespace Bacsy
@@ -55,6 +56,28 @@ std::string StringUtils::strip(const std::string& source , const std::string& t)
 	std::string str = source;
 	return lstrip(rstrip(str, t), t);
 }  
+
+bool StringUtils::isInteger(const std::string& input)
+{
+	for(size_t i = 0; i < input.length(); i++)
+	{
+		if(!Poco::Ascii::isDigit(input[i]))
+			return false;
+	}
+
+	return true;
+}
+
+bool StringUtils::isLetters(const std::string& input)
+{
+	for(size_t i = 0; i < input.length(); i++)
+	{
+		if(!Poco::Ascii::isAlpha(input[i]))
+			return false;
+	}
+
+	return true;
+}
 
 std::vector<std::string> StringUtils::split(const std::string& input, const char delim)
 {
