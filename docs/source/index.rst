@@ -10,7 +10,7 @@ Welcome to Bacsy's documentation!
 Getting Started
 ===============
 
- * `What is Bacsy?`
+ * `What is Bacsy?`_
  * `How does Bacsy work?`_
  * :ref:`Compiling the source`
  * :ref:`Configuring Bacsy`
