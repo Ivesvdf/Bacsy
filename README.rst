@@ -3,6 +3,32 @@ Welcome to Bacsy's documentation!
 
 For the complete documentation, see http://bacsy.readthedocs.org/en/latest/index.html. 
 
+What is Bacsy?
+==============
+
+Bacsy is a *backup system* (hence the name).
+
+Essential points:
+
+   * Distributed
+        A device using Bacsy to backup its data will send the backups
+        to other devices also running Bacsy.
+
+   * Easy to add a new device
+        In a default configuration, if you add a new device running
+        Bacsy to your LAN, backups will automatically be stored on
+        that device.
+
+   * Redundant
+        Backups will usually be stored on multiple devices.
+
+   * Fast to setup ...
+        A basic configuration should be quick to achieve
+
+   * ... yet extremely adjustable
+        A plethora of configuration options are available.
+
+
 How does Bacsy work?
 ====================
 
