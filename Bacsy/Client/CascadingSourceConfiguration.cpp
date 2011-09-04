@@ -71,7 +71,7 @@ std::string CascadingSourceConfiguration::Section::getName() const
 	return name;
 }
 
-std::vector<std::string> CascadingSourceConfiguration::Section::getIncludes() const
+ISourceConfiguration::IncludeCollection CascadingSourceConfiguration::Section::getIncludes() const
 {
 	return StringUtils::split(sourceFile.getCascadingValue<std::string>(
 				name,
@@ -79,9 +79,9 @@ std::vector<std::string> CascadingSourceConfiguration::Section::getIncludes() co
 			'\n'); 
 }
 
-std::list<ExclusionRule> CascadingSourceConfiguration::Section::getExcludes() const
+ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::getExcludes() const
 {
-	std::list<ExclusionRule> rv;
+	ExcludeCollection rv;
 	const std::vector<std::string> stringExcludes = StringUtils::split(sourceFile.getCascadingValue<std::string>(
 				name,
 				"Exclude"), 

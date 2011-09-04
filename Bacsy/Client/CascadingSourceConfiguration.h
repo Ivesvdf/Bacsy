@@ -59,8 +59,8 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			Section(const std::string& name, const CascadingSourceConfiguration& config);
 
 			std::string getName() const;
-			std::vector<std::string> getIncludes() const;
-			std::list<ExclusionRule>  getExcludes() const;
+			IncludeCollection getIncludes() const;
+			ExcludeCollection getExcludes() const;
 			unsigned int getPriority() const;
 			unsigned int getMinBackups() const;
 			unsigned int getMaxBackups() const;

@@ -54,9 +54,12 @@ public:
 	virtual ~ISourceConfiguration() {
 	}
 
+	typedef std::vector<std::string> IncludeCollection;
+	typedef std::list<ExclusionRule> ExcludeCollection;
+
 	virtual std::string getName() const = 0;
-	virtual std::vector<std::string> getIncludes() const = 0;
-	virtual std::list<ExclusionRule>  getExcludes() const = 0;
+	virtual IncludeCollection getIncludes() const = 0;
+	virtual ExcludeCollection getExcludes() const = 0;
 	virtual unsigned int getPriority() const = 0;
 	virtual unsigned int getMinBackups() const = 0;
 	virtual unsigned int getMaxBackups() const = 0;

@@ -192,12 +192,12 @@ std::string Source::getName() const
 	return name;
 }
 
-std::vector<std::string> Source::getIncludes() const
+ISourceConfiguration::IncludeCollection Source::getIncludes() const
 {
 	return includes;
 }
 
-std::list<ExclusionRule>  Source::getExcludes() const
+ISourceConfiguration::ExcludeCollection Source::getExcludes() const
 {
 	return exclusionRules;
 }
