@@ -97,3 +97,26 @@ TEST( StringExclusionRuleBuilderTests, TestDoubleNegation)
 	f.setSize(501);
 	ASSERT_EQ(rule1.match(f), rule2.match(f));
 }
+
+TEST( StringExclusionRuleBuilderTests, TestSelfAssigment)
+{
+	// Yes this doesn't really belong here... A test is still a test. I should
+	// probably rename this file ExclusionTests or something...
+	
+	ExclusionRule rule = StringExclusionRuleBuilder::build(">14MB");
+
+	DummyFile f("bla");
+	f.setSize(14*1024*1024-1);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024+1);
+
+	rule = rule;
+
+	f.setSize(14*1024*1024-1);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024);
+	ASSERT_FALSE(rule.match(f));
+	f.setSize(14*1024*1024+1);
+}

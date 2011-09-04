@@ -64,6 +64,9 @@ void ExclusionRule::deleteSubRules()
 
 ExclusionRule& ExclusionRule::operator=(const ExclusionRule& rule)
 {
+	if(&rule == this)
+		return *this;
+
 	deleteSubRules();
 
 	for(std::list<ExclusionSubRule*>::const_iterator it = rule.subRules.begin();
