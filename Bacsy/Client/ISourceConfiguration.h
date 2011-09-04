@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011  Nathan Samson
+ * Copyright (C) 2011  Ives van der Flaas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
 #include <vector>
 #include <list>
 
+#include "Poco/Timespan.h"
 #include "Bacsy/Client/TimeSchedule.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
@@ -51,6 +53,31 @@ public:
 
 	typedef std::list<TimeSchedule> TimeTable;
 
+	/**
+	 * Use as following: only call the methods for the things you'd like to
+	 * set. 
+	 */
+	class VersionsType
+	{
+	public:
+		VersionsType();
+
+		void setVersions(unsigned int inputVersions);
+		void setTime(Poco::Timespan inputTime);
+
+		unsigned int getVersions() const;
+		Poco::Timespan getTime() const;
+
+		bool versionsIsSet() const;
+		bool timeIsSet() const;
+	private:
+		unsigned int versions;
+		Poco::Timespan time;
+	};
+
+	typedef VersionsType MaxVersions;
+	typedef VersionsType MinVersions;
+
 	virtual ~ISourceConfiguration() 
 	{
 	}
@@ -64,6 +91,8 @@ public:
 	virtual unsigned int getPriority() const = 0;
 	virtual unsigned int getMinBackups() const = 0;
 	virtual unsigned int getMaxBackups() const = 0;
+	virtual MinVersions getMinVersions() const = 0;
+	virtual MaxVersions getMaxVersions() const = 0;
 	virtual PreferredOrder getPreferredOrder() const = 0;
 	virtual Distribution getDistribution() const = 0;
 	virtual TimeTable getTimeTable() const = 0;

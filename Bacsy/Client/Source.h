@@ -57,6 +57,8 @@ public:
 	unsigned int getPriority() const;
 	unsigned int getMinBackups() const;
 	unsigned int getMaxBackups() const;
+	MinVersions getMinVersions() const;
+	MaxVersions getMaxVersions() const;
 	PreferredOrder getPreferredOrder() const;
 	Distribution getDistribution() const;
 	TimeTable getTimeTable() const;
@@ -70,6 +72,8 @@ private:
 	const unsigned int priority;
 	const unsigned int minBackups;
 	const unsigned int maxBackups;
+	const MinVersions minVersions;
+	const MaxVersions maxVersions;
 	const ISourceConfiguration::PreferredOrder preferredOrder;
 	const ISourceConfiguration::Distribution distribution;
 	const ISourceConfiguration::TimeTable timeTable;

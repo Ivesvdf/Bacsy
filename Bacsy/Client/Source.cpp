@@ -59,6 +59,8 @@ Source::Source(const ISourceConfiguration& config):
 	priority(config.getPriority()),
 	minBackups(config.getMinBackups()),
 	maxBackups(config.getMaxBackups()),
+	minVersions(config.getMinVersions()),
+	maxVersions(config.getMaxVersions()),
 	preferredOrder(config.getPreferredOrder()),
 	distribution(config.getDistribution()),
 	timeTable(config.getTimeTable()),
@@ -216,6 +218,16 @@ unsigned int Source::getMinBackups() const
 unsigned int Source::getMaxBackups() const
 {
 	return maxBackups;
+}
+
+ISourceConfiguration::VersionsType Source::getMinVersions() const
+{
+	return minVersions;
+}
+
+ISourceConfiguration::VersionsType Source::getMaxVersions() const
+{
+	return maxVersions;
 }
 
 ISourceConfiguration::PreferredOrder Source::getPreferredOrder() const

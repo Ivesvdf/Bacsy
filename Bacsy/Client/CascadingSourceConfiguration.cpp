@@ -98,6 +98,23 @@ ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::g
 	return rv;
 }
 
+ISourceConfiguration::MinVersions CascadingSourceConfiguration::Section::getMinVersions() const
+{
+	return getVersions("MinVersions");
+}
+
+ISourceConfiguration::MaxVersions CascadingSourceConfiguration::Section::getMaxVersions() const
+{
+	return getVersions("MaxVersions");
+}
+
+ISourceConfiguration::VersionsType CascadingSourceConfiguration::Section::getVersions(const std::string& key) const
+{
+	VersionsType t;
+
+	return t;
+}
+
 unsigned int CascadingSourceConfiguration::Section::getPriority() const
 {
 	return config.getCascadingValue<unsigned int>(

@@ -64,6 +64,8 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			unsigned int getPriority() const;
 			unsigned int getMinBackups() const;
 			unsigned int getMaxBackups() const;
+			MinVersions getMinVersions() const;
+			MaxVersions getMaxVersions() const;
 			PreferredOrder getPreferredOrder() const;
 			Distribution getDistribution() const;
 			TimeTable getTimeTable() const;
@@ -71,6 +73,8 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			bool getDryPrintRun() const;
 			std::string getHostIdentification() const;
 		private:
+			VersionsType getVersions(const std::string& key) const;
+
 			std::string name;
 			const CascadingSourceConfiguration& config;
 		};
