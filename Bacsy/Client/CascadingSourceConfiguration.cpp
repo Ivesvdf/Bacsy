@@ -59,8 +59,9 @@ const CascadingSourceConfiguration::Section CascadingSourceConfiguration::getSou
 	}
 }
 
-CascadingSourceConfiguration::Section::Section(const std::string& name,
-                                      const CascadingSourceConfiguration& config):
+CascadingSourceConfiguration::Section::Section(
+		const std::string& name,
+		const CascadingSourceConfiguration& config):
 	name(name),
 	sourceFile(config)
 {

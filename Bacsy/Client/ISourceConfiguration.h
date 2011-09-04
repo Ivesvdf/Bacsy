@@ -51,7 +51,8 @@ public:
 
 	typedef std::list<TimeSchedule> TimeTable;
 
-	virtual ~ISourceConfiguration() {
+	virtual ~ISourceConfiguration() 
+	{
 	}
 
 	typedef std::vector<std::string> IncludeCollection;
