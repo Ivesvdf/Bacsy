@@ -30,6 +30,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  Common/JsonHelper
 				 Common/PocoFile
                  Common/StringUtils
+				 Common/VersionsType
                  Rules/ExclusionRule
                  Rules/ExclusionStringParser
                  Rules/ExclusionSubRule

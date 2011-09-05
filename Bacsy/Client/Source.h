@@ -32,6 +32,8 @@
 #include "Bacsy/Client/ISourceConfiguration.h"
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Common/PocoFile.h"
+#include "Bacsy/Common/MinVersions.h"
+#include "Bacsy/Common/MaxVersions.h"
 
 namespace Bacsy
 {

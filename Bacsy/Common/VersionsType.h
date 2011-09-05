@@ -14,14 +14,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "Bacsy/Client/ISourceConfiguration.h"
+
+#ifndef VERSIONSTYPE_H
+#define VERSIONSTYPE_H
+
+#include "Poco/Timespan.h"
 
 namespace Bacsy
 {
-namespace Client
+namespace Common
 {
 
+/**
+ * Use as following: only call the methods for the things you'd like to
+ * set. 
+ */
+class VersionsType
+{
+public:
+	VersionsType();
+
+	void setVersions(unsigned int inputVersions);
+	void setTime(Poco::Timespan inputTime);
+
+	unsigned int getVersions() const;
+	Poco::Timespan getTime() const;
+
+	bool versionsIsSet() const;
+	bool timeIsSet() const;
+
+	std::string toString() const;
+private:
+	unsigned int versions;
+	Poco::Timespan time;
+};
 
 }
 }
+#endif

@@ -26,8 +26,11 @@
 
 #include "Bacsy/Client/ISourceConfiguration.h"
 #include "Bacsy/Common/ConfigurationFile.h"
-#include "Bacsy/Rules/ExclusionRule.h"
 #include "Bacsy/Common/CascadingFileConfiguration.h"
+#include "Bacsy/Common/MinVersions.h"
+#include "Bacsy/Common/MaxVersions.h"
+#include "Bacsy/Common/VersionsType.h"
+#include "Bacsy/Rules/ExclusionRule.h"
 
 namespace Bacsy
 {

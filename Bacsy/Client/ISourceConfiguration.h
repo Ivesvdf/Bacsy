@@ -22,7 +22,8 @@
 #include <vector>
 #include <list>
 
-#include "Poco/Timespan.h"
+#include "Bacsy/Common/MinVersions.h"
+#include "Bacsy/Common/MaxVersions.h"
 #include "Bacsy/Client/TimeSchedule.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
@@ -52,33 +53,6 @@ public:
 	};
 
 	typedef std::list<TimeSchedule> TimeTable;
-
-	/**
-	 * Use as following: only call the methods for the things you'd like to
-	 * set. 
-	 */
-	class VersionsType
-	{
-	public:
-		VersionsType();
-
-		void setVersions(unsigned int inputVersions);
-		void setTime(Poco::Timespan inputTime);
-
-		unsigned int getVersions() const;
-		Poco::Timespan getTime() const;
-
-		bool versionsIsSet() const;
-		bool timeIsSet() const;
-
-		std::string toString() const;
-	private:
-		unsigned int versions;
-		Poco::Timespan time;
-	};
-
-	typedef VersionsType MaxVersions;
-	typedef VersionsType MinVersions;
 
 	virtual ~ISourceConfiguration() 
 	{

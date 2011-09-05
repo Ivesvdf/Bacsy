@@ -98,17 +98,17 @@ ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::g
 	return rv;
 }
 
-ISourceConfiguration::MinVersions CascadingSourceConfiguration::Section::getMinVersions() const
+MinVersions CascadingSourceConfiguration::Section::getMinVersions() const
 {
 	return getVersions("MinVersions");
 }
 
-ISourceConfiguration::MaxVersions CascadingSourceConfiguration::Section::getMaxVersions() const
+MaxVersions CascadingSourceConfiguration::Section::getMaxVersions() const
 {
 	return getVersions("MaxVersions");
 }
 
-ISourceConfiguration::VersionsType CascadingSourceConfiguration::Section::getVersions(const std::string& key) const
+VersionsType CascadingSourceConfiguration::Section::getVersions(const std::string& key) const
 {
 	const std::string stringValue = sourceFile.getCascadingValue<std::string>(
 				name,

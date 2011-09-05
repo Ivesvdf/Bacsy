@@ -220,12 +220,12 @@ unsigned int Source::getMaxBackups() const
 	return maxBackups;
 }
 
-ISourceConfiguration::VersionsType Source::getMinVersions() const
+VersionsType Source::getMinVersions() const
 {
 	return minVersions;
 }
 
-ISourceConfiguration::VersionsType Source::getMaxVersions() const
+VersionsType Source::getMaxVersions() const
 {
 	return maxVersions;
 }
