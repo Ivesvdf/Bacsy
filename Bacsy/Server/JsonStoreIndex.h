@@ -20,6 +20,7 @@
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
+#include "Bacsy/Common/MaxVersions.h"
 #include "json/json.h"
 
 namespace Bacsy
@@ -52,9 +53,13 @@ public:
 	bool isDeltaRun(
 			const std::string& source,
 			const std::string& dir);
+
+	bool needsClipping(const std::string& source, Common::MaxVersions maxVersions) const;
 private:
 	void store();
 	void read();
+
+	size_t countVersions(const std::string& source) const;
 
 	Json::Reader reader;
 	Json::StyledWriter writer;

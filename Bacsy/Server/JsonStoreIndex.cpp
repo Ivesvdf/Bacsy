@@ -143,5 +143,30 @@ void JsonStoreIndex::store()
 	out.close();
 }
 
+bool JsonStoreIndex::needsClipping(const std::string& source, Common::MaxVersions maxVersions) const
+{
+	std::cerr << "ACTUAL VERSIONS = " << countVersions(source);
+	if(maxVersions.versionsIsSet() && maxVersions.getVersions() < countVersions(source))
+	{
+		return true;
+	}
+
+	//TODO: Implement for dates
+	return false;
+}
+
+size_t JsonStoreIndex::countVersions(const std::string& source) const
+{
+	const Json::Value sourceValue = root[source];
+
+	for(size_t i = 0; i < sourceValue.size(); i++)
+	{
+		const Json::Value& entry = sourceValue[i];
+		std::cout << "DIR = " << entry["dir"] << std::endl;
+	}
+
+	return sourceValue.size();
+}
+
 }
 }

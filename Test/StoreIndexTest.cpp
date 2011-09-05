@@ -19,6 +19,7 @@
 #include "Poco/TemporaryFile.h"
 #include "Poco/Timestamp.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
+#include "Bacsy/Common/MaxVersions.h"
 
 using namespace Bacsy::Server;
 
@@ -58,6 +59,24 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_4"));
 	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
 	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
+}
+
+TEST( StoreIndexTest, ClippingTest )
+{
+	Poco::TemporaryFile tmp;
+
+	JsonStoreIndex store(tmp.path());
+	store.addNewFullRun("aSource", "aSource_1");
+	store.addNewFullRun("aSource", "aSource_2");
+	store.addNewFullRun("aSource", "aSource_3");
+
+	Bacsy::Common::MaxVersions maxVersions;
+	maxVersions.setVersions(4);
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions));
+	maxVersions.setVersions(3);
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions));
+	maxVersions.setVersions(2);
+	ASSERT_TRUE(store.needsClipping("aSource", maxVersions));
 }
 
 TEST( StoreIndexTest, ReloadJsonTest )
