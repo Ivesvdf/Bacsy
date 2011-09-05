@@ -91,22 +91,12 @@ private:
 	unsigned int priority;
 };
 
-bool StoreManager::notReadyForStoring(const Store* store)
-{
-	return !store->readyForStoring();
-}
-
-bool StoreManager::notEnabled(const Store* store)
-{
-	return !store->getEnabled();
-}
-
 std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
 {
 	std::list<Store*> copy(stores);
 	copy.remove_if(StorePriorityLower(minPriority));
-	copy.remove_if(notReadyForStoring);
-	copy.remove_if(notEnabled);
+	copy.remove_if(std::not1(std::mem_fun(&Store::readyForStoring)));
+	copy.remove_if(std::not1(std::mem_fun(&Store::getEnabled)));
 
 	return copy;
 }
