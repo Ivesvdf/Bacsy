@@ -70,6 +70,8 @@ public:
 
 		bool versionsIsSet() const;
 		bool timeIsSet() const;
+
+		std::string toString() const;
 	private:
 		unsigned int versions;
 		Poco::Timespan time;

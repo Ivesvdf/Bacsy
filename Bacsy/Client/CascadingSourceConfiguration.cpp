@@ -110,9 +110,76 @@ ISourceConfiguration::MaxVersions CascadingSourceConfiguration::Section::getMaxV
 
 ISourceConfiguration::VersionsType CascadingSourceConfiguration::Section::getVersions(const std::string& key) const
 {
-	VersionsType t;
+	const std::string stringValue = sourceFile.getCascadingValue<std::string>(
+				name,
+				key);
 
-	return t;
+	std::vector<std::string> parts =  StringUtils::split(stringValue, ' '); 
+	std::transform(parts.begin(), parts.end(), parts.begin(), StringUtils::toLower);
+
+	const size_t count = parts.size();
+
+	if((count != 2 && count != 5) || (count == 5 && (parts[2] != "and" && parts[2] != "or")))
+	{
+		throw std::runtime_error("Invalid number of parts in " + key + " string: " + stringValue);
+	}
+
+	const size_t segments = (count == 2) ? 1 : 2;
+	VersionsType rv;
+
+	for(size_t i = 0; i < segments; i++)
+	{
+		size_t offset = (i*3);
+
+		const std::string& first = parts[offset];
+		const std::string& second = parts[offset+1];
+
+		if(!StringUtils::isInteger(first))
+		{
+			throw std::runtime_error("Invalid integer " + first + " in VersionSpec " + stringValue);
+		}
+
+		const size_t number = StringUtils::fromString<size_t>(first);
+
+		if(second == "versions")
+		{
+			if(rv.versionsIsSet())
+				throw std::runtime_error("Versions is already set in VersionSpec " + stringValue);
+
+			rv.setVersions(number);
+		}
+		else
+		{
+			Poco::Timespan time;
+			if(second == "hours")
+			{
+				time = number*Poco::Timespan::HOURS;
+			}
+			else if(second == "days")
+			{
+				time = number*Poco::Timespan::DAYS;
+			}
+			else if(second == "months")
+			{
+				time = number*30*Poco::Timespan::DAYS;
+			}
+			else if(second == "years")
+			{
+				time = number*365*Poco::Timespan::DAYS;
+			}
+			else
+			{
+				throw std::runtime_error("Invalid qualifier " + second + " in VersionSpec " + stringValue);
+			}
+
+			if(rv.timeIsSet())
+				throw std::runtime_error("Time is already set in VersionSpec " + stringValue);
+
+			rv.setTime(time);
+		}
+	}
+
+	return rv;
 }
 
 unsigned int CascadingSourceConfiguration::Section::getPriority() const

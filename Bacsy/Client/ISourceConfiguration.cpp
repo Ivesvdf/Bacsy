@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
+#include "Poco/DateTimeFormatter.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Client/ISourceConfiguration.h"
 
 namespace Bacsy
@@ -53,6 +55,27 @@ bool ISourceConfiguration::VersionsType::versionsIsSet() const
 bool ISourceConfiguration::VersionsType::timeIsSet() const 
 {
 	return time != 0; 
+}
+
+std::string ISourceConfiguration::VersionsType::toString() const
+{
+	std::string rv;
+	if(versionsIsSet())
+	{
+		rv += StringUtils::toString(versions) + " versions";
+	}
+
+	if(versionsIsSet() && timeIsSet())
+	{
+		rv += " and ";
+	}
+
+	if(timeIsSet())
+	{
+		rv += Poco::DateTimeFormatter::format(time, "%d days");
+	}
+
+	return rv;
 }
 
 }
