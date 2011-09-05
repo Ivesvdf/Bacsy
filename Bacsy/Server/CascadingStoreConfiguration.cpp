@@ -84,6 +84,15 @@ bool CascadingStoreConfiguration::Section::getAlwaysPresent() const
 			"True"));
 }
 
+
+bool CascadingStoreConfiguration::Section::getEnabled() const
+{
+	return toBool(storeConfig.getCascadingValue<std::string>(
+			name,
+			"Enabled",
+			"True"));
+}
+
 unsigned int CascadingStoreConfiguration::Section::getMinPriorityForStoring() const
 {
 	return storeConfig.getCascadingValue<unsigned int>(

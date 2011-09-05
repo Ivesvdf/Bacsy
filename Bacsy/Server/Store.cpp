@@ -38,6 +38,7 @@ Store::Store(const IStoreConfiguration& configuration):
 	location(StringUtils::rstrip(configuration.getLocation(), "/\\") + "/"),
 	alwaysPresent(configuration.getAlwaysPresent()),
 	minPriorityForStoring(configuration.getMinPriorityForStoring()),
+	enabled(configuration.getEnabled()),
 	baseLocation(location)
 
 {
@@ -150,6 +151,11 @@ std::string Store::getLocation() const
 bool Store::getAlwaysPresent() const
 {
 	return alwaysPresent;
+}
+
+bool Store::getEnabled() const
+{
+	return enabled;
 }
 
 }

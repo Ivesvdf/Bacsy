@@ -61,6 +61,7 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 			unsigned int getMinPriorityForStoring() const;
 			std::string getLocation() const;
 			bool getAlwaysPresent() const;
+			bool getEnabled() const;
 		private:
 			std::string name;
 			const CascadingStoreConfiguration& storeConfig;

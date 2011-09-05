@@ -40,3 +40,12 @@ AlwaysPresent
 
   If AlwaysPresent is False and the directory in ``Location`` cannot be found,
   this directory will not be created and the store will be silently ignored. 
+
+Enabled
+  **Default Value:** True
+
+  **Domain:** { True, False }
+
+  **Semantics:** If a store is disabled, nothing will ever be stored to it.
+  Use this switch to keep the configuration for a store, without actually
+  using it. 

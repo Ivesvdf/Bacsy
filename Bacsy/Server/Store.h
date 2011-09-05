@@ -62,6 +62,7 @@ public:
 	unsigned int getMinPriorityForStoring() const;
 	std::string getLocation() const;
 	bool getAlwaysPresent() const;
+	bool getEnabled() const;
 private:
 	std::string getRunDirectory(
 			const std::string& host,
@@ -73,6 +74,7 @@ private:
 	const std::string location;
 	const bool alwaysPresent;
 	const unsigned int minPriorityForStoring;
+	const bool enabled;
 
 	Poco::File baseLocation;
 

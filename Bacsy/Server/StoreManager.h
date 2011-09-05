@@ -40,6 +40,7 @@ public:
 private:
 	static std::list<Store*> buildStores(const CascadingStoreConfiguration& configuration);
 	static bool notReadyForStoring(const Store* store);
+	static bool notEnabled(const Store* store);
 	const CascadingStoreConfiguration& configuration;
 	std::list<Store*> stores;
 };

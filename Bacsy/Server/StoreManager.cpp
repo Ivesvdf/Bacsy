@@ -60,7 +60,6 @@ std::list<Store*> StoreManager::buildStores(const CascadingStoreConfiguration& c
 	std::list<Store*> stores;
 	stores.resize(storeNames.size());
 
-
 	StorenameToStorer storenameToStore(configuration); 
 
 	std::transform(
@@ -97,11 +96,17 @@ bool StoreManager::notReadyForStoring(const Store* store)
 	return !store->readyForStoring();
 }
 
+bool StoreManager::notEnabled(const Store* store)
+{
+	return !store->getEnabled();
+}
+
 std::list<Store*> StoreManager::getStores(unsigned int minPriority) const
 {
 	std::list<Store*> copy(stores);
 	copy.remove_if(StorePriorityLower(minPriority));
 	copy.remove_if(notReadyForStoring);
+	copy.remove_if(notEnabled);
 
 	return copy;
 }
