@@ -17,6 +17,7 @@
  */
 
 #include <fstream>
+#include <set>
 #include <functional>
 #include <algorithm>
 #include "Poco/Environment.h"
@@ -37,7 +38,50 @@ using namespace Rules;
 CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& directory):
 	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/sources.config")))
 {
+	checkKeys();
+}
 
+void CascadingSourceConfiguration::checkKeys() const
+{
+	std::set<std::string> validKeys;
+	std::set<std::string> invalidKeys;
+	validKeys.insert("Include");
+	validKeys.insert("Exclude");
+	validKeys.insert("Priority");
+	validKeys.insert("MinBackups");
+	validKeys.insert("MaxBackups");
+	validKeys.insert("DryPrintRun");
+	validKeys.insert("Enabled");
+	validKeys.insert("PreferredOrder");
+	validKeys.insert("Distribution");
+	validKeys.insert("ExecuteAt");
+	validKeys.insert("HostIdentification");
+
+	std::list<std::string> sections = config.sections();
+
+	for(std::list<std::string>::iterator sectionIt = sections.begin();
+			sectionIt != sections.end();
+			++sectionIt)
+	{
+		std::list<std::string> keys = config.keys(*sectionIt);
+
+		for(std::list<std::string>::iterator keyIterator = keys.begin();
+				keyIterator != keys.end();
+				++keyIterator)
+		{
+			if(validKeys.count(*keyIterator) == 0)
+			{
+				invalidKeys.insert(*keyIterator);
+			}
+		}
+	}
+
+	if(invalidKeys.size() > 0)
+	{
+		throw std::runtime_error(
+			"Unknown key(s) in source configuration: " 
+			+ StringUtils::join(invalidKeys.begin(), invalidKeys.end(), ", "));
+	}
 }
 
 std::list<std::string> CascadingSourceConfiguration::getSources() const

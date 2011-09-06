@@ -76,6 +76,9 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 		};
 
 		const Section getSource(const std::string& name) const;
+
+	private:
+		void checkKeys() const;
 };
 
 }
