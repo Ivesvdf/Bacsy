@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <vector>
 #include <gtest/gtest.h>
 #include "Bacsy/Common/StringUtils.h"
 
@@ -94,4 +95,16 @@ TEST( StringUtilsTest, ToLowerTest)
 	ASSERT_EQ("bla", StringUtils::toLower("blA"));
 	ASSERT_EQ("bla", StringUtils::toLower("BLA"));
 	ASSERT_EQ("one two three", StringUtils::toLower("one Two three"));
+}
+
+TEST( StringUtilsTest, JoinTest)
+{
+	std::vector<std::string> vec;
+	vec.push_back("Good");
+	vec.push_back("morning");
+	vec.push_back("to");
+	vec.push_back("you!");
+
+
+	ASSERT_EQ("Good morning to you!", StringUtils::join(vec.begin(), vec.end(), " "));
 }

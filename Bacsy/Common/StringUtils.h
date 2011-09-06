@@ -47,6 +47,8 @@ public:
 	static std::vector<std::string> split(const std::string& input, const char delim);
 	static std::vector<std::string> split(const std::string& input, const std::string& delim);
 	
+	template<typename ITERATOR>
+	static std::string join(ITERATOR first, ITERATOR end, const std::string& glue);
 
 	static std::string toLower(const std::string& input);
 
@@ -68,6 +70,21 @@ public:
 		return t;
 	}
 };
+
+template<typename ITERATOR>
+std::string StringUtils::join(ITERATOR first, ITERATOR end, const std::string& glue)
+{
+	std::string rv;
+	for(ITERATOR it = first; it != end; ++it)
+	{
+		if(it != first)
+			rv += glue;
+
+		rv += *it;
+	}
+
+	return rv;
+}
 
 }
 }
