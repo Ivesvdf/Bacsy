@@ -110,7 +110,7 @@ MaxVersions CascadingSourceConfiguration::Section::getMaxVersions() const
 
 VersionsType CascadingSourceConfiguration::Section::getVersions(const std::string& key) const
 {
-	const std::string stringValue = sourceFile.getCascadingValue<std::string>(
+	const std::string stringValue = config.getCascadingValue<std::string>(
 				name,
 				key);
 
