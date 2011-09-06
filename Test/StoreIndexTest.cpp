@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include "Poco/TemporaryFile.h"
 #include "Poco/Timestamp.h"
+#include "Poco/DateTime.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 #include "Bacsy/Common/MaxVersions.h"
 
@@ -66,17 +67,28 @@ TEST( StoreIndexTest, ClippingTest )
 	Poco::TemporaryFile tmp;
 
 	JsonStoreIndex store(tmp.path());
-	store.addNewFullRun("aSource", "aSource_1", Poco::Timestamp());
-	store.addNewFullRun("aSource", "aSource_2", Poco::Timestamp());
-	store.addNewFullRun("aSource", "aSource_3", Poco::Timestamp());
+	store.addNewFullRun("aSource", "aSource_1", Poco::DateTime(2011, 9, 3, 19, 00, 00).timestamp());
+	store.addNewFullRun("aSource", "aSource_2", Poco::DateTime(2011, 9, 4, 19, 00, 00).timestamp());
+	store.addNewFullRun("aSource", "aSource_3", Poco::DateTime(2011, 9, 5, 19, 00, 00).timestamp());
 
+	Poco::Timestamp now = Poco::DateTime(2011, 9, 6, 19, 00, 00).timestamp();
 	Bacsy::Common::MaxVersions maxVersions;
 	maxVersions.setVersions(4);
-	ASSERT_FALSE(store.needsClipping("aSource", maxVersions));
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions, now));
 	maxVersions.setVersions(3);
-	ASSERT_FALSE(store.needsClipping("aSource", maxVersions));
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions, now));
 	maxVersions.setVersions(2);
-	ASSERT_TRUE(store.needsClipping("aSource", maxVersions));
+	ASSERT_TRUE(store.needsClipping("aSource", maxVersions, now));
+
+	Bacsy::Common::MaxVersions maxVersions2;
+	maxVersions2.setTime(Poco::Timespan(5*Poco::Timespan::DAYS));
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions2, now));
+	maxVersions2.setTime(Poco::Timespan(4*Poco::Timespan::DAYS));
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions2, now));
+	maxVersions2.setTime(Poco::Timespan(3*Poco::Timespan::DAYS));
+	ASSERT_FALSE(store.needsClipping("aSource", maxVersions2, now));
+	maxVersions2.setTime(Poco::Timespan(2*Poco::Timespan::DAYS));
+	ASSERT_TRUE(store.needsClipping("aSource", maxVersions2, now));
 }
 
 TEST( StoreIndexTest, ReloadJsonTest )

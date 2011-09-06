@@ -54,7 +54,10 @@ public:
 			const std::string& source,
 			const std::string& dir);
 
-	bool needsClipping(const std::string& source, Common::MaxVersions maxVersions) const;
+	bool needsClipping(
+			const std::string& source,
+			const Common::MaxVersions& maxVersions,
+			const Poco::Timestamp& now) const;
 private:
 	void store();
 	void read();
