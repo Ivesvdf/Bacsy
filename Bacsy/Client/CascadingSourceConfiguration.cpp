@@ -63,7 +63,7 @@ CascadingSourceConfiguration::Section::Section(
 		const std::string& name,
 		const CascadingSourceConfiguration& config):
 	name(name),
-	sourceFile(config)
+	config(config)
 {
 }
 
@@ -74,7 +74,7 @@ std::string CascadingSourceConfiguration::Section::getName() const
 
 ISourceConfiguration::IncludeCollection CascadingSourceConfiguration::Section::getIncludes() const
 {
-	return StringUtils::split(sourceFile.getCascadingValue<std::string>(
+	return StringUtils::split(config.getCascadingValue<std::string>(
 				name,
 				"Include"), 
 			'\n'); 
@@ -83,7 +83,7 @@ ISourceConfiguration::IncludeCollection CascadingSourceConfiguration::Section::g
 ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::getExcludes() const
 {
 	ExcludeCollection rv;
-	const std::vector<std::string> stringExcludes = StringUtils::split(sourceFile.getCascadingValue<std::string>(
+	const std::vector<std::string> stringExcludes = StringUtils::split(config.getCascadingValue<std::string>(
 				name,
 				"Exclude"), 
 			'\n'); 
@@ -100,7 +100,7 @@ ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::g
 
 unsigned int CascadingSourceConfiguration::Section::getPriority() const
 {
-	return sourceFile.getCascadingValue<unsigned int>(
+	return config.getCascadingValue<unsigned int>(
 			name,
 			"Priority",
 			5);
@@ -108,7 +108,7 @@ unsigned int CascadingSourceConfiguration::Section::getPriority() const
 
 unsigned int CascadingSourceConfiguration::Section::getMinBackups() const
 {
-	return sourceFile.getCascadingValue<unsigned int>(
+	return config.getCascadingValue<unsigned int>(
 			name,
 			"MinBackups",
 			1);
@@ -116,7 +116,7 @@ unsigned int CascadingSourceConfiguration::Section::getMinBackups() const
 
 unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 {
-	return sourceFile.getCascadingValue<unsigned int>(
+	return config.getCascadingValue<unsigned int>(
 			name,
 			"MaxBackups",
 			std::numeric_limits<unsigned int>::max());
@@ -124,7 +124,7 @@ unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 
 bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 {
-	return sourceFile.toBool(sourceFile.getCascadingValue<std::string>(
+	return config.toBool(config.getCascadingValue<std::string>(
 			name,
 			"DryPrintRun",
 			"False"));
@@ -132,7 +132,7 @@ bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 
 bool CascadingSourceConfiguration::Section::getEnabled() const
 {
-	return toBool(sourceFile.getCascadingValue<std::string>(
+	return toBool(config.getCascadingValue<std::string>(
 			name,
 			"Enabled",
 			"True"));
@@ -140,7 +140,7 @@ bool CascadingSourceConfiguration::Section::getEnabled() const
 
 ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getPreferredOrder() const
 {
-	const std::string preferredOrderString = sourceFile.getCascadingValue<std::string>(
+	const std::string preferredOrderString = config.getCascadingValue<std::string>(
 			name,
 			"PreferredOrder",
 			"this, other");
@@ -174,7 +174,7 @@ ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getP
 
 ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDistribution() const
 {
-	std::string distribution = sourceFile.getCascadingValue<std::string>(
+	std::string distribution = config.getCascadingValue<std::string>(
 			name,
 			"Distribution",
 			"focus");
@@ -195,7 +195,7 @@ ISourceConfiguration::Distribution CascadingSourceConfiguration::Section::getDis
 
 ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTable() const
 {
-	std::string timerString = sourceFile.getCascadingValue<std::string>(
+	std::string timerString = config.getCascadingValue<std::string>(
 			name,
 			"ExecuteAt",
 			"at start");
@@ -206,7 +206,7 @@ ISourceConfiguration::TimeTable CascadingSourceConfiguration::Section::getTimeTa
 
 std::string CascadingSourceConfiguration::Section::getHostIdentification() const
 {
-	return sourceFile.getCascadingValue<std::string>(
+	return config.getCascadingValue<std::string>(
 			name,
 			"HostIdentification",
 			Poco::Environment::nodeName());

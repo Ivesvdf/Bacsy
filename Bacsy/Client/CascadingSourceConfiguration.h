@@ -72,7 +72,7 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			std::string getHostIdentification() const;
 		private:
 			std::string name;
-			const CascadingSourceConfiguration& sourceFile;
+			const CascadingSourceConfiguration& config;
 		};
 
 		const Section getSource(const std::string& name) const;
