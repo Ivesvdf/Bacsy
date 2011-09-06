@@ -66,9 +66,9 @@ TEST( StoreIndexTest, ClippingTest )
 	Poco::TemporaryFile tmp;
 
 	JsonStoreIndex store(tmp.path());
-	store.addNewFullRun("aSource", "aSource_1");
-	store.addNewFullRun("aSource", "aSource_2");
-	store.addNewFullRun("aSource", "aSource_3");
+	store.addNewFullRun("aSource", "aSource_1", Poco::Timestamp());
+	store.addNewFullRun("aSource", "aSource_2", Poco::Timestamp());
+	store.addNewFullRun("aSource", "aSource_3", Poco::Timestamp());
 
 	Bacsy::Common::MaxVersions maxVersions;
 	maxVersions.setVersions(4);
