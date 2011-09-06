@@ -47,11 +47,15 @@ void JsonStoreIndex::read()
 	}	
 }
 
-void JsonStoreIndex::addNewFullRun(const std::string& source, const std::string& directory)
+void JsonStoreIndex::addNewFullRun(
+		const std::string& source,
+		const std::string& directory,
+		const Poco::Timestamp& time)
 {
 	Json::Value insert;
 	insert["type"] = "full";
 	insert["dir"] = directory;
+	insert["time"] = Json::Int64(time.utcTime());
 
 	root[source].append(insert);
 
@@ -61,12 +65,14 @@ void JsonStoreIndex::addNewFullRun(const std::string& source, const std::string&
 void JsonStoreIndex::addNewDeltaRun(
 		const std::string& source,
 		const std::string& directory,
-		const std::string& builtFromDir)
+		const std::string& builtFromDir,
+		const Poco::Timestamp& time)
 {
 	Json::Value insert;
 	insert["type"] = "delta";
 	insert["dir"] = directory;
 	insert["builtFromDir"] = builtFromDir;
+	insert["time"] = Json::Int64(time.utcTime());
 
 	root[source].append(insert);
 

@@ -22,6 +22,7 @@
 #include "Poco/Environment.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/Exception.h"
+#include "Poco/Timestamp.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
 #include "Poco/Net/DialogSocket.h"
@@ -286,6 +287,7 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 			Poco::Timestamp(),
 			"%Y-%m-%dT%H.%M.%S%z");
 	// TODO: Change this to an actual limit...
+	root["time"] = Poco::Timestamp().utcTime();
 	root["maxStoreTimes"] = maxBackups;
 
 	socket.sendMessage(JsonHelper::write(root));

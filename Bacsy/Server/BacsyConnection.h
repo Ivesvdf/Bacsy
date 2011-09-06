@@ -20,6 +20,7 @@
 
 #include <list>
 #include <string>
+#include "Poco/Timestamp.h"
 #include "Poco/Net/StreamSocket.h"
 #include "Poco/Net/DialogSocket.h"
 #include "Poco/Net/TCPServerConnection.h" 
@@ -42,6 +43,7 @@ public:
 			const std::string source,
 			const unsigned int priority,
 			const std::string runID,
+			const Poco::Timestamp& time,
 			const unsigned int maxStoreTimes);
 
 	void storeInStores(
@@ -50,6 +52,7 @@ public:
 			const std::string source,
 			const unsigned int priority,
 			const std::string runID,
+			const Poco::Timestamp& time,
 			std::list<Store*> storeTo,
 			const std::string ancestor);
 

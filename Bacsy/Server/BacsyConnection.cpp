@@ -26,6 +26,7 @@
 #include "Poco/Net/SocketStream.h"
 #include "Poco/Environment.h"
 #include "Poco/StreamCopier.h"
+#include "Poco/Timestamp.h"
 #include "woodcutter/woodcutter.h"
 #include "json/json.h"
 #include "Bacsy/Common/Functional.h"
@@ -81,6 +82,7 @@ void BacsyConnection::run()
 					root["source"].asString(),
 					root["priority"].asUInt(),
 					root["runID"].asString(),
+					Poco::Timestamp::fromUtcTime(root["time"].asInt64()),
 					root["maxStoreTimes"].asUInt());
 		}
 		else
@@ -106,6 +108,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		const std::string source,
 		const unsigned int priority,
 		const std::string runID,
+		const Poco::Timestamp& time,
 		const unsigned int maxStoreTimes)
 {
 	LOGI("Storing backup for " + host);
@@ -155,7 +158,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		storeInStores(ds, host, source, priority, runID, sendTo, ancestor);
+		storeInStores(ds, host, source, priority, runID, time, sendTo, ancestor);
 		storesSentTo += sendTo.size();
 
 		for(StorePointerList::iterator it = sendTo.begin();
@@ -189,6 +192,7 @@ void BacsyConnection::storeInStores(
 		const std::string source,
 		const unsigned int priority,
 		const std::string runID,
+		const Poco::Timestamp& time,
 		std::list<Store*> storeTo,
 		const std::string ancestor)
 {
@@ -264,7 +268,7 @@ void BacsyConnection::storeInStores(
 					it != storeTo.end();
 					++it)
 		{
-			(*it)->newCompleteRun(host, source, runID);
+			(*it)->newCompleteRun(host, source, runID, time);
 		}
 
 	}

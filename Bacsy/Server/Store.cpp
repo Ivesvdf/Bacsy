@@ -20,6 +20,7 @@
 #include <utility>
 #include <functional>
 #include "Poco/File.h"
+#include "Poco/Timestamp.h"
 #include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
 #include "Bacsy/Common/Functional.h"
@@ -63,11 +64,12 @@ std::string Store::getAncestorForNewRun(const std::string& ancestor)
 void Store::newCompleteRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID)
+			const std::string& runID,
+			const Poco::Timestamp& time)
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
-	storeIndex->addNewFullRun(source, getRunDirectory(host, source, runID));
+	storeIndex->addNewFullRun(source, getRunDirectory(host, source, runID), time);
 }
 
 std::string Store::getRunDirectory(

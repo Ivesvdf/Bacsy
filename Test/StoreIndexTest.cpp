@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include "Poco/TemporaryFile.h"
+#include "Poco/Timestamp.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 
 using namespace Bacsy::Server;
@@ -28,10 +29,10 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 	JsonStoreIndex store(tmp.path());
 	
 	ASSERT_EQ("", store.getLastFullRun("aSource"));
-	store.addNewFullRun("aSource", "aSource_1");
+	store.addNewFullRun("aSource", "aSource_1", Poco::Timestamp());
 	ASSERT_EQ("aSource_1", store.getLastFullRun("aSource"));
 	
-	store.addNewDeltaRun("aSource", "aSource_2", "aSource_1");
+	store.addNewDeltaRun("aSource", "aSource_2", "aSource_1", Poco::Timestamp());
 	ASSERT_EQ("aSource_1", store.getLastFullRun("aSource"));
 
 	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_2"));
@@ -39,16 +40,16 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 	ASSERT_FALSE(store.isDeltaRun("aSource", "aSource_1"));
 	ASSERT_TRUE(store.isDeltaRun("aSource", "aSource_2"));
 
-	store.addNewDeltaRun("aSource", "aSource_3", "aSource_1");
-	store.addNewDeltaRun("aSource", "aSource_4", "aSource_1");
-	store.addNewDeltaRun("aSource", "aSource_5", "aSource_1");
-	store.addNewDeltaRun("aSource", "aSource_6", "aSource_1");
+	store.addNewDeltaRun("aSource", "aSource_3", "aSource_1", Poco::Timestamp());
+	store.addNewDeltaRun("aSource", "aSource_4", "aSource_1", Poco::Timestamp());
+	store.addNewDeltaRun("aSource", "aSource_5", "aSource_1", Poco::Timestamp());
+	store.addNewDeltaRun("aSource", "aSource_6", "aSource_1", Poco::Timestamp());
 
-	store.addNewFullRun("aSource", "aSource_7");
+	store.addNewFullRun("aSource", "aSource_7", Poco::Timestamp());
 
-	store.addNewDeltaRun("aSource", "aSource_8", "aSource_7");
-	store.addNewDeltaRun("aSource", "aSource_9", "aSource_7");
-	store.addNewDeltaRun("aSource", "aSource_10", "aSource_7");
+	store.addNewDeltaRun("aSource", "aSource_8", "aSource_7", Poco::Timestamp());
+	store.addNewDeltaRun("aSource", "aSource_9", "aSource_7", Poco::Timestamp());
+	store.addNewDeltaRun("aSource", "aSource_10", "aSource_7", Poco::Timestamp());
 
 	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_8"));
 	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_9"));
@@ -66,20 +67,20 @@ TEST( StoreIndexTest, ReloadJsonTest )
 	{
 		JsonStoreIndex storer(tmp.path());
 
-		storer.addNewFullRun("aSource", "aSource_1");
-		storer.addNewDeltaRun("aSource", "aSource_2", "aSource_1");
+		storer.addNewFullRun("aSource", "aSource_1", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_2", "aSource_1", Poco::Timestamp());
 
 
-		storer.addNewDeltaRun("aSource", "aSource_3", "aSource_1");
-		storer.addNewDeltaRun("aSource", "aSource_4", "aSource_1");
-		storer.addNewDeltaRun("aSource", "aSource_5", "aSource_1");
-		storer.addNewDeltaRun("aSource", "aSource_6", "aSource_1");
+		storer.addNewDeltaRun("aSource", "aSource_3", "aSource_1", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_4", "aSource_1", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_5", "aSource_1", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_6", "aSource_1", Poco::Timestamp());
 
-		storer.addNewFullRun("aSource", "aSource_7");
+		storer.addNewFullRun("aSource", "aSource_7", Poco::Timestamp());
 
-		storer.addNewDeltaRun("aSource", "aSource_8", "aSource_7");
-		storer.addNewDeltaRun("aSource", "aSource_9", "aSource_7");
-		storer.addNewDeltaRun("aSource", "aSource_10", "aSource_7");
+		storer.addNewDeltaRun("aSource", "aSource_8", "aSource_7", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_9", "aSource_7", Poco::Timestamp());
+		storer.addNewDeltaRun("aSource", "aSource_10", "aSource_7", Poco::Timestamp());
 	}
 	{
 		JsonStoreIndex loader(tmp.path());

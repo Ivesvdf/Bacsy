@@ -18,6 +18,7 @@
 #ifndef JSON_STORE_INDEX
 #define JSON_STORE_INDEX
 
+#include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "json/json.h"
 
@@ -33,12 +34,14 @@ public:
 
 	void addNewFullRun(
 			const std::string& source,
-			const std::string& directory);
+			const std::string& directory,
+			const Poco::Timestamp& time);
 
 	void addNewDeltaRun(
 			const std::string& source,
 			const std::string& directory,
-			const std::string& builtFromDir);
+			const std::string& builtFromDir,
+			const Poco::Timestamp& time);
 
 	std::string getCorrespondingFullRunForDelta(
 			const std::string& source,

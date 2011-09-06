@@ -23,6 +23,7 @@
 #include "Poco/FileStream.h"
 #include "Poco/Path.h"
 #include "Poco/Mutex.h"
+#include "Poco/Timestamp.h"
 #include "Poco/File.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 #include "Bacsy/Server/IStoreConfiguration.h"
@@ -51,7 +52,8 @@ public:
 	void newCompleteRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID);
+			const std::string& runID,
+			const Poco::Timestamp& time);
 
 
 	bool readyForStoring() const;
