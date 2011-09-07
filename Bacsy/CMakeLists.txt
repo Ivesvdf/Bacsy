@@ -17,10 +17,8 @@ set(BACSY_COMMON_SOURCE_FILES
                  Client/CascadingSourceConfiguration
                  Client/ISourceConfiguration
                  Client/Source
-				 Client/StoreMessage
                  Client/TimeSchedule
                  Client/TimerStringParser
-				 Common/AMessage
                  Common/ArgParsingUtils
                  Common/CascadingFileConfiguration
                  Common/ConcurrentMap
@@ -32,6 +30,8 @@ set(BACSY_COMMON_SOURCE_FILES
                  Common/JsonHelper
 				 Common/PocoFile
                  Common/StringUtils
+				 Messages/AMessage
+				 Messages/StoreMessage
                  Rules/ExclusionRule
                  Rules/ExclusionStringParser
                  Rules/ExclusionSubRule

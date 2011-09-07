@@ -18,30 +18,37 @@
 #ifndef STOREMESSAGE_H
 #define STOREMESSAGE_H
 
+#include "json/json.h"
 #include "Poco/Timestamp.h"
-#include "Bacsy/Common/AMessage.h"
+#include "Bacsy/Messages/AMessage.h"
 
 namespace Bacsy
 {
-namespace Client
+namespace Messages
 {
 
-class StoreMessage : Bacsy::Common::AMessage
+class StoreMessage : AMessage
 {
 	StoreMessage(const std::string& hostIdentification,
 			const std::string& sourceName,
 			const unsigned int priority,
 			const unsigned int maxStoreTimes);
 
+	StoreMessage(const Json::Value& root);
+
+	const std::string getHostIdentification() const { return hostIdentification; }
+	const std::string getSourceName() const { return sourceName; }
+	const unsigned int getPriority() const { return priority; }
+	const Poco::Timestamp getTime() const { return time; }
+	const std::string getRunID() const { return runID; }
+	const unsigned int getMaxStoreTimes() const { return maxStoreTimes; }
 private:
 	const std::string hostIdentification;
 	const std::string sourceName;
 	const unsigned int priority;
-	Poco::Timestamp time;
+	const Poco::Timestamp time;
 	const std::string runID;
 	const unsigned int maxStoreTimes;
-
-
 };
 
 

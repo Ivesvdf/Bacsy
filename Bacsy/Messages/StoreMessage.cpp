@@ -16,11 +16,11 @@
  */
 
 #include "Poco/DateTimeFormatter.h"
-#include "Bacsy/Client/StoreMessage.h"
+#include "Bacsy/Messages/StoreMessage.h"
 
 namespace Bacsy
 {
-namespace Client
+namespace Messages
 {
 
 StoreMessage::StoreMessage(const std::string& hostIdentification,
@@ -40,6 +40,18 @@ StoreMessage::StoreMessage(const std::string& hostIdentification,
 {
 
 
+}
+
+StoreMessage::StoreMessage(const Json::Value& root):
+	AMessage(root["type"].asString()),
+	hostIdentification(root["host"].asString()),
+	sourceName(root["source"].asString()),
+	priority(root["priority"].asUInt()),
+	time(Poco::Timestamp::fromUtcTime(root["time"].asInt64())),
+	runID(root["runID"].asString()),
+	maxStoreTimes(root["maxStoreTimes"].asUInt())
+{
+	
 }
 
 }

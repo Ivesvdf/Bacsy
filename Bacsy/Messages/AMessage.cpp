@@ -15,26 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AMESSAGE_H
-#define AMESSAGE_H
-
-#include <string>
+#include "Bacsy/Messages/AMessage.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Messages
 {
 
-class AMessage
+AMessage::AMessage(const std::string& type)
+		: type(type)
 {
-public:
-	AMessage(const std::string& type);
-
-protected:
-	const std::string type;
-};
 
 
 }
 }
-#endif
+}
