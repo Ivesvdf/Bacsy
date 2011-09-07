@@ -53,22 +53,10 @@ public:
 	static std::string toLower(const std::string& input);
 
 	template<typename T>
-	static std::string toString(const T& t)
-	{
-		std::stringstream ss;
-		ss << t;
-		return ss.str();
-	}
+	static std::string toString(const T& t);
 
 	template<typename T>
-	static T fromString(const std::string& s)
-	{
-		std::stringstream ss;
-		T t;
-		ss << s;
-		ss >> t;
-		return t;
-	}
+	static T fromString(const std::string& s);
 };
 
 template<typename ITERATOR>
@@ -84,6 +72,24 @@ std::string StringUtils::join(ITERATOR first, ITERATOR end, const std::string& g
 	}
 
 	return rv;
+}
+
+template<typename T>
+std::string StringUtils::toString(const T& t)
+{
+	std::stringstream ss;
+	ss << t;
+	return ss.str();
+}
+
+template<typename T>
+T StringUtils::fromString(const std::string& s)
+{
+	std::stringstream ss;
+	T t;
+	ss << s;
+	ss >> t;
+	return t;
 }
 
 }
