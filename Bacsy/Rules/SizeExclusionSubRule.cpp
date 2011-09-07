@@ -36,6 +36,11 @@ SizeExclusionSubRule::SizeExclusionSubRule(const Poco::File::FileSize sizeInByte
 
 bool SizeExclusionSubRule::matchWithoutNegate(const IFile& inputFile)
 {
+	if(!inputFile.isFile())
+	{
+		return false;
+	}
+
 	if(theOperator == LESS_THAN)
 		return inputFile.getSize() < sizeInBytes;
 	else
