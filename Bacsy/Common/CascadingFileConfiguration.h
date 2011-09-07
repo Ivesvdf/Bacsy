@@ -20,6 +20,7 @@
 #define CASCADING_FILE_CONFIGURATION
 
 #include <list>
+#include <set>
 #include <fstream>
 #include <limits>
 #include <string>
@@ -64,11 +65,13 @@ class CascadingFileConfiguration
 		}
 
 		static bool toBool(const std::string& input);
+		virtual std::set<std::string> getValidKeys() const = 0;
 
 		std::ifstream inputStream;	
 		const bool configIsLoaded;
 		ConfigurationFile config;
 		const std::string globalSectionName;
+		void checkKeys() const;
 };
 
 }

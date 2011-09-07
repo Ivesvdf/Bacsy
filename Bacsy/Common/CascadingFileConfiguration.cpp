@@ -35,8 +35,40 @@ CascadingFileConfiguration::CascadingFileConfiguration(const std::string& filena
 	config(inputStream),
 	globalSectionName("global")
 {
-
 }
+
+void CascadingFileConfiguration::checkKeys() const
+{
+	std::set<std::string> validKeys = getValidKeys();
+	std::set<std::string> invalidKeys;
+
+	std::list<std::string> sections = config.sections();
+
+	for(std::list<std::string>::iterator sectionIt = sections.begin();
+			sectionIt != sections.end();
+			++sectionIt)
+	{
+		std::list<std::string> keys = config.keys(*sectionIt);
+
+		for(std::list<std::string>::iterator keyIterator = keys.begin();
+				keyIterator != keys.end();
+				++keyIterator)
+		{
+			if(validKeys.count(*keyIterator) == 0)
+			{
+				invalidKeys.insert(*keyIterator);
+			}
+		}
+	}
+
+	if(invalidKeys.size() > 0)
+	{
+		throw std::runtime_error(
+			"Unknown key(s) in configuration: " 
+			+ StringUtils::join(invalidKeys.begin(), invalidKeys.end(), ", "));
+	}
+}
+
 
 bool CascadingFileConfiguration::toBool(const std::string& input)
 {

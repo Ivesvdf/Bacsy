@@ -35,7 +35,19 @@ using namespace Common;
 CascadingStoreConfiguration::CascadingStoreConfiguration(const std::string& directory):
 	CascadingFileConfiguration((StringUtils::rstrip(directory, "/") + std::string("/stores.config")))
 {
+	checkKeys();
+}
 
+std::set<std::string> CascadingStoreConfiguration::getValidKeys() const
+{
+	std::set<std::string> validKeys;
+
+	validKeys.insert("AlwaysPresent");
+	validKeys.insert("Enabled");
+	validKeys.insert("MinPriorityForStoring");
+	validKeys.insert("Location");
+
+	return validKeys;
 }
 
 std::list<std::string> CascadingStoreConfiguration::getStores() const

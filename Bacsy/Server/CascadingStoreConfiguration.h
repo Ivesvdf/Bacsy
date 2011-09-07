@@ -68,6 +68,9 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 		};
 
 		const Section getStore(const std::string& name) const;
+
+	protected:
+		std::set<std::string> getValidKeys() const;
 };
 
 }

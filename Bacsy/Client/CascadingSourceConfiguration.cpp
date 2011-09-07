@@ -41,10 +41,18 @@ CascadingSourceConfiguration::CascadingSourceConfiguration(const std::string& di
 	checkKeys();
 }
 
-void CascadingSourceConfiguration::checkKeys() const
+
+std::list<std::string> CascadingSourceConfiguration::getSources() const
+{
+	std::list<std::string> sourceNames = getConfig().sections();
+	sourceNames.remove_if(std::bind2nd(std::equal_to<std::string>(), globalSectionName));
+	return sourceNames;
+}
+
+std::set<std::string> CascadingSourceConfiguration::getValidKeys() const
 {
 	std::set<std::string> validKeys;
-	std::set<std::string> invalidKeys;
+
 	validKeys.insert("Include");
 	validKeys.insert("Exclude");
 	validKeys.insert("Priority");
@@ -57,38 +65,7 @@ void CascadingSourceConfiguration::checkKeys() const
 	validKeys.insert("ExecuteAt");
 	validKeys.insert("HostIdentification");
 
-	std::list<std::string> sections = config.sections();
-
-	for(std::list<std::string>::iterator sectionIt = sections.begin();
-			sectionIt != sections.end();
-			++sectionIt)
-	{
-		std::list<std::string> keys = config.keys(*sectionIt);
-
-		for(std::list<std::string>::iterator keyIterator = keys.begin();
-				keyIterator != keys.end();
-				++keyIterator)
-		{
-			if(validKeys.count(*keyIterator) == 0)
-			{
-				invalidKeys.insert(*keyIterator);
-			}
-		}
-	}
-
-	if(invalidKeys.size() > 0)
-	{
-		throw std::runtime_error(
-			"Unknown key(s) in source configuration: " 
-			+ StringUtils::join(invalidKeys.begin(), invalidKeys.end(), ", "));
-	}
-}
-
-std::list<std::string> CascadingSourceConfiguration::getSources() const
-{
-	std::list<std::string> sourceNames = getConfig().sections();
-	sourceNames.remove_if(std::bind2nd(std::equal_to<std::string>(), globalSectionName));
-	return sourceNames;
+	return validKeys;
 }
 
 const CascadingSourceConfiguration::Section CascadingSourceConfiguration::getSource(const std::string& name) const
