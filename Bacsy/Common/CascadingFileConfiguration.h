@@ -47,22 +47,7 @@ class CascadingFileConfiguration
 		T getCascadingValue(
 				const std::string& section,
 				const std::string& keyname, 
-				const T& defaultValue = T()) const
-		{
-			T rv = defaultValue;
-			try
-			{
-				rv = config.get<T>(globalSectionName, keyname, rv);
-			}
-			catch(NoSuchSectionException& e)
-			{
-				// Ignore, global sections aren't obligatory
-			}
-
-			rv = config.get<T>(section, keyname, rv);
-
-			return rv;
-		}
+				const T& defaultValue = T()) const;
 
 		static bool toBool(const std::string& input);
 		virtual std::set<std::string> getValidKeys() const = 0;
@@ -73,6 +58,27 @@ class CascadingFileConfiguration
 		const std::string globalSectionName;
 		void checkKeys() const;
 };
+
+template<typename T>
+T CascadingFileConfiguration::getCascadingValue(
+		const std::string& section,
+		const std::string& keyname, 
+		const T& defaultValue) const
+{
+	T rv = defaultValue;
+	try
+	{
+		rv = config.get<T>(globalSectionName, keyname, rv);
+	}
+	catch(NoSuchSectionException& e)
+	{
+		// Ignore, global sections aren't obligatory
+	}
+
+	rv = config.get<T>(section, keyname, rv);
+
+	return rv;
+}
 
 }
 }
