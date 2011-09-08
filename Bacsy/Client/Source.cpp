@@ -41,6 +41,7 @@
 #include "Bacsy/Common/IFile.h"
 #include "Bacsy/Messages/StoreMessage.h"
 #include "Bacsy/Messages/CanStoreMessage.h"
+#include "Bacsy/Messages/ReadyToStoreMessage.h"
 
 namespace Bacsy
 {
@@ -320,8 +321,17 @@ class CanStoreResponseAccepter
 			try
 			{
 				const Json::Value root = JsonHelper::read(parts[1]);
-				if(root["type"] != "readyToStore" || root["source"] != sourceName)
+				if(root["type"] == "readyToStore")
+				{
+					if(Bacsy::Messages::ReadyToStoreMessage(root).getSource() != sourceName)
+					{
+						return;
+					}
+				}
+				else
+				{
 					return;
+				}
 			}
 			catch(const std::runtime_error& e)
 			{
