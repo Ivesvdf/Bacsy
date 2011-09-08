@@ -25,6 +25,7 @@
 #include "Poco/Net/DialogSocket.h"
 #include "Poco/Net/TCPServerConnection.h" 
 #include "Bacsy/Server/StoreManager.h"
+#include "Bacsy/Messages/StoreMessage.h"
 
 namespace Bacsy
 {
@@ -39,20 +40,11 @@ public:
 	BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager);
 	void storeBackup(
 			Poco::Net::DialogSocket& ds,
-			const std::string host,
-			const std::string source,
-			const unsigned int priority,
-			const std::string runID,
-			const Poco::Timestamp& time,
-			const unsigned int maxStoreTimes);
+			const Bacsy::Messages::StoreMessage& message);
 
 	void storeInStores(
 			Poco::Net::DialogSocket& ds,
-			const std::string host,
-			const std::string source,
-			const unsigned int priority,
-			const std::string runID,
-			const Poco::Timestamp& time,
+			const Bacsy::Messages::StoreMessage& message,
 			std::list<Store*> storeTo,
 			const std::string ancestor);
 

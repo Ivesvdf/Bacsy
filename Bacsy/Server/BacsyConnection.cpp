@@ -76,14 +76,7 @@ void BacsyConnection::run()
 
 		if(root["type"] == "store")
 		{
-			storeBackup(
-					ds,
-					root["host"].asString(),
-					root["source"].asString(),
-					root["priority"].asUInt(),
-					root["runID"].asString(),
-					Poco::Timestamp::fromUtcTime(root["time"].asInt64()),
-					root["maxStoreTimes"].asUInt());
+			storeBackup(ds, Bacsy::Messages::StoreMessage(root));
 		}
 		else
 		{
@@ -104,28 +97,25 @@ void BacsyConnection::run()
 
 
 void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds, 
-		const std::string host,
-		const std::string source,
-		const unsigned int priority,
-		const std::string runID,
-		const Poco::Timestamp& time,
-		const unsigned int maxStoreTimes)
+		const Bacsy::Messages::StoreMessage& message)
 {
-	LOGI("Storing backup for " + host);
+	LOGI("Storing backup for " + message.getHostIdentification());
 
 	// Test if there are any stores available
 	typedef std::list<Store*> StorePointerList;
-	StorePointerList storesToTry = storeManager.getStores(priority);
+	StorePointerList storesToTry = storeManager.getStores(message.getPriority());
 
 	if(storesToTry.empty())
 	{
-		LOGW("No stores found with a MinPriorityForStoring higher than " + StringUtils::toString(priority) + ", cannot possibly accept backup.");
+		LOGW("No stores found with a MinPriorityForStoring higher than " 
+				+ StringUtils::toString(message.getPriority()) 
+				+ ", cannot possibly accept backup.");
 		return;
 	}
 
 	unsigned int storesSentTo = 0;
 
-	while(maxStoreTimes - storesSentTo > 0 && !storesToTry.empty())
+	while(message.getMaxStoreTimes() - storesSentTo > 0 && !storesToTry.empty())
 	{
 		LOGI("Entering");
 		StorePointerList sendTo;
@@ -135,7 +125,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		// Find the ancestor for this store, we'll later on find all stores
 		// that share this ancestor and give them priority (it saves
 		// bandwidth) 
-		const std::string ancestor = store.getAncestorForNewRun(source);
+		const std::string ancestor = store.getAncestorForNewRun(message.getSourceName());
 
 		unsigned int nrAdded = 0;
 
@@ -143,7 +133,8 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != storesToTry.end();
 				++it)
 		{
-			if(ancestor == (*it)->getAncestorForNewRun(source) && nrAdded < maxStoreTimes - storesSentTo)
+			if(ancestor == (*it)->getAncestorForNewRun(message.getSourceName()) 
+					&& nrAdded < message.getMaxStoreTimes() - storesSentTo)
 			{
 				sendTo.push_back(*it);
 				nrAdded++;
@@ -158,7 +149,12 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		storeInStores(ds, host, source, priority, runID, time, sendTo, ancestor);
+		storeInStores(
+				ds,
+				message,
+				sendTo,
+				ancestor);
+
 		storesSentTo += sendTo.size();
 
 		for(StorePointerList::iterator it = sendTo.begin();
@@ -188,16 +184,10 @@ public:
 
 void BacsyConnection::storeInStores(
 		Poco::Net::DialogSocket& ds,
-		const std::string host,
-		const std::string source,
-		const unsigned int priority,
-		const std::string runID,
-		const Poco::Timestamp& time,
+		const Bacsy::Messages::StoreMessage& message,
 		std::list<Store*> storeTo,
 		const std::string ancestor)
 {
-
-
 	if(ancestor.length() == 0)
 	{
 		LOGI("No ancestor");
@@ -225,11 +215,17 @@ void BacsyConnection::storeInStores(
 
 					Poco::File sourceFile = (*it)->getOutputForCompleteFile(
 								originalPath,
-								host,
-								source,
-								runID);
-					Poco::FileOutputStream* fileOutputStream = new Poco::FileOutputStream(sourceFile.path(), std::ios::out | std::ios::trunc);
-					SimpleOStreamStream* outputStream = new SimpleOStreamStream(*fileOutputStream);
+								message.getHostIdentification(),
+								message.getSourceName(),
+								message.getRunID());
+					Poco::FileOutputStream* fileOutputStream 
+						= new Poco::FileOutputStream(
+								sourceFile.path(),
+								std::ios::out | std::ios::trunc);
+
+					SimpleOStreamStream* outputStream 
+						= new SimpleOStreamStream(*fileOutputStream);
+
 					pointers.push_back(FileAssociations(fileOutputStream, outputStream, sourceFile));
 					tee.addOutput(*outputStream);
 				}
@@ -268,7 +264,11 @@ void BacsyConnection::storeInStores(
 					it != storeTo.end();
 					++it)
 		{
-			(*it)->newCompleteRun(host, source, runID, time);
+			(*it)->newCompleteRun(
+					message.getHostIdentification(),
+					message.getSourceName(),
+					message.getRunID(),
+					message.getTime());
 		}
 
 	}
