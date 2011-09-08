@@ -47,18 +47,16 @@ public:
 			const Poco::Path& originalPath,
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID);
+			const Poco::Timestamp& time);
 
 	void newCompleteRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID,
 			const Poco::Timestamp& time);
 
 	void newFullfilesRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID,
 			const std::string& ancestorDirectory,
 			const Poco::Timestamp& time);
 
@@ -75,7 +73,7 @@ private:
 	std::string getRunDirectory(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID);
+			const Poco::Timestamp& time);
 
 	const std::string storeName;
 

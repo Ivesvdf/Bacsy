@@ -42,14 +42,12 @@ public:
 	const std::string getSourceName() const { return sourceName; }
 	const unsigned int getPriority() const { return priority; }
 	const Poco::Timestamp getTime() const { return time; }
-	const std::string getRunID() const { return runID; }
 	const unsigned int getMaxStoreTimes() const { return maxStoreTimes; }
 private:
 	const std::string hostIdentification;
 	const std::string sourceName;
 	const unsigned int priority;
 	const Poco::Timestamp time;
-	const std::string runID;
 	const unsigned int maxStoreTimes;
 };
 

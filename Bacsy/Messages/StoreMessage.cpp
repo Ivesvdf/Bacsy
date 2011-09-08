@@ -33,9 +33,6 @@ StoreMessage::StoreMessage(const std::string& hostIdentification,
 		sourceName(sourceName),
 		priority(priority),
 		time(Poco::Timestamp()),
-		runID(Poco::DateTimeFormatter::format(
-					time,
-					"%Y-%m-%dT%H.%M.%S%z")),
 		maxStoreTimes(maxStoreTimes)
 {
 
@@ -48,7 +45,6 @@ StoreMessage::StoreMessage(const Json::Value& root):
 	sourceName(root["source"].asString()),
 	priority(root["priority"].asUInt()),
 	time(Poco::Timestamp::fromUtcTime(root["time"].asInt64())),
-	runID(root["runID"].asString()),
 	maxStoreTimes(root["maxStoreTimes"].asUInt())
 {
 	
@@ -59,7 +55,6 @@ void StoreMessage::buildJson(Json::Value& root) const
 	root["host"] = hostIdentification;
 	root["source"] = sourceName;
 	root["priority"] = priority;
-	root["runID"] = runID;
 	root["time"] = time.utcTime();
 	root["maxStoreTimes"] = maxStoreTimes;
 }

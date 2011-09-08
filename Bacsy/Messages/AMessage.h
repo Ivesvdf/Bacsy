@@ -31,6 +31,7 @@ class AMessage
 {
 public:
 	AMessage(const std::string& type);
+	virtual ~AMessage();
 
 	virtual void buildJson(Json::Value& root) const = 0;
 	void send(Poco::Net::DialogSocket& socket);

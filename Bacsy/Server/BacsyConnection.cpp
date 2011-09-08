@@ -219,7 +219,7 @@ void BacsyConnection::storeNonDeltaInStores(
 							originalPath,
 							message.getHostIdentification(),
 							message.getSourceName(),
-							message.getRunID());
+							message.getTime());
 				Poco::FileOutputStream* fileOutputStream 
 					= new Poco::FileOutputStream(
 							sourceFile.path(),
@@ -269,7 +269,6 @@ void BacsyConnection::storeNonDeltaInStores(
 		(*it)->newCompleteRun(
 				message.getHostIdentification(),
 				message.getSourceName(),
-				message.getRunID(),
 				message.getTime());
 	}
 

@@ -31,6 +31,10 @@ AMessage::AMessage(const std::string& type)
 
 }
 
+AMessage::~AMessage()
+{
+}
+
 void AMessage::send(Poco::Net::DialogSocket& socket)
 {
 	Json::Value root;

@@ -21,6 +21,7 @@
 #include <functional>
 #include "Poco/File.h"
 #include "Poco/Timestamp.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
 #include "Bacsy/Common/Functional.h"
@@ -63,7 +64,6 @@ std::string Store::getAncestorDirectoryForNewRun(const std::string& ancestor)
 void Store::newFullfilesRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID,
 			const std::string& ancestorDirectory,
 			const Poco::Timestamp& time)
 {
@@ -71,7 +71,7 @@ void Store::newFullfilesRun(
 
 	storeIndex->addNewFullFilesRun(
 			source,
-			getRunDirectory(host, source, runID),
+			getRunDirectory(host, source, time),
 			ancestorDirectory,
 			time);
 }
@@ -79,34 +79,40 @@ void Store::newFullfilesRun(
 void Store::newCompleteRun(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID,
 			const Poco::Timestamp& time)
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
 	storeIndex->addNewFullRun(
 			source,
-			getRunDirectory(host, source, runID), 
+			getRunDirectory(host, source, time), 
 			time);
 }
 
 std::string Store::getRunDirectory(
 			const std::string& host,
 			const std::string& source,
-			const std::string& runID)
+			const Poco::Timestamp& time)
 {
-	return "[" + host + "][" + source + "] " + runID;
+	return "[" 
+		+ host 
+		+ "][" 
+		+ source 
+		+ "] " 
+		+ Poco::DateTimeFormatter::format(
+				time,
+				"%Y-%m-%dT%H.%M.%S%z");
 }
 
 Poco::File Store::getOutputForCompleteFile(
 		const Poco::Path& originalPath,
 		const std::string& host, 
 		const std::string& source, 
-		const std::string& runID)
+		const Poco::Timestamp& time)
 {
 	Poco::Path newPath(location);
 
-	newPath.pushDirectory(getRunDirectory(host, source, runID));
+	newPath.pushDirectory(getRunDirectory(host, source, time));
 
 	// Keep only alphabetic characters in the nodeID
 	std::string nodeIdentification(originalPath.getNode());
