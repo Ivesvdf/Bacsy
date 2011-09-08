@@ -35,7 +35,7 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 	store.addNewDeltaRun("aSource", "aSource_2", "aSource_1", Poco::Timestamp());
 	ASSERT_EQ("aSource_1", store.getLastFullRun("aSource"));
 
-	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_2"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRun("aSource", "aSource_2"));
 
 	ASSERT_FALSE(store.isDeltaRun("aSource", "aSource_1"));
 	ASSERT_TRUE(store.isDeltaRun("aSource", "aSource_2"));
@@ -47,17 +47,17 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 
 	store.addNewFullRun("aSource", "aSource_7", Poco::Timestamp());
 
-	store.addNewDeltaRun("aSource", "aSource_8", "aSource_7", Poco::Timestamp());
-	store.addNewDeltaRun("aSource", "aSource_9", "aSource_7", Poco::Timestamp());
-	store.addNewDeltaRun("aSource", "aSource_10", "aSource_7", Poco::Timestamp());
+	store.addNewFullFilesRun("aSource", "aSource_8", "aSource_7", Poco::Timestamp());
+	store.addNewFullFilesRun("aSource", "aSource_9", "aSource_7", Poco::Timestamp());
+	store.addNewFullFilesRun("aSource", "aSource_10", "aSource_7", Poco::Timestamp());
 
-	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_8"));
-	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_9"));
-	ASSERT_EQ("aSource_7", store.getCorrespondingFullRunForDelta("aSource", "aSource_10"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRun("aSource", "aSource_8"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRun("aSource", "aSource_9"));
+	ASSERT_EQ("aSource_7", store.getCorrespondingFullRun("aSource", "aSource_10"));
 
-	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_4"));
-	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
-	ASSERT_EQ("aSource_1", store.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRun("aSource", "aSource_4"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRun("aSource", "aSource_5"));
+	ASSERT_EQ("aSource_1", store.getCorrespondingFullRun("aSource", "aSource_6"));
 }
 
 TEST( StoreIndexTest, ReloadJsonTest )
@@ -87,17 +87,17 @@ TEST( StoreIndexTest, ReloadJsonTest )
 
 		ASSERT_EQ("aSource_7", loader.getLastFullRun("aSource"));
 
-		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_2"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRun("aSource", "aSource_2"));
 
 		ASSERT_FALSE(loader.isDeltaRun("aSource", "aSource_1"));
 		ASSERT_TRUE(loader.isDeltaRun("aSource", "aSource_2"));
 
-		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_8"));
-		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_9"));
-		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRunForDelta("aSource", "aSource_10"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRun("aSource", "aSource_8"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRun("aSource", "aSource_9"));
+		ASSERT_EQ("aSource_7", loader.getCorrespondingFullRun("aSource", "aSource_10"));
 
-		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_4"));
-		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_5"));
-		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRunForDelta("aSource", "aSource_6"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRun("aSource", "aSource_4"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRun("aSource", "aSource_5"));
+		ASSERT_EQ("aSource_1", loader.getCorrespondingFullRun("aSource", "aSource_6"));
 	}
 }

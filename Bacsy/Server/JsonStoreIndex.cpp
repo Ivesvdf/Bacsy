@@ -97,7 +97,7 @@ void JsonStoreIndex::addNewDeltaRun(
 }
 
 
-std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& source, const std::string& dir) const
+std::string JsonStoreIndex::getCorrespondingFullRun(const std::string& source, const std::string& dir) const
 {
 	const Json::Value sourceValue = root[source];
 
@@ -105,7 +105,7 @@ std::string JsonStoreIndex::getCorrespondingFullRunForDelta(const std::string& s
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
 		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
-		if(entry["type"].asString() == "delta" && entry["dir"].asString() == dir)
+		if(entry["dir"].asString() == dir)
 		{
 			return entry["builtFromDir"].asString();
 		}

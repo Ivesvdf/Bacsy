@@ -49,7 +49,7 @@ public:
 			const std::string& builtFromDir,
 			const Poco::Timestamp& time);
 
-	std::string getCorrespondingFullRunForDelta(
+	std::string getCorrespondingFullRun(
 			const std::string& source,
 			const std::string& dir) const;
 
