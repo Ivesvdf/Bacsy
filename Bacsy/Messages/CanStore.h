@@ -34,6 +34,9 @@ public:
 	CanStore(const Json::Value& root);
 	void buildJson(Json::Value& root) const;
 
+	const std::string getSource() const { return source; };
+	const unsigned int getPriority() const { return priority; };
+
 private:
 	const std::string source;
 	const unsigned int priority;
