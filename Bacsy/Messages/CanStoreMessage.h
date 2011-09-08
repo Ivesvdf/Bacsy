@@ -15,38 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/DateTimeFormatter.h"
-#include "Bacsy/Messages/CanStore.h"
+#ifndef CANSTOREMESSAGE_H
+#define CANSTOREMESSAGE_H
+
+#include "Bacsy/Messages/AMessage.h"
 
 namespace Bacsy
 {
 namespace Messages
 {
 
-CanStore::CanStore(const std::string& source,
-			const unsigned int priority)
-	: 
-		AMessage("canStore"),
-		source(source),
-		priority(priority)
+class CanStoreMessage : public AMessage
 {
+public:
+	CanStoreMessage(const std::string& source,
+			const unsigned int priority);
+
+	CanStoreMessage(const Json::Value& root);
+	void buildJson(Json::Value& root) const;
+
+	const std::string getSource() const { return source; };
+	const unsigned int getPriority() const { return priority; };
+
+private:
+	const std::string source;
+	const unsigned int priority;
+};
 
 
 }
-
-CanStore::CanStore(const Json::Value& root):
-	AMessage(root["type"].asString()),
-	source(root["source"].asString()),
-	priority(root["priority"].asUInt())
-{
-	
 }
-
-void CanStore::buildJson(Json::Value& root) const
-{
-	root["source"] = source;
-	root["priority"] = priority;
-}
-
-}
-}
+#endif

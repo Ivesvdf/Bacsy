@@ -31,7 +31,7 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Common/PocoFile
                  Common/StringUtils
 				 Messages/AMessage
-				 Messages/CanStore
+				 Messages/CanStoreMessage
 				 Messages/StoreMessage
                  Rules/ExclusionRule
                  Rules/ExclusionStringParser

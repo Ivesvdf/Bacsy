@@ -23,6 +23,7 @@
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Server/MulticastResponder.h"
+#include "Bacsy/Messages/CanStoreMessage.h"
 
 namespace Bacsy
 {
@@ -62,6 +63,8 @@ void MulticastResponder::respondToMulticast(Poco::Net::SocketAddress address, co
 	if(root["type"] == "canStore")
 	{
 		LOGI("Received canStore message -- checking if we can store.");
+		Bacsy::Messages::CanStoreMessage message(root);
+		
 		Json::Value responseRoot;
 		responseRoot["type"] = "readyToStore";
 		responseRoot["source"] = root["source"];

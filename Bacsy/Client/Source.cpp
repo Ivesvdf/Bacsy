@@ -40,6 +40,7 @@
 #include "Bacsy/Common/JsonHelper.h"
 #include "Bacsy/Common/IFile.h"
 #include "Bacsy/Messages/StoreMessage.h"
+#include "Bacsy/Messages/CanStoreMessage.h"
 
 namespace Bacsy
 {
@@ -292,15 +293,8 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 
 void Source::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
 {
-	Json::Value root;
-	root["type"] = "canStore";
-	root["source"] = name;
-	root["priority"] = priority;
-
-	const std::string msg = DatagramHelper::toMessage(root);
-
 	LOGI("Sending canStore message");
-	sendFrom.sendTo(msg.c_str(), msg.size(), to);
+	Bacsy::Messages::CanStoreMessage(name, priority).send(sendFrom, to);
 }
 
 class CanStoreResponseAccepter
