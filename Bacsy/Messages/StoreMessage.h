@@ -27,14 +27,16 @@ namespace Bacsy
 namespace Messages
 {
 
-class StoreMessage : AMessage
+class StoreMessage : public AMessage
 {
+public:
 	StoreMessage(const std::string& hostIdentification,
 			const std::string& sourceName,
 			const unsigned int priority,
 			const unsigned int maxStoreTimes);
 
 	StoreMessage(const Json::Value& root);
+	void buildJson(Json::Value& root) const;
 
 	const std::string getHostIdentification() const { return hostIdentification; }
 	const std::string getSourceName() const { return sourceName; }

@@ -39,6 +39,7 @@
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Common/JsonHelper.h"
 #include "Bacsy/Common/IFile.h"
+#include "Bacsy/Messages/StoreMessage.h"
 
 namespace Bacsy
 {
@@ -278,19 +279,12 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 {
 	Poco::Net::DialogSocket socket(who);
 	socket.sendMessage(bacsyProtocolString);
-	Json::Value root;
-	root["type"] = "store";
-	root["host"] = hostIdentification;
-	root["source"] = name;
-	root["priority"] = priority;
-	root["runID"] = Poco::DateTimeFormatter::format(
-			Poco::Timestamp(),
-			"%Y-%m-%dT%H.%M.%S%z");
-	// TODO: Change this to an actual limit...
-	root["time"] = Poco::Timestamp().utcTime();
-	root["maxStoreTimes"] = maxBackups;
 
-	socket.sendMessage(JsonHelper::write(root));
+	Bacsy::Messages::StoreMessage(
+		hostIdentification,
+		name,
+		priority,
+		maxBackups).send(socket);
 
 	FileSender sender(socket);
 	sendAll(sender);

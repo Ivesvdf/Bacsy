@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Bacsy/Common/JsonHelper.h"
+#include "Poco/Net/DialogSocket.h"
 #include "Bacsy/Messages/AMessage.h"
 
 namespace Bacsy
@@ -28,5 +30,14 @@ AMessage::AMessage(const std::string& type)
 
 
 }
+
+void AMessage::send(Poco::Net::DialogSocket& socket)
+{
+	Json::Value root;
+	root["type"] = type;
+	buildJson(root);
+	socket.sendMessage(Bacsy::Common::JsonHelper::write(root));
+}
+
 }
 }

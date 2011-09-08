@@ -19,6 +19,8 @@
 #define AMESSAGE_H
 
 #include <string>
+#include "json/json.h"
+#include "Poco/Net/DialogSocket.h"
 
 namespace Bacsy
 {
@@ -29,6 +31,9 @@ class AMessage
 {
 public:
 	AMessage(const std::string& type);
+
+	virtual void buildJson(Json::Value& root) const = 0;
+	void send(Poco::Net::DialogSocket& socket);
 
 protected:
 	const std::string type;
