@@ -37,6 +37,12 @@ public:
 			const std::string& directory,
 			const Poco::Timestamp& time);
 
+	void addNewFullFilesRun(
+			const std::string& source,
+			const std::string& directory,
+			const std::string& builtFromDir,
+			const Poco::Timestamp& time);
+
 	void addNewDeltaRun(
 			const std::string& source,
 			const std::string& directory,
@@ -61,6 +67,13 @@ private:
 	Json::Value root;
 
 	const std::string path;
+
+	void addNewRun(
+			const std::string& source,
+			const std::string& type,
+			const std::string& dir,
+			const Poco::Timestamp& time,
+			const std::string& builtFromDir = "");
 };
 
 }

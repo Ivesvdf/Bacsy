@@ -47,19 +47,44 @@ void JsonStoreIndex::read()
 	}	
 }
 
-void JsonStoreIndex::addNewFullRun(
+void JsonStoreIndex::addNewRun(
 		const std::string& source,
-		const std::string& directory,
-		const Poco::Timestamp& time)
+		const std::string& type,
+		const std::string& dir,
+		const Poco::Timestamp& time,
+		const std::string& builtFromDir)
 {
 	Json::Value insert;
-	insert["type"] = "full";
-	insert["dir"] = directory;
+	insert["type"] = type;
+	insert["dir"] = dir;
+	if(builtFromDir != "")
+	{
+		insert["builtFromDir"] = builtFromDir;
+	}
+
 	insert["time"] = Json::Int64(time.utcTime());
 
 	root[source].append(insert);
 
 	store();
+}
+
+
+void JsonStoreIndex::addNewFullFilesRun(
+		const std::string& source,
+		const std::string& directory,
+		const std::string& builtFromDir,
+		const Poco::Timestamp& time)
+{
+	addNewRun(source, "fullfiles", directory, time, builtFromDir);
+}
+
+void JsonStoreIndex::addNewFullRun(
+		const std::string& source,
+		const std::string& directory,
+		const Poco::Timestamp& time)
+{
+	addNewRun(source, "full", directory, time);
 }
 
 void JsonStoreIndex::addNewDeltaRun(
@@ -68,15 +93,7 @@ void JsonStoreIndex::addNewDeltaRun(
 		const std::string& builtFromDir,
 		const Poco::Timestamp& time)
 {
-	Json::Value insert;
-	insert["type"] = "delta";
-	insert["dir"] = directory;
-	insert["builtFromDir"] = builtFromDir;
-	insert["time"] = Json::Int64(time.utcTime());
-
-	root[source].append(insert);
-
-	store();
+	addNewRun(source, "delta", directory, time, builtFromDir);
 }
 
 
