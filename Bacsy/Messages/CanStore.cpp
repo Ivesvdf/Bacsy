@@ -15,43 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/Net/DialogSocket.h"
-#include "Bacsy/Messages/AMessage.h"
-#include "Bacsy/Common/JsonHelper.h"
-#include "Bacsy/Common/DatagramHelper.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Bacsy/Messages/CanStore.h"
 
 namespace Bacsy
 {
 namespace Messages
 {
 
-AMessage::AMessage(const std::string& type)
-		: type(type)
+CanStore::CanStore(const std::string& source,
+			const unsigned int priority)
+	: 
+		AMessage("canStore"),
+		source(source),
+		priority(priority)
 {
 
 
 }
 
-AMessage::~AMessage()
+CanStore::CanStore(const Json::Value& root):
+	AMessage(root["type"].asString()),
+	source(root["source"].asString()),
+	priority(root["priority"].asUInt())
 {
+	
 }
 
-void AMessage::send(Poco::Net::DialogSocket& socket)
+void CanStore::buildJson(Json::Value& root) const
 {
-	Json::Value root;
-	root["type"] = type;
-	buildJson(root);
-	socket.sendMessage(Bacsy::Common::JsonHelper::write(root));
-}
-
-void AMessage::send(Poco::Net::DatagramSocket& socket, Poco::Net::SocketAddress to)
-{
-	Json::Value root;
-	root["type"] = type;
-	buildJson(root);
-
-	const std::string msg = Bacsy::Common::DatagramHelper::toMessage(root);
-	socket.sendTo(msg.c_str(), msg.size(), to);
+	root["source"] = source;
+	root["priority"] = priority;
 }
 
 }

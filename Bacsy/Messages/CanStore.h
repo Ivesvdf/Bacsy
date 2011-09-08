@@ -15,44 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Poco/Net/DialogSocket.h"
+#ifndef CANSTORE_H
+#define CANSTORE_H
+
 #include "Bacsy/Messages/AMessage.h"
-#include "Bacsy/Common/JsonHelper.h"
-#include "Bacsy/Common/DatagramHelper.h"
 
 namespace Bacsy
 {
 namespace Messages
 {
 
-AMessage::AMessage(const std::string& type)
-		: type(type)
+class CanStore : public AMessage
 {
+public:
+	CanStore(const std::string& source,
+			const unsigned int priority);
+
+	CanStore(const Json::Value& root);
+	void buildJson(Json::Value& root) const;
+
+private:
+	const std::string source;
+	const unsigned int priority;
+};
 
 
 }
-
-AMessage::~AMessage()
-{
 }
-
-void AMessage::send(Poco::Net::DialogSocket& socket)
-{
-	Json::Value root;
-	root["type"] = type;
-	buildJson(root);
-	socket.sendMessage(Bacsy::Common::JsonHelper::write(root));
-}
-
-void AMessage::send(Poco::Net::DatagramSocket& socket, Poco::Net::SocketAddress to)
-{
-	Json::Value root;
-	root["type"] = type;
-	buildJson(root);
-
-	const std::string msg = Bacsy::Common::DatagramHelper::toMessage(root);
-	socket.sendTo(msg.c_str(), msg.size(), to);
-}
-
-}
-}
+#endif

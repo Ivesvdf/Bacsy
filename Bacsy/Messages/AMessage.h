@@ -21,6 +21,7 @@
 #include <string>
 #include "json/json.h"
 #include "Poco/Net/DialogSocket.h"
+#include "Poco/Net/DatagramSocket.h"
 
 namespace Bacsy
 {
@@ -35,6 +36,7 @@ public:
 
 	virtual void buildJson(Json::Value& root) const = 0;
 	void send(Poco::Net::DialogSocket& socket);
+	void send(Poco::Net::DatagramSocket& socket, Poco::Net::SocketAddress to);
 
 protected:
 	const std::string type;
