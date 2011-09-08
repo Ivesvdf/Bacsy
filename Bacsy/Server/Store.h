@@ -41,7 +41,7 @@ public:
 	Store(const IStoreConfiguration& configuration);
 	~Store();
 
-	std::string getAncestorForNewRun(const std::string& ancestor);
+	std::string getAncestorDirectoryForNewRun(const std::string& ancestor);
 
 	Poco::File getOutputForCompleteFile(
 			const Poco::Path& originalPath,
@@ -55,6 +55,12 @@ public:
 			const std::string& runID,
 			const Poco::Timestamp& time);
 
+	void newFullfilesRun(
+			const std::string& host,
+			const std::string& source,
+			const std::string& runID,
+			const std::string& ancestorDirectory,
+			const Poco::Timestamp& time);
 
 	bool readyForStoring() const;
 

@@ -36,17 +36,21 @@ using namespace Common;
 
 class BacsyConnection : public Poco::Net::TCPServerConnection
 {
+private:
+	enum WhatFiles { ALL_FILES, SOME_FILES };
+
 public:
 	BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager);
 	void storeBackup(
 			Poco::Net::DialogSocket& ds,
 			const Bacsy::Messages::StoreMessage& message);
 
-	void storeInStores(
+	void storeNonDeltaInStores(
 			Poco::Net::DialogSocket& ds,
 			const Bacsy::Messages::StoreMessage& message,
 			std::list<Store*> storeTo,
-			const std::string ancestor);
+			const std::string ancestor,
+			WhatFiles whatFiles);
 
 	void backupFile(
 			Poco::Net::DialogSocket& ds,

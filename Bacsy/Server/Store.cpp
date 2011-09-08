@@ -55,11 +55,26 @@ Store::~Store()
 	delete storeIndex;
 }
 
-std::string Store::getAncestorForNewRun(const std::string& ancestor)
+std::string Store::getAncestorDirectoryForNewRun(const std::string& ancestor)
 {
 	return "";
 }
 
+void Store::newFullfilesRun(
+			const std::string& host,
+			const std::string& source,
+			const std::string& runID,
+			const std::string& ancestorDirectory,
+			const Poco::Timestamp& time)
+{
+	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
+
+	storeIndex->addNewFullFilesRun(
+			source,
+			getRunDirectory(host, source, runID),
+			ancestorDirectory,
+			time);
+}
 
 void Store::newCompleteRun(
 			const std::string& host,
@@ -69,7 +84,10 @@ void Store::newCompleteRun(
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
-	storeIndex->addNewFullRun(source, getRunDirectory(host, source, runID), time);
+	storeIndex->addNewFullRun(
+			source,
+			getRunDirectory(host, source, runID), 
+			time);
 }
 
 std::string Store::getRunDirectory(

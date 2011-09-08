@@ -125,7 +125,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		// Find the ancestor for this store, we'll later on find all stores
 		// that share this ancestor and give them priority (it saves
 		// bandwidth) 
-		const std::string ancestor = store.getAncestorForNewRun(message.getSourceName());
+		const std::string ancestor = store.getAncestorDirectoryForNewRun(message.getSourceName());
 
 		unsigned int nrAdded = 0;
 
@@ -133,7 +133,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != storesToTry.end();
 				++it)
 		{
-			if(ancestor == (*it)->getAncestorForNewRun(message.getSourceName()) 
+			if(ancestor == (*it)->getAncestorDirectoryForNewRun(message.getSourceName()) 
 					&& nrAdded < message.getMaxStoreTimes() - storesSentTo)
 			{
 				sendTo.push_back(*it);
@@ -149,11 +149,14 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		storeInStores(
-				ds,
-				message,
-				sendTo,
-				ancestor);
+		if(ancestor.length() == 0)
+		{
+			storeNonDeltaInStores(ds, message, sendTo, "", ALL_FILES);
+		}
+		else
+		{
+			// Not yet implemented
+		}
 
 		storesSentTo += sendTo.size();
 
@@ -182,100 +185,94 @@ public:
 	Poco::File file;
 };
 
-void BacsyConnection::storeInStores(
+void BacsyConnection::storeNonDeltaInStores(
 		Poco::Net::DialogSocket& ds,
 		const Bacsy::Messages::StoreMessage& message,
 		std::list<Store*> storeTo,
-		const std::string ancestor)
+		const std::string ancestor,
+		WhatFiles whatFiles)
 {
-	if(ancestor.length() == 0)
+	LOGI("No ancestor");
+
+	std::string file;
+	std::string size;
+	std::string changed;
+	std::string checksum;
+	while(ds.receiveMessage(file) && ds.receiveMessage(changed) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
 	{
-		LOGI("No ancestor");
+		LOGI("Receiving size = " + size);
+		//backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
 
-		std::string file;
-		std::string size;
-		std::string changed;
-		std::string checksum;
-		while(ds.receiveMessage(file) && ds.receiveMessage(changed) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
-		{
-			LOGI("Receiving size = " + size);
-			//backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
+		SimpleTee tee;
 
-			SimpleTee tee;
+		std::list<FileAssociations> pointers;
 
-			std::list<FileAssociations> pointers;
-
-			for(std::list<Store*>::iterator it = storeTo.begin();
-					it != storeTo.end();
-					++it)
-			{
-				try
-				{
-					const Poco::Path originalPath(file);
-
-					Poco::File sourceFile = (*it)->getOutputForCompleteFile(
-								originalPath,
-								message.getHostIdentification(),
-								message.getSourceName(),
-								message.getRunID());
-					Poco::FileOutputStream* fileOutputStream 
-						= new Poco::FileOutputStream(
-								sourceFile.path(),
-								std::ios::out | std::ios::trunc);
-
-					SimpleOStreamStream* outputStream 
-						= new SimpleOStreamStream(*fileOutputStream);
-
-					pointers.push_back(FileAssociations(fileOutputStream, outputStream, sourceFile));
-					tee.addOutput(*outputStream);
-				}
-				catch(Poco::FileException& e)
-				{
-					LOGE(std::string("Cannot store file because of exception: ") + e.what());
-				}
-			}
-			
-			// We must keep receiving the file! If not the protocol gets out of sync
-			// and we're screwed. 
-			const std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
-			if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
-			{
-				LOGE("Received sizes do not match -- I should do something about this.");
-			}
-			LOGI("Bytes received = " + StringUtils::toString(received));
-
-			for(std::list<FileAssociations>::iterator it = pointers.begin();
-					it != pointers.end();
-					it++)
-			{
-				it->fileOutputStream->close();
-				it->file.setLastModified(
-						Poco::Timestamp::fromUtcTime(
-							StringUtils::fromString<Poco::Timestamp::UtcTimeVal>(
-								changed)*10000000));
-				delete it->fileOutputStream;
-				delete it->ostreamStream;
-			}
-			
-		}
-
-		// Register this run with every store we saved it to
 		for(std::list<Store*>::iterator it = storeTo.begin();
-					it != storeTo.end();
-					++it)
+				it != storeTo.end();
+				++it)
 		{
-			(*it)->newCompleteRun(
-					message.getHostIdentification(),
-					message.getSourceName(),
-					message.getRunID(),
-					message.getTime());
-		}
+			try
+			{
+				const Poco::Path originalPath(file);
 
+				Poco::File sourceFile = (*it)->getOutputForCompleteFile(
+							originalPath,
+							message.getHostIdentification(),
+							message.getSourceName(),
+							message.getRunID());
+				Poco::FileOutputStream* fileOutputStream 
+					= new Poco::FileOutputStream(
+							sourceFile.path(),
+							std::ios::out | std::ios::trunc);
+
+				SimpleOStreamStream* outputStream 
+					= new SimpleOStreamStream(*fileOutputStream);
+
+				pointers.push_back(FileAssociations(fileOutputStream, outputStream, sourceFile));
+				tee.addOutput(*outputStream);
+			}
+			catch(Poco::FileException& e)
+			{
+				LOGE(std::string("Cannot store file because of exception: ") + e.what());
+			}
+		}
+		
+		// We must keep receiving the file! If not the protocol gets out of sync
+		// and we're screwed. 
+		const std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
+		if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
+		{
+			LOGE("Received sizes do not match -- I should do something about this.");
+		}
+		LOGI("Bytes received = " + StringUtils::toString(received));
+
+		for(std::list<FileAssociations>::iterator it = pointers.begin();
+				it != pointers.end();
+				it++)
+		{
+			it->fileOutputStream->close();
+			it->file.setLastModified(
+					Poco::Timestamp::fromUtcTime(
+						StringUtils::fromString<Poco::Timestamp::UtcTimeVal>(
+							changed)*10000000));
+			delete it->fileOutputStream;
+			delete it->ostreamStream;
+		}
+		
 	}
-	else
+
+	// Register this run with every store we saved it to
+	for(std::list<Store*>::iterator it = storeTo.begin();
+				it != storeTo.end();
+				++it)
 	{
-		// Not yet implemented
+		(*it)->newCompleteRun(
+				message.getHostIdentification(),
+				message.getSourceName(),
+				message.getRunID(),
+				message.getTime());
 	}
+
 }
 
 void BacsyConnection::backupFile(
