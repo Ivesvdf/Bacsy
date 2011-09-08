@@ -24,6 +24,7 @@
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Server/MulticastResponder.h"
 #include "Bacsy/Messages/CanStoreMessage.h"
+#include "Bacsy/Messages/ReadyToStoreMessage.h"
 
 namespace Bacsy
 {
@@ -65,13 +66,12 @@ void MulticastResponder::respondToMulticast(Poco::Net::SocketAddress address, co
 		LOGI("Received canStore message -- checking if we can store.");
 		Bacsy::Messages::CanStoreMessage message(root);
 		
-		Json::Value responseRoot;
-		responseRoot["type"] = "readyToStore";
-		responseRoot["source"] = root["source"];
-
-		const std::string msg = DatagramHelper::toMessage(responseRoot);
-
-		responseSocket.sendTo(msg.c_str(), msg.length(), Poco::Net::SocketAddress(address.host(), MULTICASTPORT));
+		Bacsy::Messages::ReadyToStoreMessage(
+				message.getSource()).send(
+				responseSocket,
+				Poco::Net::SocketAddress(
+					address.host(),
+					MULTICASTPORT));
 	}
 }
 
