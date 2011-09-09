@@ -70,6 +70,7 @@ void Store::newFullfilesRun(
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
 	storeIndex->addNewFullFilesRun(
+			host,
 			source,
 			getRunDirectory(host, source, time),
 			ancestorDirectory,
@@ -84,6 +85,7 @@ void Store::newCompleteRun(
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
 	storeIndex->addNewFullRun(
+			host,
 			source,
 			getRunDirectory(host, source, time), 
 			time);

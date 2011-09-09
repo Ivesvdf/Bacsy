@@ -33,29 +33,36 @@ public:
 	JsonStoreIndex(const std::string path);
 
 	void addNewFullRun(
+			const std::string& hostIdentification,
 			const std::string& source,
 			const std::string& directory,
 			const Poco::Timestamp& time);
 
 	void addNewFullFilesRun(
+			const std::string& hostIdentification,
 			const std::string& source,
 			const std::string& directory,
 			const std::string& builtFromDir,
 			const Poco::Timestamp& time);
 
 	void addNewDeltaRun(
+			const std::string& hostIdentification,
 			const std::string& source,
 			const std::string& directory,
 			const std::string& builtFromDir,
 			const Poco::Timestamp& time);
 
 	std::string getCorrespondingFullRun(
+			const std::string& hostIdentification,
 			const std::string& source,
 			const std::string& dir) const;
 
-	std::string getLastFullRun(const std::string& source) const;
+	std::string getLastFullRun(
+			const std::string& hostIdentification,
+			const std::string& source) const;
 
 	bool isDeltaRun(
+			const std::string& hostIdentification,
 			const std::string& source,
 			const std::string& dir);
 private:
@@ -69,6 +76,7 @@ private:
 	const std::string path;
 
 	void addNewRun(
+			const std::string& host,
 			const std::string& source,
 			const std::string& type,
 			const std::string& dir,
