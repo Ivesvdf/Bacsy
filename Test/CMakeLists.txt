@@ -8,6 +8,7 @@ add_executable(test
                    RsyncStreamTests
                    ExclusionStringParserTests
                    StringExclusionRuleBuilderTests
+				   RunTypeTest
 )
 
 target_link_libraries(test gtest ${bacsy_libraries})

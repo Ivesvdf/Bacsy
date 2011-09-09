@@ -29,6 +29,7 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Common/IFile
                  Common/JsonHelper
 				 Common/PocoFile
+				 Common/RunType
                  Common/StringUtils
 				 Messages/AMessage
 				 Messages/CanStoreMessage
