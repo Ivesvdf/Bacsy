@@ -52,12 +52,6 @@ public:
 			const std::string ancestor,
 			WhatFiles whatFiles);
 
-	void backupFile(
-			Poco::Net::DialogSocket& ds,
-			std::string sourceFile,
-			size_t size,
-			unsigned int priority);
-
 	virtual void run();
 
 private:

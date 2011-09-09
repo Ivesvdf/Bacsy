@@ -274,37 +274,6 @@ void BacsyConnection::storeNonDeltaInStores(
 
 }
 
-void BacsyConnection::backupFile(
-		Poco::Net::DialogSocket& ds,
-		std::string sourceFile,
-		size_t size,
-		unsigned int priority)
-{
-	LOGI("Pushing file " + sourceFile + " to the backup queue.");
-
-	Poco::FileOutputStream output;
-	try
-	{
-		output.open(sourceFile, std::ios::out | std::ios::trunc);
-	}
-	catch(Poco::FileException& e)
-	{
-		LOGE("Cannot store file " + sourceFile + " because of exception: " + e.what());
-		return;
-	}
-
-	// We must keep receiving the file! If not the protocol gets out of sync
-	// and we're screwed. 
-	std::streamsize received = StreamUtilities::copyStream(ds, output, 65536, size);
-	if(received != static_cast<std::streamsize>(size))
-	{
-		LOGE("Received sizes do not match -- I should do something about this.");
-	}
-	LOGI("Bytes received = " + StringUtils::toString(received));
-
-	output.close();
-}
-
 
 }
 }
