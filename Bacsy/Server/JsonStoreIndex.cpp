@@ -18,11 +18,14 @@
 #include <fstream>
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
+#include "Bacsy/Common/RunType.h"
 
 namespace Bacsy
 {
 namespace Server
 {
+
+using Bacsy::Common::RunType;
 
 JsonStoreIndex::JsonStoreIndex(const std::string inputPath):
 	path(inputPath)
@@ -81,7 +84,7 @@ void JsonStoreIndex::addNewFullFilesRun(
 	addNewRun(
 			hostIdentification,
 			source,
-			"fullfiles",
+			RunType::fullfiles.toString(),
 			directory,
 			time,
 			builtFromDir);
@@ -96,7 +99,7 @@ void JsonStoreIndex::addNewFullRun(
 	addNewRun(
 			hostIdentification, 
 			source,
-			"full",
+			RunType::full.toString(),
 			directory,
 			time);
 }
@@ -111,7 +114,7 @@ void JsonStoreIndex::addNewDeltaRun(
 	addNewRun(
 			hostIdentification,
 			source,
-			"delta",
+			RunType::delta.toString(),
 			directory,
 			time,
 			builtFromDir);
@@ -148,7 +151,8 @@ bool JsonStoreIndex::isDeltaRun(
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
 		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
-		if(entry["type"].asString() == "delta" && entry["dir"].asString() == dir)
+		if(entry["type"].asString() == 	RunType::delta.toString() 
+				&& entry["dir"].asString() == dir)
 		{
 			return true;
 		}
@@ -170,7 +174,7 @@ std::string JsonStoreIndex::getLastFullRun(
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
 		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
-		if(entry["type"].asString() == "full")
+		if(entry["type"].asString() == 	RunType::full.toString())
 		{
 			return entry["dir"].asString();
 		}
