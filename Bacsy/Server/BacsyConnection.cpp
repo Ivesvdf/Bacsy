@@ -243,6 +243,8 @@ void BacsyConnection::storeNonDeltaInStores(
 		if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
 		{
 			LOGE("Received sizes do not match -- I should do something about this.");
+			LOGE("Quitting receival!");
+			return;
 		}
 		LOGI("Bytes received = " + StringUtils::toString(received));
 
