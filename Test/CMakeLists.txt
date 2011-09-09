@@ -3,12 +3,12 @@ add_executable(test
                    ConfigurationTests
                    StringUtilsTests
                    TimerStringParserTests
-                   StoreIndexTest
-                   ConcurrentMapTest
+                   StoreIndexTests
+                   ConcurrentMapTests
                    RsyncStreamTests
                    ExclusionStringParserTests
                    StringExclusionRuleBuilderTests
-				   RunTypeTest
+				   RunTypeTests
 )
 
 target_link_libraries(test gtest ${bacsy_libraries})

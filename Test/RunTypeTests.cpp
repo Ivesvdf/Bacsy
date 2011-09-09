@@ -17,26 +17,21 @@
 
 #include <string>
 #include <gtest/gtest.h>
-#include "Bacsy/Common/ConcurrentMap.h"
+#include "Bacsy/Common/RunType.h"
 
 using namespace Bacsy::Common;
 
 using std::string;
 
-TEST( ConcurrentMapTest, SimpleTest )
+TEST( RunTypeTests, SimpleTest )
 {
-	ConcurrentMap<int, string> stringMap;
+	ASSERT_EQ("full", RunType::full.toString());
+	ASSERT_EQ("fullfiles", RunType::fullfiles.toString());
+	ASSERT_EQ("delta", RunType::delta.toString());
 
-	ASSERT_EQ(0u, stringMap.count(5));
-	ASSERT_EQ("", stringMap.get(5));
+	ASSERT_EQ(RunType::full, RunType::fromString("full"));
+	ASSERT_EQ(RunType::fullfiles, RunType::fromString("fullfiles"));
+	ASSERT_EQ(RunType::delta, RunType::fromString("delta"));
 
-	ASSERT_EQ(0u, stringMap.count(6));
-	stringMap.set(6, "hello");
-	ASSERT_EQ(1u, stringMap.count(6));
-	ASSERT_EQ("hello", stringMap.get(6));
-
-	stringMap.erase(6);
-	ASSERT_EQ(0u, stringMap.count(6));
-	ASSERT_EQ("", stringMap.get(6));
-	ASSERT_EQ(1u, stringMap.count(6));
+	ASSERT_ANY_THROW(RunType::fromString("foo"));
 }

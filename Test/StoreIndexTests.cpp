@@ -22,7 +22,7 @@
 
 using namespace Bacsy::Server;
 
-TEST( StoreIndexTest, NoReloadJsonTest )
+TEST( StoreIndexTests, NoReloadJsonTest )
 {
 	Poco::TemporaryFile tmp;
 
@@ -60,7 +60,7 @@ TEST( StoreIndexTest, NoReloadJsonTest )
 	ASSERT_EQ("aSource_1", store.getCorrespondingFullRun("IX", "aSource", "aSource_6"));
 }
 
-TEST( StoreIndexTest, ReloadJsonTest )
+TEST( StoreIndexTests, ReloadJsonTest )
 {
 	Poco::TemporaryFile tmp;
 
