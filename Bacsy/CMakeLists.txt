@@ -35,6 +35,7 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Messages/CanStoreMessage
 				 Messages/ReadyToStoreMessage
 				 Messages/StoreMessage
+				 Messages/StoreResponseMessage
                  Rules/ExclusionRule
                  Rules/ExclusionStringParser
                  Rules/ExclusionSubRule
