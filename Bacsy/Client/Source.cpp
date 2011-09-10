@@ -42,6 +42,7 @@
 #include "Bacsy/Messages/StoreMessage.h"
 #include "Bacsy/Messages/CanStoreMessage.h"
 #include "Bacsy/Messages/ReadyToStoreMessage.h"
+#include "Bacsy/Messages/StoreResponseMessage.h"
 
 namespace Bacsy
 {
@@ -50,6 +51,7 @@ namespace Client
 
 using namespace Common;
 using namespace Rules;
+using Bacsy::Messages::StoreResponseMessage;
 
 bool Source::isPath(std::string s) const
 {
@@ -287,6 +289,8 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 		name,
 		priority,
 		maxBackups).send(socket);
+
+	StoreResponseMessage response = StoreResponseMessage::receive(socket);
 
 	FileSender sender(socket);
 	sendAll(sender);

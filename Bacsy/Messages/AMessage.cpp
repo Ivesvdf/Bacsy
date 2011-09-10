@@ -25,6 +25,8 @@ namespace Bacsy
 namespace Messages
 {
 
+using Bacsy::Common::JsonHelper;
+
 AMessage::AMessage(const std::string& type)
 		: type(type)
 {
@@ -41,7 +43,7 @@ void AMessage::send(Poco::Net::DialogSocket& socket)
 	Json::Value root;
 	root["type"] = type;
 	buildJson(root);
-	socket.sendMessage(Bacsy::Common::JsonHelper::write(root));
+	socket.sendMessage(JsonHelper::write(root));
 }
 
 void AMessage::send(Poco::Net::DatagramSocket& socket, Poco::Net::SocketAddress to)
@@ -52,6 +54,15 @@ void AMessage::send(Poco::Net::DatagramSocket& socket, Poco::Net::SocketAddress 
 
 	const std::string msg = Bacsy::Common::DatagramHelper::toMessage(root);
 	socket.sendTo(msg.c_str(), msg.size(), to);
+}
+
+Json::Value AMessage::fromDialogSocket(Poco::Net::DialogSocket& ds)
+{
+	std::string json;
+	ds.receiveMessage(json);
+	Json::Value root = JsonHelper::read(json);
+
+	return root;
 }
 
 }

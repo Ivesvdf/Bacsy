@@ -40,6 +40,7 @@ public:
 
 protected:
 	const std::string type;
+	static Json::Value fromDialogSocket(Poco::Net::DialogSocket& ds);
 };
 
 

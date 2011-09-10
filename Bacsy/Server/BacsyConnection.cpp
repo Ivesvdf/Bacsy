@@ -35,6 +35,7 @@
 #include "Bacsy/Streams/StreamUtils.h"
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/JsonHelper.h"
+#include "Bacsy/Messages/StoreResponseMessage.h"
 
 namespace Bacsy
 {
@@ -148,6 +149,9 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				nrAdded++;
 			}
 		}
+
+		Bacsy::Messages::StoreResponseMessage responseMessage(spec.runType);
+		responseMessage.send(ds);
 
 		LOGI("Storing in stores: ");
 		for(StorePointerList::const_iterator it = storesToTry.begin();

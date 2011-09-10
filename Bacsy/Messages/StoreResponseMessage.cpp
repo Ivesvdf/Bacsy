@@ -44,5 +44,10 @@ void StoreResponseMessage::buildJson(Json::Value& root) const
 	root["runtype"] = runtype.toString();
 }
 
+StoreResponseMessage StoreResponseMessage::receive(Poco::Net::DialogSocket& ds)
+{
+	return StoreResponseMessage(fromDialogSocket(ds));
+}
+
 }
 }

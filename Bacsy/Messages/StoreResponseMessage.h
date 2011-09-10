@@ -36,7 +36,9 @@ public:
 	StoreResponseMessage(const Json::Value& root);
 	void buildJson(Json::Value& root) const;
 
-	const RunType& getRuntype() const { return runtype; };
+	static StoreResponseMessage receive(Poco::Net::DialogSocket& ds);
+
+	const RunType& getRunType() const { return runtype; };
 private:
 	const RunType& runtype;
 };
