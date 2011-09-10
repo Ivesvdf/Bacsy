@@ -23,7 +23,7 @@
 #include "Poco/Timestamp.h"
 #include "Poco/Net/StreamSocket.h"
 #include "Poco/Net/DialogSocket.h"
-#include "Poco/Net/TCPServerConnection.h" 
+#include "Poco/Net/TCPServerConnection.h"
 #include "Bacsy/Server/StoreManager.h"
 #include "Bacsy/Messages/StoreMessage.h"
 #include "Bacsy/Common/RunType.h"

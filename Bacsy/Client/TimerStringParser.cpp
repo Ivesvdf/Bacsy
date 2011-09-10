@@ -107,7 +107,7 @@ std::list<TimeSchedule> TimerStringParser::parse(Poco::LocalDateTime now, std::s
 		}
 		else if(isDaily.match(timerStringPart))
 		{
-			schedules.push_back(parseDaily(now, timerStringPart));  
+			schedules.push_back(parseDaily(now, timerStringPart));
 		}
 		else if(isNMinutes.match(timerStringPart))
 		{
@@ -242,7 +242,7 @@ TimeSchedule TimerStringParser::parseWeekly(const Poco::LocalDateTime& now, cons
 	// I'll have to construct a Timespan that spans the correct number of
 	// days, add that to now and then use the day, month & year info in
 	// the resulting date. Which can then be combined with hour & minute
-	// to find when the next run will be. 
+	// to find when the next run will be.
 	Poco::Timespan daysToWaitTimespan(daysToWait*Poco::Timespan::DAYS);
 
 	Poco::LocalDateTime correctDay = now + daysToWaitTimespan;

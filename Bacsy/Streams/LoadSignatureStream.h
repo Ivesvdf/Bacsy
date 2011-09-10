@@ -31,7 +31,7 @@ using namespace Common;
 /**
  * Loads a Signature to an rs_signature_t object. This object is *owned* by
  * this LoadSignatureStream. Don't free the little bastard yourself or die
- * horribly. 
+ * horribly.
  */
 class LoadSignatureStream : public RsyncStream<1024>
 {

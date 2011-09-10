@@ -40,9 +40,9 @@ std::string Environment::getDefaultConfigurationDirectory()
 		prefix = "C:/Bacsy/";
 	}
 #elif defined(POCO_OS_FAMILY_UNIX)
-	const std::string homeConfig = 
-		Poco::Environment::has("XDG_CONFIG_HOME") 
-			? Poco::Environment::get("XDG_CONFIG_HOME") 
+	const std::string homeConfig =
+		Poco::Environment::has("XDG_CONFIG_HOME")
+			? Poco::Environment::get("XDG_CONFIG_HOME")
 			: StringUtils::rstrip(Poco::Environment::get("HOME"), "/") + "/.config";
 
 	prefix = StringUtils::rstrip(homeConfig, "/") + "/bacsy/";

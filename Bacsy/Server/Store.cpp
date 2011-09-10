@@ -69,7 +69,7 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 		NewRunSpecification specification(RunType::full);
 		return specification;
 	}
-	else 
+	else
 	{
 		NewRunSpecification specification(RunType::fullfiles);
 		specification.ancestorDirectory = ancestor;
@@ -107,7 +107,7 @@ void Store::newCompleteRun(
 	storeIndex->addNewFullRun(
 			host,
 			source,
-			getRunDirectory(host, source, time), 
+			getRunDirectory(host, source, time),
 			time);
 }
 
@@ -116,11 +116,11 @@ std::string Store::getRunDirectory(
 			const std::string& source,
 			const Poco::Timestamp& time)
 {
-	return "[" 
-		+ host 
-		+ "][" 
-		+ source 
-		+ "] " 
+	return "["
+		+ host
+		+ "]["
+		+ source
+		+ "] "
 		+ Poco::DateTimeFormatter::format(
 				time,
 				"%Y-%m-%dT%H.%M.%S%z");
@@ -128,8 +128,8 @@ std::string Store::getRunDirectory(
 
 Poco::File Store::getOutputForCompleteFile(
 		const Poco::Path& originalPath,
-		const std::string& host, 
-		const std::string& source, 
+		const std::string& host,
+		const std::string& source,
 		const Poco::Timestamp& time)
 {
 	Poco::Path newPath(location);
@@ -167,17 +167,17 @@ Poco::File Store::getOutputForCompleteFile(
 bool Store::readyForStoring() const
 {
 	// If the location was AlwaysPresent but did not exist,
-	// the necessary directories would have been created in the Store ctor. 
-	return baseLocation.exists(); 
+	// the necessary directories would have been created in the Store ctor.
+	return baseLocation.exists();
 }
 
 std::string Store::toString() const
 {
-	return storeName 
-		+ " @ " 
-		+ location 
-		+ "\tMSP=" 
-		+ StringUtils::toString(minPriorityForStoring) 
+	return storeName
+		+ " @ "
+		+ location
+		+ "\tMSP="
+		+ StringUtils::toString(minPriorityForStoring)
 		+ ",\t AP=" + StringUtils::toString(alwaysPresent);
 }
 

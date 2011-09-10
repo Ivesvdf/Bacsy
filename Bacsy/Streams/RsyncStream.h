@@ -47,7 +47,7 @@ protected:
 
 private:
 	rs_buffers_s buffers;
-	bool closed; 
+	bool closed;
 
 	SimpleOStream& output;
 };
@@ -110,7 +110,7 @@ template<int buffersize>
 void RsyncStream<buffersize>::write(const char* const c, std::streamsize size)
 {
 	// Allocate a buffer as big as the input; this should *always* be big
-	// enough for a signature. 
+	// enough for a signature.
 	// Poco::Buffer<char> outputBuffer(size);
 	char outputBuffer[1024];
 

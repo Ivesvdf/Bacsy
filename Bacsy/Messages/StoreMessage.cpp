@@ -27,7 +27,7 @@ StoreMessage::StoreMessage(const std::string& hostIdentification,
 		const std::string& sourceName,
 		const unsigned int priority,
 		const unsigned int maxStoreTimes)
-	: 
+	:
 		AMessage("store"),
 		hostIdentification(hostIdentification),
 		sourceName(sourceName),

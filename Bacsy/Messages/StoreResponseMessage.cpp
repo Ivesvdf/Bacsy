@@ -24,7 +24,7 @@ namespace Messages
 {
 
 StoreResponseMessage::StoreResponseMessage(const RunType& runtype)
-	: 
+	:
 		AMessage("storeResponse"),
 		runtype(runtype)
 {

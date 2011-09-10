@@ -35,8 +35,8 @@ RunType::RunType(std::string textRepresentation):
 }
 
 std::string RunType::toString() const
-{ 
-	return textRepresentation; 
+{
+	return textRepresentation;
 }
 
 const RunType& RunType::fromString(const std::string& str)

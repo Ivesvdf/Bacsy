@@ -64,7 +64,7 @@ void CascadingFileConfiguration::checkKeys() const
 	if(invalidKeys.size() > 0)
 	{
 		throw std::runtime_error(
-			"Unknown key(s) in configuration: " 
+			"Unknown key(s) in configuration: "
 			+ StringUtils::join(invalidKeys.begin(), invalidKeys.end(), ", "));
 	}
 }

@@ -104,9 +104,9 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 
 
 			rule.addSubRule(new SizeExclusionSubRule(sizeInBytes,
-						theOperator == '>' ? 
+						theOperator == '>' ?
 							SizeExclusionSubRule::GREATER_THAN :
-							SizeExclusionSubRule::LESS_THAN, 
+							SizeExclusionSubRule::LESS_THAN,
 						negated));
 		}
 		else if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)

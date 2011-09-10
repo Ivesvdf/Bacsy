@@ -46,7 +46,7 @@ class CascadingFileConfiguration
 		template<typename T>
 		T getCascadingValue(
 				const std::string& section,
-				const std::string& keyname, 
+				const std::string& keyname,
 				const T& defaultValue = T()) const;
 
 		static bool toBool(const std::string& input);
@@ -62,7 +62,7 @@ class CascadingFileConfiguration
 template<typename T>
 T CascadingFileConfiguration::getCascadingValue(
 		const std::string& section,
-		const std::string& keyname, 
+		const std::string& keyname,
 		const T& defaultValue) const
 {
 	T rv = defaultValue;

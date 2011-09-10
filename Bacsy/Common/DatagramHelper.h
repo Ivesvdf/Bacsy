@@ -43,7 +43,7 @@ class DatagramHelper
 
 			const size_t maxsize = maxSize+1;
 			char buffer[maxsize];
-			try 
+			try
 			{
 				while(true)
 				{

@@ -1,15 +1,15 @@
-#find_file(BUILD_NUMBER_FILE_FOUND build_number.txt PATHS .) 
+#find_file(BUILD_NUMBER_FILE_FOUND build_number.txt PATHS .)
 
-#if(${BUILD_NUMBER_FILE_FOUND} MATCHES "NOTFOUND") 
-#	set(CURRENT_BUILD_NUM 1) 
-#	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}") 
-#else() 
-#	file(READ build_number.txt OLD_BUILD_NUM) 
-#	math(EXPR CURRENT_BUILD_NUM "${OLD_BUILD_NUM} + 1") 
-#	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}") 
-#endif() 
+#if(${BUILD_NUMBER_FILE_FOUND} MATCHES "NOTFOUND")
+#	set(CURRENT_BUILD_NUM 1)
+#	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}")
+#else()
+#	file(READ build_number.txt OLD_BUILD_NUM)
+#	math(EXPR CURRENT_BUILD_NUM "${OLD_BUILD_NUM} + 1")
+#	file(WRITE build_number.txt "${CURRENT_BUILD_NUM}")
+#endif()
 
-configure_file(Common/Info.h.in Common/Info.h @ONLY) 
+configure_file(Common/Info.h.in Common/Info.h @ONLY)
 include_directories("${PROJECT_BINARY_DIR}")
 
 set(BACSY_COMMON_SOURCE_FILES

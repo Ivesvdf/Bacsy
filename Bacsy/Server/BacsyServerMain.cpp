@@ -31,8 +31,8 @@ using namespace Bacsy::Server;
 
 int main(int argc, char **argv)
 {
-	try 
-	{  
+	try
+	{
 		TCLAP::CmdLine cmd("Server for the Bacsy backup system", ' ', bacsyVersion);
 
 		TCLAP::ValueArg<std::string> configArg(
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 	}
 	catch (TCLAP::ArgException &e)  // catch any exceptions
 	{
-		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; 
+		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl;
 	}
 
 	return 0;

@@ -86,7 +86,7 @@ class SimpleDialogSocketStream : public SimpleIOStream
 
 class SimpleTee: public SimpleOStream
 {
-public: 
+public:
 	SimpleTee();
 
 	SimpleTee(std::vector<SimpleOStream*> outputs);

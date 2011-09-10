@@ -23,11 +23,11 @@ namespace Bacsy
 namespace Common
 {
 
-class ObjectDeleter 
+class ObjectDeleter
 {
 public:
 	template <typename T>
-	void operator()(T* obj) 
+	void operator()(T* obj)
 	{
 		delete obj;
 	}

@@ -51,7 +51,7 @@ std::vector<Source*> sourceNamesToSources(
 	sources.resize(sourceStrings.size());
 
 
-	SourceNameToSourcer sourceNameToSource(configuration); 
+	SourceNameToSourcer sourceNameToSource(configuration);
 
 	std::transform(
 			sourceStrings.begin(),
@@ -75,7 +75,7 @@ BackupEngine::~BackupEngine()
 			it != sources.end();
 			it++)
 	{
-		delete *it; 
+		delete *it;
 	}
 }
 

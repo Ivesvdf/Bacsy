@@ -42,7 +42,7 @@ public:
 
 	/**
 	 * When adding an ExclusionSubRule, it is owned by the ExclusionRule from
-	 * that moment on and will thus be freed by it. 
+	 * that moment on and will thus be freed by it.
 	 */
 	void addSubRule(ExclusionSubRule* sr);
 

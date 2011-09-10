@@ -37,8 +37,8 @@ class fun1_ref_t : public std::unary_function<A,S>
 
 template <class S, class A>
 fun1_ref_t<S,A> fun_ref (S (*f)(A))
-{ 
-	return fun1_ref_t<S,A>(f); 
+{
+	return fun1_ref_t<S,A>(f);
 }
 
 }

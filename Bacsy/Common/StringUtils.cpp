@@ -28,14 +28,14 @@ namespace Common
 
 using std::string;
 
-StringUtils::Stripper::Stripper(const std::string& toStrip) 
-	: toStrip(toStrip) 
+StringUtils::Stripper::Stripper(const std::string& toStrip)
+	: toStrip(toStrip)
 {
 }
 
 std::string StringUtils::Stripper::operator()(const std::string& input)
 {
-	return strip(input, toStrip); 
+	return strip(input, toStrip);
 }
 
 std::string StringUtils::rstrip(const std::string& source , const std::string& t)
@@ -54,14 +54,14 @@ std::string StringUtils::strip(const std::string& source , const std::string& t)
 {
 	std::string str = source;
 	return lstrip(rstrip(str, t), t);
-}  
+}
 
 std::vector<std::string> StringUtils::split(const std::string& input, const char delim)
 {
 	std::vector<std::string> elems;
 	std::stringstream ss(input);
 	std::string item;
-	while(std::getline(ss, item, delim)) 
+	while(std::getline(ss, item, delim))
 	{
 		elems.push_back(item);
 	}

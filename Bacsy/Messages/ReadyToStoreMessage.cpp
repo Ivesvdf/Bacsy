@@ -24,7 +24,7 @@ namespace Messages
 {
 
 ReadyToStoreMessage::ReadyToStoreMessage(const std::string& source)
-	: 
+	:
 		AMessage("readyToStore"),
 		source(source)
 {

@@ -101,7 +101,7 @@ std::list<Poco::Timer*> Source::createTimers()
 		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0) ? 1000 : it->delay.totalMilliseconds();
 		Poco::Timer* const timer = new Poco::Timer(delayInMilliSeconds, it->repeat.totalMilliseconds());
 		LOGI(std::string("Creating timer with delay of ")
-				+ StringUtils::toString(delayInMilliSeconds) 
+				+ StringUtils::toString(delayInMilliSeconds)
 				+ std::string(" and repeat rate of ")
 				+ StringUtils::toString(it->repeat.totalMilliseconds()));
 		theTimers.push_back(timer);
@@ -140,12 +140,12 @@ public:
 
 void Source::run(Poco::Timer& timer)
 {
-	LOGI("Starting source " 
-			+ name 
-			+ " because of Timer(" 
-			+ StringUtils::toString(timer.getStartInterval()) 
-			+ "," 
-			+ StringUtils::toString(timer.getPeriodicInterval()) 
+	LOGI("Starting source "
+			+ name
+			+ " because of Timer("
+			+ StringUtils::toString(timer.getStartInterval())
+			+ ","
+			+ StringUtils::toString(timer.getPeriodicInterval())
 			+ ")");
 
 	if(maxBackups == 0)
@@ -348,7 +348,7 @@ class CanStoreResponseAccepter
 
 		}
 
-		std::vector<Poco::Net::SocketAddress> getPeopleToContact() const 
+		std::vector<Poco::Net::SocketAddress> getPeopleToContact() const
 		{ return peopleToContact; }
 
 

@@ -46,7 +46,7 @@ using namespace Common;
 using namespace Streams;
 
 
-BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) : 
+BacsyConnection::BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager) :
 	Poco::Net::TCPServerConnection(socket),
 	storeManager(manager)
 {
@@ -97,7 +97,7 @@ void BacsyConnection::run()
 }
 
 
-void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds, 
+void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		const Bacsy::Messages::StoreMessage& message)
 {
 	LOGI("Storing backup for " + message.getHostIdentification());
@@ -108,8 +108,8 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 
 	if(storesToTry.empty())
 	{
-		LOGW("No stores found with a MinPriorityForStoring higher than " 
-				+ StringUtils::toString(message.getPriority()) 
+		LOGW("No stores found with a MinPriorityForStoring higher than "
+				+ StringUtils::toString(message.getPriority())
 				+ ", cannot possibly accept backup.");
 		return;
 	}
@@ -125,7 +125,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 
 		// Find the ancestor for this store, we'll later on find all stores
 		// that share this ancestor and give them priority (it saves
-		// bandwidth) 
+		// bandwidth)
 		Store::NewRunSpecification spec = store.getNewRunSpecification(
 				message.getHostIdentification(),
 				message.getSourceName());
@@ -136,13 +136,13 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != storesToTry.end();
 				++it)
 		{
-			Store::NewRunSpecification otherSpec 
+			Store::NewRunSpecification otherSpec
 				= (*it)->getNewRunSpecification(
 						message.getHostIdentification(),
 						message.getSourceName());
 
-			if(spec.runType == otherSpec.runType 
-					&& spec.ancestorDirectory == otherSpec.ancestorDirectory 
+			if(spec.runType == otherSpec.runType
+					&& spec.ancestorDirectory == otherSpec.ancestorDirectory
 					&& nrAdded < message.getMaxStoreTimes() - storesSentTo)
 			{
 				sendTo.push_back(*it);
@@ -233,12 +233,12 @@ void BacsyConnection::storeNonDeltaInStores(
 							message.getHostIdentification(),
 							message.getSourceName(),
 							message.getTime());
-				Poco::FileOutputStream* fileOutputStream 
+				Poco::FileOutputStream* fileOutputStream
 					= new Poco::FileOutputStream(
 							sourceFile.path(),
 							std::ios::out | std::ios::trunc);
 
-				SimpleOStreamStream* outputStream 
+				SimpleOStreamStream* outputStream
 					= new SimpleOStreamStream(*fileOutputStream);
 
 				pointers.push_back(FileAssociations(fileOutputStream, outputStream, sourceFile));
@@ -251,7 +251,7 @@ void BacsyConnection::storeNonDeltaInStores(
 		}
 		
 		// We must keep receiving the file! If not the protocol gets out of sync
-		// and we're screwed. 
+		// and we're screwed.
 		const std::streamsize received = StreamUtilities::copyStream(ds, tee, 65536, StringUtils::fromString<size_t>(size));
 		if(received != static_cast<std::streamsize>(StringUtils::fromString<size_t>(size)))
 		{

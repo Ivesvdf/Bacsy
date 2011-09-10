@@ -60,7 +60,7 @@ std::list<Store*> StoreManager::buildStores(const CascadingStoreConfiguration& c
 	std::list<Store*> stores;
 	stores.resize(storeNames.size());
 
-	StorenameToStorer storenameToStore(configuration); 
+	StorenameToStorer storenameToStore(configuration);
 
 	std::transform(
 			storeNames.begin(),

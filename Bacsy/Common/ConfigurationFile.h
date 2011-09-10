@@ -132,7 +132,7 @@ public:
 };
 
 template<typename T>
-T ConfigurationFile::get(string section, string key) const 
+T ConfigurationFile::get(string section, string key) const
 {
 	SectionMap::const_iterator it = sectionMap.find(section);
 	if(it == sectionMap.end())
@@ -147,7 +147,7 @@ T ConfigurationFile::get(string section, string key) const
 template<typename T>
 T ConfigurationFile::get(string section, string key, const T& defaultVal) const
 {
-	try 
+	try
 	{
 		return get<T>(section, key);
 	}

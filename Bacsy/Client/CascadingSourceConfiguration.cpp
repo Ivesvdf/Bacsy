@@ -97,8 +97,8 @@ ISourceConfiguration::IncludeCollection CascadingSourceConfiguration::Section::g
 {
 	return StringUtils::split(config.getCascadingValue<std::string>(
 				name,
-				"Include"), 
-			'\n'); 
+				"Include"),
+			'\n');
 }
 
 ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::getExcludes() const
@@ -106,8 +106,8 @@ ISourceConfiguration::ExcludeCollection CascadingSourceConfiguration::Section::g
 	ExcludeCollection rv;
 	const std::vector<std::string> stringExcludes = StringUtils::split(config.getCascadingValue<std::string>(
 				name,
-				"Exclude"), 
-			'\n'); 
+				"Exclude"),
+			'\n');
 
 	for(std::vector<std::string>::const_iterator it = stringExcludes.begin();
 			it != stringExcludes.end();
@@ -172,7 +172,7 @@ ISourceConfiguration::PreferredOrder CascadingSourceConfiguration::Section::getP
 	std::transform(parts.begin(), parts.end(), parts.begin(), StringUtils::toLower);
 
 	ISourceConfiguration::PreferredOrder preferredOrder;
-	for(std::vector<std::string>::const_iterator it = parts.begin(); 
+	for(std::vector<std::string>::const_iterator it = parts.begin();
 			it != parts.end();
 			++it)
 	{

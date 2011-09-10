@@ -120,14 +120,14 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 
 	if(!path.exists())
 	{
-		LOGE("Could not backup file " + pathString + 
+		LOGE("Could not backup file " + pathString +
 				" because it does not exist.");
 		return;
 	}
 
 	if(!path.canRead())
 	{
-		LOGE("Could not backup file " + pathString + 
+		LOGE("Could not backup file " + pathString +
 				" because this user does not have read permissions.");
 		return;
 	}

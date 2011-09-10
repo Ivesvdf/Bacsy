@@ -18,7 +18,7 @@
 #ifndef BACSY_PERFORM_DELTA_STREAM_H
 #define BACSY_PERFORM_DELTA_STREAM_H
 
-#include "Bacsy/Streams/RsyncStream.h" 
+#include "Bacsy/Streams/RsyncStream.h"
 
 namespace Bacsy
 {

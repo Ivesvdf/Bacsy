@@ -36,7 +36,7 @@ class BackupEngine
 		const CascadingSourceConfiguration& configuration;
 		std::vector<Source*> sources;
 
-	public: 
+	public:
 		BackupEngine(const CascadingSourceConfiguration& configuration);
 		~BackupEngine();
 

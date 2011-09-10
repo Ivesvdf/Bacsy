@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef BACSY_ISOURCECONFIGURATION_H
 #define BACSY_ISOURCECONFIGURATION_H
 
@@ -51,7 +51,7 @@ public:
 
 	typedef std::list<TimeSchedule> TimeTable;
 
-	virtual ~ISourceConfiguration() 
+	virtual ~ISourceConfiguration()
 	{
 	}
 

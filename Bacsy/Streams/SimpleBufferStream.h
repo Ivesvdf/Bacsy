@@ -18,7 +18,7 @@
 #ifndef BACSY_SIMPLE_BUFFER_STREAM
 #define BACSY_SIMPLE_BUFFER_STREAM
 
-#include "Bacsy/Streams/StreamUtils.h" 
+#include "Bacsy/Streams/StreamUtils.h"
 
 namespace Bacsy
 {

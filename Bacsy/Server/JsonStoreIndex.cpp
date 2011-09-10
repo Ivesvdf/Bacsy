@@ -98,7 +98,7 @@ void JsonStoreIndex::addNewFullRun(
 		const Poco::Timestamp& time)
 {
 	addNewRun(
-			hostIdentification, 
+			hostIdentification,
 			source,
 			RunType::full.toString(),
 			directory,
@@ -152,7 +152,7 @@ bool JsonStoreIndex::isDeltaRun(
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
 		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
-		if(entry["type"].asString() == 	RunType::delta.toString() 
+		if(entry["type"].asString() == 	RunType::delta.toString()
 				&& entry["dir"].asString() == dir)
 		{
 			return true;

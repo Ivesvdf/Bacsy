@@ -26,7 +26,7 @@ namespace Server
 
 using namespace Common;
 
-BacsyServer::BacsyServer(StoreManager& storeManager): 
+BacsyServer::BacsyServer(StoreManager& storeManager):
 	Poco::Net::TCPServer(
 			new ConnectionFactory(storeManager),
 			Poco::Net::ServerSocket(BACSYSERVERPORT),

@@ -25,7 +25,7 @@ namespace Common
 
 void ArgParsingUtils::processDefinitions(const std::vector<std::string>& definitions, ConfigurationFile& conf)
 {
-	for(std::vector<std::string>::const_iterator it = definitions.begin(); 
+	for(std::vector<std::string>::const_iterator it = definitions.begin();
 			it != definitions.end();
 			++it)
 	{

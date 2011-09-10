@@ -25,7 +25,7 @@ namespace Messages
 
 CanStoreMessage::CanStoreMessage(const std::string& source,
 			const unsigned int priority)
-	: 
+	:
 		AMessage("canStore"),
 		source(source),
 		priority(priority)
