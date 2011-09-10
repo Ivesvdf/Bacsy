@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JSON_STORE_INDEX
-#define JSON_STORE_INDEX
+#ifndef BACSY_JSON_STORE_INDEX
+#define BACSY_JSON_STORE_INDEX
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"

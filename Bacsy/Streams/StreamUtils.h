@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STREAM_UTILITIES_H
-#define STREAM_UTILITIES_H
+#ifndef BACSY_STREAM_UTILITIES_H
+#define BACSY_STREAM_UTILITIES_H
 
 #include <limits>
 #include "Poco/Buffer.h"

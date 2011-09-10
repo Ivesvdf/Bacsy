@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACKUP_ENGINE_H
-#define BACKUP_ENGINE_H
+#ifndef BACSY_BACKUP_ENGINE_H
+#define BACSY_BACKUP_ENGINE_H
 
 #include <vector>
 #include "Bacsy/Client/Source.h"

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIZE_EXCLUSION_SUB_RULE_H
-#define SIZE_EXCLUSION_SUB_RULE_H
+#ifndef BACSY_SIZE_EXCLUSION_SUB_RULE_H
+#define BACSY_SIZE_EXCLUSION_SUB_RULE_H
 
 #include <string>
 #include "Poco/File.h"

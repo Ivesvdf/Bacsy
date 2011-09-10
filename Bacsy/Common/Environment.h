@@ -17,8 +17,8 @@
 
 #include <string>
 
-#ifndef ENVIRONMENT_H
-#define ENVIRONMENT_H
+#ifndef BACSY_ENVIRONMENT_H
+#define BACSY_ENVIRONMENT_H
 
 namespace Bacsy
 {

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STORERESPONSEMESSSAGE_H
-#define STORERESPONSEMESSSAGE_H
+#ifndef BACSY_STORERESPONSEMESSSAGE_H
+#define BACSY_STORERESPONSEMESSSAGE_H
 
 #include "Bacsy/Messages/AMessage.h"
 #include "Bacsy/Common/RunType.h"

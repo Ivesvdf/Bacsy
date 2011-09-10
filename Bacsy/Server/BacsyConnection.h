@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSYCONNECTION_H
-#define BACSYCONNECTION_H
+#ifndef BACSY_BACSYCONNECTION_H
+#define BACSY_BACSYCONNECTION_H
 
 #include <list>
 #include <string>

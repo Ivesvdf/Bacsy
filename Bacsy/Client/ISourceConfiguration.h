@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#ifndef ISOURCECONFIGURATION_H
-#define ISOURCECONFIGURATION_H
+#ifndef BACSY_ISOURCECONFIGURATION_H
+#define BACSY_ISOURCECONFIGURATION_H
 
 #include <vector>
 #include <list>

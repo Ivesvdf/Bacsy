@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STRINGUTILS_H
-#define STRINGUTILS_H
+#ifndef BACSY_STRINGUTILS_H
+#define BACSY_STRINGUTILS_H
 
 #include <sstream>
 #include <string>

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXCLUSION_STRING_PARSER_H
-#define EXCLUSION_STRING_PARSER_H
+#ifndef BACSY_EXCLUSION_STRING_PARSER_H
+#define BACSY_EXCLUSION_STRING_PARSER_H
 
 #include <string>
 #include <list>

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STOREMESSAGE_H
-#define STOREMESSAGE_H
+#ifndef BACSY_STOREMESSAGE_H
+#define BACSY_STOREMESSAGE_H
 
 #include "json/json.h"
 #include "Poco/Timestamp.h"

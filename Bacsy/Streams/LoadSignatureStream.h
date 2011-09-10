@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOADSIGNATURESTREAM_H
-#define LOADSIGNATURESTREAM_H
+#ifndef BACSY_LOADSIGNATURESTREAM_H
+#define BACSY_LOADSIGNATURESTREAM_H
 
 #include "Bacsy/Streams/RsyncStream.h"
 

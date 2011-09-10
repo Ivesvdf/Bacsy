@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ISTORECONFIGURATION_H
-#define ISTORECONFIGURATION_H
+#ifndef BACSY_ISTORECONFIGURATION_H
+#define BACSY_ISTORECONFIGURATION_H
 
 #include <vector>
 #include <list>

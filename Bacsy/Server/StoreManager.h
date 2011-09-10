@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STORE_MANAGER_H
-#define STORE_MANAGER_H
+#ifndef BACSY_STORE_MANAGER_H
+#define BACSY_STORE_MANAGER_H
 
 #include <list>
 #include "Bacsy/Server/CascadingStoreConfiguration.h"

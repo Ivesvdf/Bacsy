@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CASCADING_FILE_CONFIGURATION
-#define CASCADING_FILE_CONFIGURATION
+#ifndef BACSY_CASCADING_FILE_CONFIGURATION
+#define BACSY_CASCADING_FILE_CONFIGURATION
 
 #include <list>
 #include <set>

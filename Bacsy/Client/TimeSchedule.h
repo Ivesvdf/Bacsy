@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TIMESCHEDULE_H
-#define TIMESCHEDULE_H
+#ifndef BACSY_TIMESCHEDULE_H
+#define BACSY_TIMESCHEDULE_H
 
 #include "Poco/Timespan.h"
 

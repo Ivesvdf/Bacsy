@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMPLE_BUFFER_STREAM
-#define SIMPLE_BUFFER_STREAM
+#ifndef BACSY_SIMPLE_BUFFER_STREAM
+#define BACSY_SIMPLE_BUFFER_STREAM
 
 #include "Bacsy/Streams/StreamUtils.h" 
 

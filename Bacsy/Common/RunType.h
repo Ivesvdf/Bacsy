@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RUNTYPE_H
-#define RUNTYPE_H
+#ifndef BACSY_RUNTYPE_H
+#define BACSY_RUNTYPE_H
 
 #include <string>
 

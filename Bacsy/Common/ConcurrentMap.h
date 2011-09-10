@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONCURRENT_MAP_H
-#define CONCURRENT_MAP_H
+#ifndef BACSY_CONCURRENT_MAP_H
+#define BACSY_CONCURRENT_MAP_H
 
 #include <map>
 #include "Poco/RWLock.h"

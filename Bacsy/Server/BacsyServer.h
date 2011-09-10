@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSYSERVER_H
-#define BACSYSERVER_H
+#ifndef BACSY_BACSYSERVER_H
+#define BACSY_BACSYSERVER_H
 
 #include "Poco/Net/TCPServer.h"
 #include "Poco/Net/TCPServerConnectionFactory.h"

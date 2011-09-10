@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXCLUSION_RULE_H
-#define EXCLUSION_RULE_H
+#ifndef BACSY_EXCLUSION_RULE_H
+#define BACSY_EXCLUSION_RULE_H
 
 #include <list>
 #include "Poco/File.h"

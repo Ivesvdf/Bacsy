@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PATH_EXCLUSION_SUB_RULE_H
-#define PATH_EXCLUSION_SUB_RULE_H
+#ifndef BACSY_PATH_EXCLUSION_SUB_RULE_H
+#define BACSY_PATH_EXCLUSION_SUB_RULE_H
 
 #include <string>
 #include "Bacsy/Rules/ExclusionSubRule.h"

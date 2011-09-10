@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RSYNC_STREAM_H
-#define RSYNC_STREAM_H
+#ifndef BACSY_RSYNC_STREAM_H
+#define BACSY_RSYNC_STREAM_H
 
 #include "Bacsy/Streams/StreamUtils.h"
 #include "librsync.h"

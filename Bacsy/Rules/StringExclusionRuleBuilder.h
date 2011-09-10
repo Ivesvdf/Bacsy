@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STRING_EXCLUSION_RULE_BUILDER_H
-#define STRING_EXCLUSION_RULE_BUILDER_H
+#ifndef BACSY_STRING_EXCLUSION_RULE_BUILDER_H
+#define BACSY_STRING_EXCLUSION_RULE_BUILDER_H
 
 #include "Bacsy/Rules/ExclusionRule.h"
 

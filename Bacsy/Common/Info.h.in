@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INFO_H
-#define INFO_H
+#ifndef BACSY_INFO_H
+#define BACSY_INFO_H
 
 #include <string>
 

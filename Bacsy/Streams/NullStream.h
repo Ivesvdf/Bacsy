@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NULLSTREAM_H
-#define NULLSTREAM_H
+#ifndef BACSY_NULLSTREAM_H
+#define BACSY_NULLSTREAM_H
 
 #include <iostream>
 #include "Bacsy/Streams/StreamUtils.h"

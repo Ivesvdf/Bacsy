@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STORE_H
-#define STORE_H
+#ifndef BACSY_STORE_H
+#define BACSY_STORE_H
 
 #include <string>
 #include "Poco/FileStream.h"

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_GLOB_EXCLUSION_SUB_RULE_H
-#define FILE_GLOB_EXCLUSION_SUB_RULE_H
+#ifndef BACSY_FILE_GLOB_EXCLUSION_SUB_RULE_H
+#define BACSY_FILE_GLOB_EXCLUSION_SUB_RULE_H
 
 #include "Poco/Path.h"
 #include "Poco/Glob.h"

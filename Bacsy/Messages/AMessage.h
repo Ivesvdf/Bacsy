@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AMESSAGE_H
-#define AMESSAGE_H
+#ifndef BACSY_AMESSAGE_H
+#define BACSY_AMESSAGE_H
 
 #include <string>
 #include "json/json.h"

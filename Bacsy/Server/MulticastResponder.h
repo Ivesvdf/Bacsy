@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTICAST_RESPONDER_H
-#define MULTICAST_RESPONDER_H
+#ifndef BACSY_MULTICAST_RESPONDER_H
+#define BACSY_MULTICAST_RESPONDER_H
 
 #include <string>
 #include "Poco/Thread.h"

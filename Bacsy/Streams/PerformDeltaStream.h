@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PERFORM_DELTA_STREAM_H
-#define PERFORM_DELTA_STREAM_H
+#ifndef BACSY_PERFORM_DELTA_STREAM_H
+#define BACSY_PERFORM_DELTA_STREAM_H
 
 #include "Bacsy/Streams/RsyncStream.h" 
 

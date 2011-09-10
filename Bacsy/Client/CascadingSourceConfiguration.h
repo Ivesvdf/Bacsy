@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CASCADING_SOURCE_CONFIGURATION
-#define CASCADING_SOURCE_CONFIGURATION
+#ifndef BACSY_CASCADING_SOURCE_CONFIGURATION
+#define BACSY_CASCADING_SOURCE_CONFIGURATION
 
 #include <list>
 #include <fstream>

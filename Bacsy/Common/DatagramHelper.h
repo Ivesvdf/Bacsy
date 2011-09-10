@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DATAGRAM_HELPER_H
-#define DATAGRAM_HELPER_H
+#ifndef BACSY_DATAGRAM_HELPER_H
+#define BACSY_DATAGRAM_HELPER_H
 
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"

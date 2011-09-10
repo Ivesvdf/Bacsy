@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef READYTOSTOREMESSAGE_H
-#define READYTOSTOREMESSAGE_H
+#ifndef BACSY_READYTOSTOREMESSAGE_H
+#define BACSY_READYTOSTOREMESSAGE_H
 
 #include "Bacsy/Messages/AMessage.h"
 

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef BACSY_UTILS_H
+#define BACSY_UTILS_H
 
 namespace Bacsy
 {

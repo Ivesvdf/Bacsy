@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOURCE_H
-#define SOURCE_H
+#ifndef BACSY_SOURCE_H
+#define BACSY_SOURCE_H
 
 #include <string>
 #include <set>

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOSIGNATURESTREAM_H
-#define TOSIGNATURESTREAM_H
+#ifndef BACSY_TOSIGNATURESTREAM_H
+#define BACSY_TOSIGNATURESTREAM_H
 
 #include <iostream>
 #include "Bacsy/Streams/StreamUtils.h"

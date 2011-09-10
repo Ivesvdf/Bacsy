@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DUMMY_FILE_H
-#define DUMMY_FILE_H
+#ifndef BACSY_DUMMY_FILE_H
+#define BACSY_DUMMY_FILE_H
 
 #include "Bacsy/Common/IFile.h"
 

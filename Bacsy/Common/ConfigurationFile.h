@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATIONFILE_H
-#define CONFIGURATIONFILE_H
+#ifndef BACSY_CONFIGURATIONFILE_H
+#define BACSY_CONFIGURATIONFILE_H
 
 #include <istream>
 #include <sstream>

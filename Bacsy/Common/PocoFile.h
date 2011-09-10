@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POCO_FILE_H
-#define POCO_FILE_H
+#ifndef BACSY_POCO_FILE_H
+#define BACSY_POCO_FILE_H
 
 #include "Poco/File.h"
 #include "Bacsy/Common/IFile.h"

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TIMERSTRINGPARSER_H
-#define TIMERSTRINGPARSER_H
+#ifndef BACSY_TIMERSTRINGPARSER_H
+#define BACSY_TIMERSTRINGPARSER_H
 
 #include <string>
 #include <list>

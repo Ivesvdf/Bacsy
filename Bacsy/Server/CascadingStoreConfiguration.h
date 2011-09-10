@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CASCADING_STORE_CONFIGURATION
-#define CASCADING_STORE_CONFIGURATION
+#ifndef BACSY_CASCADING_STORE_CONFIGURATION
+#define BACSY_CASCADING_STORE_CONFIGURATION
 
 #include <list>
 #include <fstream>

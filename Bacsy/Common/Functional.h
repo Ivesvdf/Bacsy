@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FUNCTIONAL_H
-#define FUNCTIONAL_H
+#ifndef BACSY_FUNCTIONAL_H
+#define BACSY_FUNCTIONAL_H
 
 #include <functional>
 

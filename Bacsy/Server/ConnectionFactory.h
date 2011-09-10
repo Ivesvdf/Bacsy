@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONNECTION_FACTORY_H
-#define CONNECTION_FACTORY_H
+#ifndef BACSY_CONNECTION_FACTORY_H
+#define BACSY_CONNECTION_FACTORY_H
 
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "Bacsy/Server/BacsyConnection.h"

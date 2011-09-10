@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ARG_PARSING_UTILS_H
-#define ARG_PARSING_UTILS_H
+#ifndef BACSY_ARG_PARSING_UTILS_H
+#define BACSY_ARG_PARSING_UTILS_H
 
 #include <list>
 #include <string>

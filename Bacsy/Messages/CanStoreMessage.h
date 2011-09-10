@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CANSTOREMESSAGE_H
-#define CANSTOREMESSAGE_H
+#ifndef BACSY_CANSTOREMESSAGE_H
+#define BACSY_CANSTOREMESSAGE_H
 
 #include "Bacsy/Messages/AMessage.h"
 
