@@ -61,6 +61,11 @@ public:
 			const std::string& hostIdentification,
 			const std::string& source) const;
 
+	Poco::Timestamp getCorrespondingTime(
+			const std::string& hostIdentification,
+			const std::string& source,
+			const std::string& directory) const;
+
 	bool isDeltaRun(
 			const std::string& hostIdentification,
 			const std::string& source,

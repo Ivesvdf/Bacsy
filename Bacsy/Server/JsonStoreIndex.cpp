@@ -16,6 +16,7 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 #include "Bacsy/Common/RunType.h"
@@ -180,6 +181,25 @@ std::string JsonStoreIndex::getLastFullRun(
 		}
 	}
 	return "";
+}
+
+Poco::Timestamp JsonStoreIndex::getCorrespondingTime(
+		const std::string& hostIdentification,
+		const std::string& source,
+		const std::string& directory) const
+{
+	const Json::Value sourceValue = root[hostIdentification][source];
+
+	for(size_t i = 0; i < sourceValue.size(); i++)
+	{
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		if(entry["dir"].asString() == directory)
+		{
+			return Poco::Timestamp::fromUtcTime(entry["time"].asInt64());
+		}
+	}
+
+	throw std::runtime_error("No such directory for host & source.");
 }
 
 void JsonStoreIndex::store()

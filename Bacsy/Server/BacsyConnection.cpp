@@ -125,7 +125,9 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		// Find the ancestor for this store, we'll later on find all stores
 		// that share this ancestor and give them priority (it saves
 		// bandwidth) 
-		const std::string ancestor = store.getAncestorDirectoryForNewRun(message.getSourceName());
+		Store::NewRunSpecification spec = store.getNewRunSpecification(
+				message.getHostIdentification(),
+				message.getSourceName());
 
 		unsigned int nrAdded = 0;
 
@@ -133,7 +135,13 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != storesToTry.end();
 				++it)
 		{
-			if(ancestor == (*it)->getAncestorDirectoryForNewRun(message.getSourceName()) 
+			Store::NewRunSpecification otherSpec 
+				= (*it)->getNewRunSpecification(
+						message.getHostIdentification(),
+						message.getSourceName());
+
+			if(spec.runType == otherSpec.runType 
+					&& spec.ancestorDirectory == otherSpec.ancestorDirectory 
 					&& nrAdded < message.getMaxStoreTimes() - storesSentTo)
 			{
 				sendTo.push_back(*it);
@@ -149,12 +157,13 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		if(ancestor.length() == 0)
+		if(spec.runType == RunType::full)
 		{
 			storeNonDeltaInStores(ds, message, sendTo, "", ALL_FILES);
 		}
 		else
 		{
+			LOGE("Fullfiles run -- not implemented.");
 			// Not yet implemented
 		}
 

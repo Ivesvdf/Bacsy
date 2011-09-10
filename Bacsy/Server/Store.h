@@ -27,6 +27,7 @@
 #include "Poco/File.h"
 #include "Bacsy/Server/JsonStoreIndex.h"
 #include "Bacsy/Server/IStoreConfiguration.h"
+#include "Bacsy/Common/RunType.h"
 
 namespace Bacsy
 {
@@ -38,10 +39,21 @@ using namespace Common;
 class Store : public IStoreConfiguration
 {
 public:
+	class NewRunSpecification
+	{
+	public:
+		NewRunSpecification(RunType runType): runType(runType) {}
+		Poco::Timestamp time;
+		std::string ancestorDirectory;
+		RunType runType;
+	};
+
 	Store(const IStoreConfiguration& configuration);
 	~Store();
 
-	std::string getAncestorDirectoryForNewRun(const std::string& ancestor);
+	NewRunSpecification getNewRunSpecification(
+			const std::string& host,
+			const std::string& source);
 
 	Poco::File getOutputForCompleteFile(
 			const Poco::Path& originalPath,
