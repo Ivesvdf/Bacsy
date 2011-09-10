@@ -52,6 +52,7 @@ namespace Client
 using namespace Common;
 using namespace Rules;
 using Bacsy::Messages::StoreResponseMessage;
+using Bacsy::Messages::ReadyToStoreMessage;
 
 bool Source::isPath(std::string s) const
 {
@@ -98,8 +99,12 @@ std::list<Poco::Timer*> Source::createTimers()
 			it++)
 	{
 		// Execute all timers that normally fire immediately after 1 second
-		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0) ? 1000 : it->delay.totalMilliseconds();
-		Poco::Timer* const timer = new Poco::Timer(delayInMilliSeconds, it->repeat.totalMilliseconds());
+		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0)
+			?  1000
+			: it->delay.totalMilliseconds();
+		Poco::Timer* const timer = new Poco::Timer(
+				delayInMilliSeconds,
+				it->repeat.totalMilliseconds());
 		LOGI(std::string("Creating timer with delay of ")
 				+ StringUtils::toString(delayInMilliSeconds)
 				+ std::string(" and repeat rate of ")
@@ -150,7 +155,9 @@ void Source::run(Poco::Timer& timer)
 
 	if(maxBackups == 0)
 	{
-		LOGI("Not executing source " + name + " after all, because maxBackups equals 0.");
+		LOGI("Not executing source " 
+				+ name 
+				+ " after all, because maxBackups equals 0.");
 		return;
 	}
 
@@ -296,7 +303,9 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 	sendAll(sender);
 }
 
-void Source::sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const
+void Source::sendCanStore(
+		Poco::Net::DatagramSocket& sendFrom,
+		Poco::Net::SocketAddress to) const
 {
 	LOGI("Sending canStore message");
 	Bacsy::Messages::CanStoreMessage(name, priority).send(sendFrom, to);
@@ -317,8 +326,8 @@ class CanStoreResponseAccepter
 
 			if(parts.size() != 2 || parts[0] != bacsyProtocolString)
 			{
-				LOGW( "Received packet with incorrect protocol string or invalid contents:"
-						+ what);
+				LOGW("Received packet with incorrect protocol "
+						"string or invalid contents:" + what);
 				return;
 			}
 
@@ -327,7 +336,7 @@ class CanStoreResponseAccepter
 				const Json::Value root = JsonHelper::read(parts[1]);
 				if(root["type"] == "readyToStore")
 				{
-					if(Bacsy::Messages::ReadyToStoreMessage(root).getSource() != sourceName)
+					if(ReadyToStoreMessage(root).getSource() != sourceName)
 					{
 						return;
 					}
@@ -341,9 +350,10 @@ class CanStoreResponseAccepter
 			{
 				LOGW(e.what());
 				return;
-			}	
+			}
 
-			LOGI(std::string("Received valid MC message -- adding ") + who.toString());
+			LOGI(std::string("Received valid MC message -- adding ")
+					+ who.toString());
 			peopleToContact.push_back(who);
 
 		}
