@@ -209,7 +209,7 @@ void BacsyConnection::storeNonDeltaInStores(
 		const Bacsy::Messages::StoreMessage& message,
 		std::list<Store*> storeTo,
 		const std::string ancestor,
-		RunType runType)
+		RunType& runType)
 {
 	LOGI("No ancestor");
 
@@ -287,10 +287,22 @@ void BacsyConnection::storeNonDeltaInStores(
 				it != storeTo.end();
 				++it)
 	{
-		(*it)->newCompleteRun(
-				message.getHostIdentification(),
-				message.getSourceName(),
-				message.getTime());
+		if(runType == RunType::full)
+		{
+			(*it)->newCompleteRun(
+					message.getHostIdentification(),
+					message.getSourceName(),
+					message.getTime());
+		}
+		else if(runType == RunType::fullfiles)
+		{
+			(*it)->newFullfilesRun(
+					message.getHostIdentification(),
+					message.getSourceName(),
+					ancestor,
+					message.getTime());
+		}
+
 	}
 
 }

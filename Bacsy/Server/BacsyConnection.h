@@ -48,7 +48,7 @@ public:
 			const Bacsy::Messages::StoreMessage& message,
 			std::list<Store*> storeTo,
 			const std::string ancestor,
-			RunType runType);
+			RunType& runType);
 
 	virtual void run();
 
