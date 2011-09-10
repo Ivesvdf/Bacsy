@@ -26,6 +26,7 @@
 #include "Poco/Net/TCPServerConnection.h" 
 #include "Bacsy/Server/StoreManager.h"
 #include "Bacsy/Messages/StoreMessage.h"
+#include "Bacsy/Common/RunType.h"
 
 namespace Bacsy
 {
@@ -36,9 +37,6 @@ using namespace Common;
 
 class BacsyConnection : public Poco::Net::TCPServerConnection
 {
-private:
-	enum WhatFiles { ALL_FILES, SOME_FILES };
-
 public:
 	BacsyConnection(const Poco::Net::StreamSocket& socket, StoreManager& manager);
 	void storeBackup(
@@ -50,7 +48,7 @@ public:
 			const Bacsy::Messages::StoreMessage& message,
 			std::list<Store*> storeTo,
 			const std::string ancestor,
-			WhatFiles whatFiles);
+			RunType runType);
 
 	virtual void run();
 

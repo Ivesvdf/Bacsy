@@ -159,7 +159,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 
 		if(spec.runType == RunType::full)
 		{
-			storeNonDeltaInStores(ds, message, sendTo, "", ALL_FILES);
+			storeNonDeltaInStores(ds, message, sendTo, "", RunType::full);
 		}
 		else
 		{
@@ -199,7 +199,7 @@ void BacsyConnection::storeNonDeltaInStores(
 		const Bacsy::Messages::StoreMessage& message,
 		std::list<Store*> storeTo,
 		const std::string ancestor,
-		WhatFiles whatFiles)
+		RunType runType)
 {
 	LOGI("No ancestor");
 
