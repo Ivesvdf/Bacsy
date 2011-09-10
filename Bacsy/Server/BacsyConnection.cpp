@@ -161,9 +161,9 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			LOGI("  - " + (*it)->toString());
 		}
 
-		if(spec.runType == RunType::full)
+		if(spec.runType == RunType::full || spec.runType == RunType::fullfiles)
 		{
-			storeNonDeltaInStores(ds, message, sendTo, "", RunType::full);
+			storeNonDeltaInStores(ds, message, sendTo, "", spec.runType);
 		}
 		else
 		{
