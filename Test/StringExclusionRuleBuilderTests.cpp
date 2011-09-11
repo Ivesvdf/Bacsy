@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include "Poco/Types.h"
+#include "Poco/LocalDateTime.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 #include "Bacsy/Common/DummyFile.h"
 #include "Bacsy/Rules/SizeExclusionSubRule.h"
@@ -119,4 +120,31 @@ TEST( StringExclusionRuleBuilderTests, TestSelfAssigment)
 	f.setSize(14*1024*1024);
 	ASSERT_FALSE(rule.match(f));
 	f.setSize(14*1024*1024+1);
+}
+
+TEST( StringExclusionRuleBuilderTests, TestLastModified)
+{
+	ExclusionRule rule = StringExclusionRuleBuilder::build("modified:>2011-09-11T15:00");
+
+	DummyFile f("bla");
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 10, 21, 00, 00).timestamp());
+	ASSERT_FALSE(rule.match(f));
+
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 11, 14, 55, 00).timestamp());
+	ASSERT_FALSE(rule.match(f));
+
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 11, 15, 01, 00).timestamp());
+	ASSERT_TRUE(rule.match(f));
+
+
+	rule = StringExclusionRuleBuilder::build("modified:<2011-09-11T15:00");
+
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 10, 21, 00, 00).timestamp());
+	ASSERT_TRUE(rule.match(f));
+
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 11, 14, 55, 00).timestamp());
+	ASSERT_TRUE(rule.match(f));
+
+	f.setLastModified(Poco::LocalDateTime(2011, 9, 11, 15, 01, 00).timestamp());
+	ASSERT_FALSE(rule.match(f));
 }

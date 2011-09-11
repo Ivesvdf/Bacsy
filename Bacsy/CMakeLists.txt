@@ -40,6 +40,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  Rules/ExclusionStringParser
                  Rules/ExclusionSubRule
                  Rules/FileGlobExclusionSubRule
+				 Rules/ModifiedDateExclusionSubRule
                  Rules/PathExclusionSubRule
                  Rules/PathGlobExclusionSubRule
                  Rules/SizeExclusionSubRule

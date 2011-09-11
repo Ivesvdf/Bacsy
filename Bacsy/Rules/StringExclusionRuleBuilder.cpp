@@ -16,14 +16,17 @@
  */
 
 #include "Poco/Ascii.h"
-#include "Bacsy/Common/StringUtils.h"
+#include "Poco/RegularExpression.h"
+#include "Poco/LocalDateTime.h"
 #include "woodcutter/woodcutter.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 #include "Bacsy/Rules/PathGlobExclusionSubRule.h"
 #include "Bacsy/Rules/SizeExclusionSubRule.h"
 #include "Bacsy/Rules/FileGlobExclusionSubRule.h"
 #include "Bacsy/Rules/PathExclusionSubRule.h"
 #include "Bacsy/Rules/ExclusionStringParser.h"
+#include "Bacsy/Rules/ModifiedDateExclusionSubRule.h"
 
 namespace Bacsy
 {
@@ -39,6 +42,9 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 
 	typedef std::list<std::string> StringList;
 	StringList parsed = ExclusionStringParser::parse(source);
+
+	Poco::RegularExpression dateRegex("modified:([<>])(\\d\\d\\d\\d)-?(\\d\\d)-?(\\d\\d)"
+			"(T(\\d\\d):?(\\d\\d)Z?)?");
 
 	bool negated = false;
 
@@ -58,6 +64,10 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 			continue;
 		}
 		// Test for size subrule
+		else if(dateRegex.match(subject))
+		{
+			addDate(dateRegex, rule, subject, negated);
+		}
 		else if(subject.size() > 3 && (subject[0] == '>' || subject[0] == '<'))
 		{
 			addSize(rule, subject, negated);
@@ -88,6 +98,32 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 	return rule;
 }
 
+void StringExclusionRuleBuilder::addDate(
+		const Poco::RegularExpression& regex,
+		ExclusionRule& rule,
+		const std::string& subject,
+		const bool negated)
+{
+
+	std::vector<std::string> parts;
+	regex.split(subject, 0, parts);
+
+	const char theOperator = parts[1][0];
+
+	Poco::LocalDateTime time(
+			StringUtils::fromString<int>(parts[2]),
+			StringUtils::fromString<int>(parts[3]),
+			StringUtils::fromString<int>(parts[4]),
+			StringUtils::fromString<int>(parts[6]),
+			StringUtils::fromString<int>(parts[7]),
+			0);
+
+	rule.addSubRule(new ModifiedDateExclusionSubRule(time.timestamp(),
+				theOperator == '>' ?
+				ModifiedDateExclusionSubRule::NEWER_THAN :
+				ModifiedDateExclusionSubRule::OLDER_THAN,
+				negated));
+}
 void StringExclusionRuleBuilder::addSize(
 		ExclusionRule& rule,
 		const std::string& subject,

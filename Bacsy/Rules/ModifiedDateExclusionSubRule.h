@@ -15,11 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSY_STRING_EXCLUSION_RULE_BUILDER_H
-#define BACSY_STRING_EXCLUSION_RULE_BUILDER_H
+#ifndef BACSY_MODIFIEDDATE_EXCLUSION_SUB_RULE_H
+#define BACSY_MODIFIEDDATE_EXCLUSION_SUB_RULE_H
 
-#include "Poco/RegularExpression.h"
-#include "Bacsy/Rules/ExclusionRule.h"
+#include <string>
+#include "Poco/File.h"
+#include "Poco/Timestamp.h"
+#include "Bacsy/Rules/ExclusionSubRule.h"
 
 namespace Bacsy
 {
@@ -29,23 +31,24 @@ namespace Rules
 using namespace Common;
 
 
-class StringExclusionRuleBuilder
+class ModifiedDateExclusionSubRule : public ExclusionSubRule
 {
 public:
-	static ExclusionRule build(const std::string& source);
-	static bool isPath(std::string s);
+	enum Operator { OLDER_THAN, NEWER_THAN };
 
+	ModifiedDateExclusionSubRule(
+			const Poco::Timestamp& timestamp,
+			const Operator theOperator,
+			bool negated);
+	ModifiedDateExclusionSubRule(const ModifiedDateExclusionSubRule& copy);
+	bool matchWithoutNegate(const IFile& inputFile);
+	virtual ExclusionSubRule* clone() const;
+
+	Poco::Timestamp getTimestamp() const;
+	Operator getOperator() const;
 private:
-	static void addSize(
-			ExclusionRule& rule,
-			const std::string& subject,
-			const bool negated);
-
-	static void addDate(
-			const Poco::RegularExpression& regex,
-			ExclusionRule& rule,
-			const std::string& subject,
-			const bool negated);
+	const Poco::Timestamp timestamp;
+	const Operator theOperator;
 };
 
 }
