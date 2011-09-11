@@ -31,6 +31,7 @@ public:
 	std::string toString() const;
 	static const RunType& fromString(const std::string& str);
 	bool operator==(const RunType& other) const;
+	bool operator!=(const RunType& other) const;
 
 	static const RunType full;
 	static const RunType fullfiles;

@@ -64,5 +64,10 @@ bool RunType::operator==(const RunType& other) const
 	return textRepresentation == other.textRepresentation;
 }
 
+bool RunType::operator!=(const RunType& other) const
+{
+	return !(*this == other);
+}
+
 }
 }
