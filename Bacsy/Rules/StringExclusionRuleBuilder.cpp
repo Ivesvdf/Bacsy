@@ -60,54 +60,7 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 		// Test for size subrule
 		else if(subject.size() > 3 && (subject[0] == '>' || subject[0] == '<'))
 		{
-			const char theOperator = subject[0];
-			const char possiblePrefix = subject[subject.length()-2];
-
-			using Poco::Ascii;
-
-			const char prefix = Poco::Ascii::isDigit(possiblePrefix) ? 0 : possiblePrefix;
-			const std::string numberString = subject.substr(1, subject.length()-2 - (prefix ? 1 : 0));
-			const Poco::File::FileSize sizeInUnit = StringUtils::fromString<size_t>(numberString);
-
-			if(!Poco::Ascii::isAlpha(prefix) && prefix != 0)
-			{
-				LOGE("Invalid prefix in size subrule : " + subject);
-				continue;
-			}
-
-			if(subject[subject.length()-1] != 'B')
-			{
-				LOGE("Invalid unit in subrule " + subject + ", only B is supported.");
-				continue;
-			}
-
-			Poco::File::FileSize sizeInBytes = -1;
-			switch(prefix)
-			{
-				case 0:
-					sizeInBytes = sizeInUnit;
-					break;
-				case 'k':
-					sizeInBytes = sizeInUnit * 1024;
-					break;
-				case 'M':
-					sizeInBytes = sizeInUnit * 1024 * 1024;
-					break;
-				case 'G':
-					sizeInBytes = sizeInUnit * 1024*1024*1024;
-					break;
-				default:
-					sizeInBytes = 0;
-					LOGE(std::string("Unrecognized prefix ") + prefix + " in subrule " + subject);
-					continue;
-			}
-
-
-			rule.addSubRule(new SizeExclusionSubRule(sizeInBytes,
-						theOperator == '>' ?
-							SizeExclusionSubRule::GREATER_THAN :
-							SizeExclusionSubRule::LESS_THAN,
-						negated));
+			addSize(rule, subject, negated);
 		}
 		else if(subject.find('*') != std::string::npos || subject.find('?') != std::string::npos)
 		{
@@ -134,6 +87,62 @@ ExclusionRule StringExclusionRuleBuilder::build(const std::string& source)
 	}
 	return rule;
 }
+
+void StringExclusionRuleBuilder::addSize(
+		ExclusionRule& rule,
+		const std::string& subject,
+		const bool negated)
+{
+	const char theOperator = subject[0];
+	const char possiblePrefix = subject[subject.length()-2];
+
+	using Poco::Ascii;
+
+	const char prefix = Poco::Ascii::isDigit(possiblePrefix) ? 0 : possiblePrefix;
+	const std::string numberString = subject.substr(1, subject.length()-2 - (prefix ? 1 : 0));
+	const Poco::File::FileSize sizeInUnit = StringUtils::fromString<size_t>(numberString);
+
+	if(!Poco::Ascii::isAlpha(prefix) && prefix != 0)
+	{
+		LOGE("Invalid prefix in size subrule : " + subject);
+		return;
+	}
+
+	if(subject[subject.length()-1] != 'B')
+	{
+		LOGE("Invalid unit in subrule " + subject + ", only B is supported.");
+		return;
+	}
+
+	Poco::File::FileSize sizeInBytes = -1;
+	switch(prefix)
+	{
+		case 0:
+			sizeInBytes = sizeInUnit;
+			break;
+		case 'k':
+			sizeInBytes = sizeInUnit * 1024;
+			break;
+		case 'M':
+			sizeInBytes = sizeInUnit * 1024 * 1024;
+			break;
+		case 'G':
+			sizeInBytes = sizeInUnit * 1024*1024*1024;
+			break;
+		default:
+			sizeInBytes = 0;
+			LOGE(std::string("Unrecognized prefix ") + prefix + " in subrule " + subject);
+			return;
+	}
+
+
+	rule.addSubRule(new SizeExclusionSubRule(sizeInBytes,
+				theOperator == '>' ?
+				SizeExclusionSubRule::GREATER_THAN :
+				SizeExclusionSubRule::LESS_THAN,
+				negated));
+}
+
 
 bool StringExclusionRuleBuilder::isPath(std::string s)
 {

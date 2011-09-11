@@ -33,6 +33,12 @@ class StringExclusionRuleBuilder
 public:
 	static ExclusionRule build(const std::string& source);
 	static bool isPath(std::string s);
+
+private:
+	static void addSize(
+			ExclusionRule& rule,
+			const std::string& subject,
+			const bool negated);
 };
 
 }
