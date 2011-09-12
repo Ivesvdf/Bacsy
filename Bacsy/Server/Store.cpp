@@ -73,10 +73,7 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 	{
 		NewRunSpecification specification(RunType::fullfiles);
 		specification.ancestorDirectory = ancestor;
-		specification.time = storeIndex->getCorrespondingTime(
-				host,
-				source,
-				ancestor);
+		specification.time = storeIndex->getLastRunTime(host, source);
 		return specification;
 	}
 }

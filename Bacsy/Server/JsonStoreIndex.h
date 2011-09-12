@@ -66,6 +66,10 @@ public:
 			const std::string& source,
 			const std::string& directory) const;
 
+	Poco::Timestamp getLastRunTime(
+			const std::string& hostIdentification,
+			const std::string& source) const;
+
 	bool isDeltaRun(
 			const std::string& hostIdentification,
 			const std::string& source,

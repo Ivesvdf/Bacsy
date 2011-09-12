@@ -202,6 +202,15 @@ Poco::Timestamp JsonStoreIndex::getCorrespondingTime(
 	throw std::runtime_error("No such directory for host & source.");
 }
 
+Poco::Timestamp JsonStoreIndex::getLastRunTime(
+		const std::string& hostIdentification,
+		const std::string& source) const
+{
+	const Json::Value sourceValue = root[hostIdentification][source];
+	return Poco::Timestamp::fromUtcTime(
+			sourceValue[sourceValue.size()-1]["time"].asInt64());
+}
+
 void JsonStoreIndex::store()
 {
 	const std::string& newContents = writer.write(root);
