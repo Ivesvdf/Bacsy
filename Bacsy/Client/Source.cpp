@@ -320,6 +320,8 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 					false));
 
 		sendAll(sender, rule);
+		socket.sendMessage("");
+		socket.sendMessage("EOF");
 	}
 	else
 	{

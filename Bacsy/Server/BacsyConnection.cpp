@@ -220,8 +220,29 @@ void BacsyConnection::storeNonDeltaInStores(
 	std::string size;
 	std::string changed;
 	std::string checksum;
-	while(ds.receiveMessage(file) && ds.receiveMessage(changed) && ds.receiveMessage(size)) // && ds.receiveMessage(checksum))
+	while(true)
 	{
+		const bool b1 = ds.receiveMessage(file);
+
+		// Test if a newline was received, if so we need to exit the loop
+		// because we'll be getting e.g. EOF later.
+		if(b1 && file.empty())
+		{
+			break;
+		}
+
+		const bool b2 = ds.receiveMessage(changed);
+		const bool b3 = ds.receiveMessage(size);
+
+
+		if(!b1 || file.empty()
+				|| !b2 || changed.empty()
+				|| !b3 || size.empty())
+		{
+			LOGE("Problem receiving file metadata.");
+			break;
+		}
+
 		LOGI("Receiving size = " + size);
 		//backupFile(ds, newPath.toString(), StringUtils::fromString<size_t>(size), priority);
 
@@ -282,32 +303,43 @@ void BacsyConnection::storeNonDeltaInStores(
 			delete it->fileOutputStream;
 			delete it->ostreamStream;
 		}
-		
 	}
 
-	// Register this run with every store we saved it to
-	for(std::list<Store*>::iterator it = storeTo.begin();
-				it != storeTo.end();
-				++it)
+	std::string possibleEOF;
+	ds.receiveMessage(possibleEOF);
+
+	if(possibleEOF == "EOF")
 	{
-		LOGI("Registering run to store " + (*it)->toString());
+		LOGI("EOF Received.");
 
-		if(runType == RunType::full)
+		// Register this run with every store we saved it to
+		for(std::list<Store*>::iterator it = storeTo.begin();
+					it != storeTo.end();
+					++it)
 		{
-			(*it)->newCompleteRun(
-					message.getHostIdentification(),
-					message.getSourceName(),
-					message.getTime());
-		}
-		else if(runType == RunType::fullfiles)
-		{
-			(*it)->newFullfilesRun(
-					message.getHostIdentification(),
-					message.getSourceName(),
-					ancestor,
-					message.getTime());
-		}
+			LOGI("Registering run for store " + (*it)->toString());
 
+			if(runType == RunType::full)
+			{
+				(*it)->newCompleteRun(
+						message.getHostIdentification(),
+						message.getSourceName(),
+						message.getTime());
+			}
+			else if(runType == RunType::fullfiles)
+			{
+				(*it)->newFullfilesRun(
+						message.getHostIdentification(),
+						message.getSourceName(),
+						ancestor,
+						message.getTime());
+			}
+
+		}
+	}
+	else
+	{
+		LOGE("No EOF received. Not writing to store indexes.");
 	}
 
 }
