@@ -18,6 +18,7 @@
 #ifndef BACSY_STORERESPONSEMESSSAGE_H
 #define BACSY_STORERESPONSEMESSSAGE_H
 
+#include "Poco/Timestamp.h"
 #include "Bacsy/Messages/AMessage.h"
 #include "Bacsy/Common/RunType.h"
 
@@ -31,7 +32,9 @@ using Bacsy::Common::RunType;
 class StoreResponseMessage : public AMessage
 {
 public:
-	StoreResponseMessage(const RunType& runtype);
+	StoreResponseMessage(
+			const RunType& runtype,
+			const Poco::Timestamp timestamp = Poco::Timestamp());
 
 	StoreResponseMessage(const Json::Value& root);
 	void buildJson(Json::Value& root) const;
@@ -39,8 +42,10 @@ public:
 	static StoreResponseMessage receive(Poco::Net::DialogSocket& ds);
 
 	const RunType& getRunType() const { return runtype; };
+	const Poco::Timestamp getTimestamp() const { return timestamp; };
 private:
 	const RunType& runtype;
+	const Poco::Timestamp timestamp;
 };
 
 

@@ -43,6 +43,7 @@
 #include "Bacsy/Messages/CanStoreMessage.h"
 #include "Bacsy/Messages/ReadyToStoreMessage.h"
 #include "Bacsy/Messages/StoreResponseMessage.h"
+#include "Bacsy/Rules/ModifiedDateExclusionSubRule.h"
 
 namespace Bacsy
 {
@@ -177,7 +178,8 @@ void Source::run(Poco::Timer& timer)
 	{
 		LOGI("Executing Dry Print Run");
 		PrintFileSender sender;
-		sendAll(sender);
+		ExclusionRule rule;
+		sendAll(sender, rule);
 	}
 	else
 	{
@@ -299,8 +301,30 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 
 	StoreResponseMessage response = StoreResponseMessage::receive(socket);
 
-	FileSender sender(socket);
-	sendAll(sender);
+	if(response.getRunType() == RunType::full)
+	{
+		LOGI("Sending a full run");
+		FileSender sender(socket);
+		ExclusionRule rule; // use empty extra rule
+		sendAll(sender, rule);
+	}
+	else if(response.getRunType() == RunType::fullfiles)
+	{
+		LOGI("Sending a full files run.");
+		FileSender sender(socket);
+		ExclusionRule rule;
+		rule.addSubRule(
+				new ModifiedDateExclusionSubRule(
+					response.getTimestamp(),
+					ModifiedDateExclusionSubRule::OLDER_THAN,
+					false));
+
+		sendAll(sender, rule);
+	}
+	else
+	{
+		LOGE("Unsupported run type.");
+	}
 }
 
 void Source::sendCanStore(
@@ -391,8 +415,16 @@ std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 	return accepter.getPeopleToContact();
 }
 
-bool Source::isExcluded(const Poco::File& path) const
+bool Source::isExcluded(
+		const ExclusionRule& exclusionRule,
+		const Poco::File& path) const
 {
+	if(exclusionRule.match(PocoFile(path)))
+	{
+		LOGI("Extra rule matched.");
+		return true;
+	}
+
 	for(std::list<ExclusionRule>::const_iterator it = exclusionRules.begin();
 			it != exclusionRules.end();
 			++it)

@@ -150,7 +150,10 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 			}
 		}
 
-		Bacsy::Messages::StoreResponseMessage responseMessage(spec.runType);
+		Bacsy::Messages::StoreResponseMessage responseMessage(
+				spec.runType,
+				spec.time);
+
 		responseMessage.send(ds);
 
 		LOGI("Storing in stores: ");
@@ -211,7 +214,7 @@ void BacsyConnection::storeNonDeltaInStores(
 		const std::string ancestor,
 		RunType& runType)
 {
-	LOGI("No ancestor");
+	LOGI("RunType = " + runType.toString());
 
 	std::string file;
 	std::string size;
@@ -287,6 +290,8 @@ void BacsyConnection::storeNonDeltaInStores(
 				it != storeTo.end();
 				++it)
 	{
+		LOGI("Registering run to store " + (*it)->toString());
+
 		if(runType == RunType::full)
 		{
 			(*it)->newCompleteRun(

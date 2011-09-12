@@ -92,28 +92,31 @@ private:
 	void sendTo(const Poco::Net::SocketAddress& to);
 
 	template<typename FUNCTION>
-	void sendAll(FUNCTION fun);
+	void sendAll(FUNCTION fun, ExclusionRule extraRule);
 
 	template<typename FUNCTION>
-	void backupPath(const Poco::File& path, FUNCTION& function) const;
+	void backupPath(const Poco::File& path, FUNCTION& function, ExclusionRule extraRule) const;
 
-	bool isExcluded(const Poco::File& path) const;
+	bool isExcluded(const ExclusionRule& exclusionRule, const Poco::File& path) const;
 };
 
 template<typename FUNCTION>
-void Source::sendAll(FUNCTION fun)
+void Source::sendAll(FUNCTION fun, ExclusionRule extraRule)
 {
 	for( std::vector<std::string>::const_iterator it = includes.begin();
 			it != includes.end();
 			it++)
 	{
-		backupPath(Poco::File(*it), fun);
+		backupPath(Poco::File(*it), fun, extraRule);
 	}
 }
 
 
 template<typename FUNCTION>
-void Source::backupPath(const Poco::File& path, FUNCTION& function) const
+void Source::backupPath(
+		const Poco::File& path,
+		FUNCTION& function,
+		ExclusionRule extraRule) const
 {
 	std::string pathString = path.path();
 	LOGI("Filename = " + pathString);
@@ -132,7 +135,7 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 		return;
 	}
 
-	if(isExcluded(path))
+	if(isExcluded(extraRule, path))
 	{
 		LOGI("Exclude rule matched.");
 		return;
@@ -145,7 +148,7 @@ void Source::backupPath(const Poco::File& path, FUNCTION& function) const
 		Poco::DirectoryIterator end;
 		for(Poco::DirectoryIterator it(path); it != end; ++it)
 		{
-			backupPath(*it, function);
+			backupPath(*it, function, extraRule);
 		}
 	}
 	else // Is file

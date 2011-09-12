@@ -23,10 +23,13 @@ namespace Bacsy
 namespace Messages
 {
 
-StoreResponseMessage::StoreResponseMessage(const RunType& runtype)
+StoreResponseMessage::StoreResponseMessage(
+		const RunType& runtype,
+		const Poco::Timestamp timestamp)
 	:
 		AMessage("storeResponse"),
-		runtype(runtype)
+		runtype(runtype),
+		timestamp(timestamp)
 {
 
 
@@ -34,14 +37,19 @@ StoreResponseMessage::StoreResponseMessage(const RunType& runtype)
 
 StoreResponseMessage::StoreResponseMessage(const Json::Value& root):
 	AMessage(root["type"].asString()),
-	runtype(RunType::fromString(root["runtype"].asString()))
+	runtype(RunType::fromString(root["runtype"].asString())),
+	timestamp(Poco::Timestamp::fromUtcTime(root["time"].asInt64()))
 {
-	
 }
 
 void StoreResponseMessage::buildJson(Json::Value& root) const
 {
 	root["runtype"] = runtype.toString();
+
+	if(runtype != RunType::full)
+	{
+		root["time"] = timestamp.utcTime();
+	}
 }
 
 StoreResponseMessage StoreResponseMessage::receive(Poco::Net::DialogSocket& ds)

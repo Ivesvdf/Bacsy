@@ -16,6 +16,7 @@
  */
 
 #include <string>
+#include <iostream>
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Rules/ModifiedDateExclusionSubRule.h"
 
@@ -43,6 +44,9 @@ bool ModifiedDateExclusionSubRule::matchWithoutNegate(const IFile& inputFile)
 	{
 		return false;
 	}
+
+	std::cerr << "lastmodified = " << inputFile.getLastModified().utcTime() << std::endl;
+	std::cerr << "timestamp = " << timestamp.utcTime() << std::endl;
 
 	if(theOperator == OLDER_THAN)
 		return inputFile.getLastModified() < timestamp;
