@@ -45,6 +45,7 @@ std::set<std::string> CascadingStoreConfiguration::getValidKeys() const
 	validKeys.insert("AlwaysPresent");
 	validKeys.insert("Enabled");
 	validKeys.insert("MinPriorityForStoring");
+	validKeys.insert("MaxRunsBetweenFullBackups");
 	validKeys.insert("Location");
 
 	return validKeys;
@@ -111,6 +112,14 @@ unsigned int CascadingStoreConfiguration::Section::getMinPriorityForStoring() co
 			name,
 			"MinPriorityForStoring",
 			10);
+}
+
+unsigned int CascadingStoreConfiguration::Section::getMaxRunsBetweenFullBackups() const
+{
+	return storeConfig.getCascadingValue<unsigned int>(
+			name,
+			"MaxRunsBetweenFullBackups",
+			2);
 }
 
 

@@ -61,6 +61,10 @@ public:
 			const std::string& hostIdentification,
 			const std::string& source) const;
 
+	unsigned int getNrOfNonFullRunsAfterLastFull(
+		const std::string& hostIdentification,
+		const std::string& source) const;
+
 	std::string getLastRun(
 		const std::string& hostIdentification,
 		const std::string& source) const;

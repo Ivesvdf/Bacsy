@@ -64,6 +64,7 @@ class CascadingSourceConfiguration : public CascadingFileConfiguration
 			unsigned int getPriority() const;
 			unsigned int getMinBackups() const;
 			unsigned int getMaxBackups() const;
+			unsigned int getMaxRunsBetweenFullBackups() const;
 			PreferredOrder getPreferredOrder() const;
 			Distribution getDistribution() const;
 			TimeTable getTimeTable() const;

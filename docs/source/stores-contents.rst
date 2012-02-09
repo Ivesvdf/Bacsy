@@ -28,6 +28,15 @@ MinPriorityForStoring
   store's MinPriorityForStoring will be stored. 
 
 
+MaxRunsBetweenFullBackups
+  **Default Value:** 2
+
+  **Domain:** [0 - 2 147 483 648[
+
+  **Semantics:** The maximum number of non-full backup runs Bacsy will execute
+  before forcing a full run.
+
+
 AlwaysPresent
   **Default Value:** True
 

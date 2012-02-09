@@ -36,6 +36,7 @@ public:
 
 	virtual std::string getName() const = 0;
 	virtual unsigned int getMinPriorityForStoring() const = 0;
+	virtual unsigned int getMaxRunsBetweenFullBackups() const = 0;
 	virtual std::string getLocation() const = 0;
 	virtual bool getAlwaysPresent() const = 0;
 	virtual bool getEnabled() const = 0;

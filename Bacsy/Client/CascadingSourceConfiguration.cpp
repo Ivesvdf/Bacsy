@@ -143,6 +143,14 @@ unsigned int CascadingSourceConfiguration::Section::getMaxBackups() const
 			std::numeric_limits<unsigned int>::max());
 }
 
+unsigned int CascadingSourceConfiguration::Section::getMaxRunsBetweenFullBackups() const
+{
+	return config.getCascadingValue<unsigned int>(
+			name,
+			"MaxRunsBetweenFullBackups",
+			2);
+}
+
 bool CascadingSourceConfiguration::Section::getDryPrintRun() const
 {
 	return config.toBool(config.getCascadingValue<std::string>(

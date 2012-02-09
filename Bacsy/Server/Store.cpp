@@ -40,6 +40,7 @@ Store::Store(const IStoreConfiguration& configuration):
 	location(StringUtils::rstrip(configuration.getLocation(), "/\\") + "/"),
 	alwaysPresent(configuration.getAlwaysPresent()),
 	minPriorityForStoring(configuration.getMinPriorityForStoring()),
+	maxRunsBetweenFullBackups(configuration.getMaxRunsBetweenFullBackups()),
 	enabled(configuration.getEnabled()),
 	baseLocation(location)
 
@@ -61,10 +62,10 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 			const std::string& source)
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
+	const unsigned int nonFullsSinceFull =
+		storeIndex->getNrOfNonFullRunsAfterLastFull(host, source);
 
-	const std::string ancestor = storeIndex->getLastRun(host, source);
-
-	if(ancestor == "")
+	if(nonFullsSinceFull == 0 || nonFullsSinceFull > maxRunsBetweenFullBackups)
 	{
 		NewRunSpecification specification(RunType::full);
 		return specification;
@@ -72,6 +73,7 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 	else
 	{
 		NewRunSpecification specification(RunType::fullfiles);
+		const std::string ancestor = storeIndex->getLastRun(host, source);
 		specification.ancestorDirectory = ancestor;
 		specification.time = storeIndex->getLastRunTime(host, source);
 		return specification;
@@ -213,6 +215,11 @@ std::string Store::getName() const
 unsigned int Store::getMinPriorityForStoring() const
 {
 	return minPriorityForStoring;
+}
+
+unsigned int Store::getMaxRunsBetweenFullBackups() const
+{
+	return maxRunsBetweenFullBackups;
 }
 
 std::string Store::getLocation() const

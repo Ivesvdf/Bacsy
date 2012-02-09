@@ -183,6 +183,29 @@ std::string JsonStoreIndex::getLastFullRun(
 	return "";
 }
 
+unsigned int JsonStoreIndex::getNrOfNonFullRunsAfterLastFull(
+		const std::string& hostIdentification,
+		const std::string& source) const
+{
+	const Json::Value sourceValue = root[hostIdentification][source];
+	int nonfulls = 0;
+
+	for(size_t i = 0; i < sourceValue.size(); i++)
+	{
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		if(entry["type"].asString() == 	RunType::full.toString())
+		{
+			return nonfulls;
+		}
+		else
+		{
+			nonfulls++;
+		}
+	}
+
+	return nonfulls;
+}
+
 std::string JsonStoreIndex::getLastRun(
 		const std::string& hostIdentification,
 		const std::string& source) const

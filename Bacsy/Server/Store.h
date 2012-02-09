@@ -85,6 +85,7 @@ public:
 
 	std::string getName() const;
 	unsigned int getMinPriorityForStoring() const;
+	unsigned int getMaxRunsBetweenFullBackups() const;
 	std::string getLocation() const;
 	bool getAlwaysPresent() const;
 	bool getEnabled() const;
@@ -104,6 +105,7 @@ private:
 	const std::string location;
 	const bool alwaysPresent;
 	const unsigned int minPriorityForStoring;
+	const unsigned int maxRunsBetweenFullBackups;
 	const bool enabled;
 
 	Poco::File baseLocation;
