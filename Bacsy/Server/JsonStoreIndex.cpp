@@ -132,7 +132,7 @@ std::string JsonStoreIndex::getCorrespondingFullRun(
 	// Find last delta
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		if(entry["dir"].asString() == dir)
 		{
 			return entry["builtFromDir"].asString();
@@ -151,7 +151,7 @@ bool JsonStoreIndex::isDeltaRun(
 	// Find last delta
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		if(entry["type"].asString() == 	RunType::delta.toString()
 				&& entry["dir"].asString() == dir)
 		{
@@ -174,7 +174,7 @@ std::string JsonStoreIndex::getLastFullRun(
 
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		if(entry["type"].asString() == 	RunType::full.toString())
 		{
 			return entry["dir"].asString();
@@ -192,7 +192,7 @@ unsigned int JsonStoreIndex::getNrOfNonFullRunsAfterLastFull(
 
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		if(entry["type"].asString() == 	RunType::full.toString())
 		{
 			return nonfulls;
@@ -214,7 +214,7 @@ std::string JsonStoreIndex::getLastRun(
 
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		return entry["dir"].asString();
 	}
 	return "";
@@ -229,7 +229,7 @@ Poco::Timestamp JsonStoreIndex::getCorrespondingTime(
 
 	for(size_t i = 0; i < sourceValue.size(); i++)
 	{
-		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		const Json::Value& entry = sourceValue[(Json::Value::ArrayIndex)(sourceValue.size() - i - 1)];
 		if(entry["dir"].asString() == directory)
 		{
 			return Poco::Timestamp::fromUtcTime(entry["time"].asInt64());

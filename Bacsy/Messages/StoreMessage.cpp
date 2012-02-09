@@ -55,7 +55,7 @@ void StoreMessage::buildJson(Json::Value& root) const
 	root["host"] = hostIdentification;
 	root["source"] = sourceName;
 	root["priority"] = priority;
-	root["time"] = time.utcTime();
+	root["time"] = (Json::Value::UInt64)time.utcTime();
 	root["maxStoreTimes"] = maxStoreTimes;
 }
 

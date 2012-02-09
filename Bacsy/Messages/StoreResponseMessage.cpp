@@ -48,7 +48,7 @@ void StoreResponseMessage::buildJson(Json::Value& root) const
 
 	if(runtype != RunType::full)
 	{
-		root["time"] = timestamp.utcTime();
+		root["time"] = (Json::Value::UInt64)timestamp.utcTime();
 	}
 }
 
