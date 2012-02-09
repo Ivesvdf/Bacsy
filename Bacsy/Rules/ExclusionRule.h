@@ -47,6 +47,8 @@ public:
 	void addSubRule(ExclusionSubRule* sr);
 
 	const std::list<ExclusionSubRule*>& getSubRules() const;
+
+	virtual std::string toString() const;
 private:
 	std::list<ExclusionSubRule*> subRules;
 	void deleteSubRules();

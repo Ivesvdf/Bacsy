@@ -36,6 +36,9 @@ public:
 	PathGlobExclusionSubRule(const std::string glob, bool negated);
 	bool matchWithoutNegate(const IFile& inputFile);
 	virtual ExclusionSubRule* clone() const;
+
+	virtual std::string toString() const 
+	{ return "PathGlobExclusionSubRule"; }
 private:
 	Poco::Glob glob;	
 	const std::string globStr;

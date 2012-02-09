@@ -56,6 +56,7 @@ public:
 			const std::string& source);
 
 	Poco::File getOutputForCompleteFile(
+			const RunType runType,
 			const Poco::Path& originalPath,
 			const std::string& host,
 			const std::string& source,
@@ -83,6 +84,11 @@ public:
 	bool getEnabled() const;
 private:
 	std::string getRunDirectory(
+			const std::string& host,
+			const std::string& source,
+			const Poco::Timestamp& time);
+
+	std::string getIncompleteRunDirectory(
 			const std::string& host,
 			const std::string& source,
 			const Poco::Timestamp& time);

@@ -46,6 +46,9 @@ public:
 
 	Poco::Timestamp getTimestamp() const;
 	Operator getOperator() const;
+
+	virtual std::string toString() const 
+	{ return "ModifiedDateExclusionSubRule"; }
 private:
 	const Poco::Timestamp timestamp;
 	const Operator theOperator;

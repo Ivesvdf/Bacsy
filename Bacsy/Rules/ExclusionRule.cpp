@@ -18,6 +18,7 @@
 #include <algorithm>
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Common/Utils.h"
+#include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Rules/ExclusionRule.h"
 
 namespace Bacsy
@@ -44,6 +45,13 @@ ExclusionRule::~ExclusionRule()
 
 bool ExclusionRule::match(const IFile& inputFile) const
 {
+	// Rules with no subrules match nothing by definition. Used for a full
+	// file run by Source.
+	if(subRules.size() == 0)
+	{
+		return false;
+	}
+
 	for(std::list<ExclusionSubRule*>::const_iterator it = subRules.begin();
 			it != subRules.end();
 			++it)
@@ -87,6 +95,20 @@ void ExclusionRule::addSubRule(ExclusionSubRule* sr)
 const std::list<ExclusionSubRule*>& ExclusionRule::getSubRules() const
 {
 	return subRules;
+}
+
+std::string ExclusionRule::toString() const 
+{
+	std::string rv = "Rule with " + StringUtils::toString(subRules.size()) + " subrules: ";
+
+	for(std::list<ExclusionSubRule*>::const_iterator it = subRules.begin();
+			it != subRules.end();
+			++it)
+	{
+		rv += (*it)->toString();
+	}
+
+	return rv;
 }
 
 }

@@ -36,6 +36,10 @@ public:
 	PathExclusionSubRule(const PathExclusionSubRule& copy);
 	bool matchWithoutNegate(const IFile& inputFile);
 	virtual ExclusionSubRule* clone() const;
+
+	virtual std::string toString() const 
+	{ return "PathExclusionSubRule: " + path; }
+
 private:
 	const std::string path;
 };

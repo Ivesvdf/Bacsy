@@ -123,15 +123,27 @@ std::string Store::getRunDirectory(
 				"%Y-%m-%dT%H.%M.%S%z");
 }
 
+std::string Store::getIncompleteRunDirectory(
+			const std::string& host,
+			const std::string& source,
+			const Poco::Timestamp& time)
+{
+	return getRunDirectory(host, source, time) + "_INCOMPLETE";
+}
+
 Poco::File Store::getOutputForCompleteFile(
+		const RunType runType,
 		const Poco::Path& originalPath,
 		const std::string& host,
 		const std::string& source,
 		const Poco::Timestamp& time)
 {
 	Poco::Path newPath(location);
-
-	newPath.pushDirectory(getRunDirectory(host, source, time));
+	
+	if(runType == RunType::full)
+		newPath.pushDirectory(getRunDirectory(host, source, time));
+	else
+		newPath.pushDirectory(getIncompleteRunDirectory(host, source, time));
 
 	// Keep only alphabetic characters in the nodeID
 	std::string nodeIdentification(originalPath.getNode());

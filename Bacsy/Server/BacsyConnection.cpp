@@ -176,7 +176,7 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 		}
 		else
 		{
-			LOGE("Fullfiles run -- not implemented.");
+			LOGE("Neither Files nor Fullfiles run -- not implemented.");
 			// Not yet implemented
 		}
 
@@ -235,9 +235,17 @@ void BacsyConnection::storeNonDeltaInStores(
 		const bool b3 = ds.receiveMessage(size);
 
 
-		if(!b1 || file.empty()
-				|| !b2 || changed.empty()
-				|| !b3 || size.empty())
+		if(!b1 || file.empty())
+		{
+			LOGE("Problem receiving filename");
+			break;
+		}
+		if(!b2 || changed.empty())
+		{
+			LOGE("Problem receiving changed date");
+			break;
+		}
+		if(!b3 || size.empty())
 		{
 			LOGE("Problem receiving file metadata.");
 			break;
@@ -259,6 +267,7 @@ void BacsyConnection::storeNonDeltaInStores(
 				const Poco::Path originalPath(file);
 
 				Poco::File sourceFile = (*it)->getOutputForCompleteFile(
+							runType,
 							originalPath,
 							message.getHostIdentification(),
 							message.getSourceName(),

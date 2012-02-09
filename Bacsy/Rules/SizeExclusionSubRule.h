@@ -42,6 +42,9 @@ public:
 
 	Poco::File::FileSize getSizeInBytes() const;
 	Operator getOperator() const;
+
+	virtual std::string toString() const 
+	{ return "SizeExclusionSubRule"; }
 private:
 	const Poco::File::FileSize sizeInBytes;
 	const Operator theOperator;

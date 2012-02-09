@@ -307,6 +307,8 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 		FileSender sender(socket);
 		ExclusionRule rule; // use empty extra rule
 		sendAll(sender, rule);
+		socket.sendMessage("");
+		socket.sendMessage("EOF");
 	}
 	else if(response.getRunType() == RunType::fullfiles)
 	{
@@ -423,7 +425,8 @@ bool Source::isExcluded(
 {
 	if(exclusionRule.match(PocoFile(path)))
 	{
-		LOGI("Extra rule matched.");
+		LOGI("Extra rule matched:" + path.path() + " was matched because of"
+				" rule " + exclusionRule.toString());
 		return true;
 	}
 

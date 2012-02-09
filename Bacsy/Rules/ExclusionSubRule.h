@@ -18,6 +18,7 @@
 #ifndef BACSY_EXCLUSION_SUB_RULE_H
 #define BACSY_EXCLUSION_SUB_RULE_H
 
+#include <typeinfo>
 #include "Poco/File.h"
 #include "Bacsy/Common/IFile.h"
 
@@ -38,7 +39,8 @@ public:
 	bool match(const IFile& inputFile);
 	virtual ExclusionSubRule* clone() const=0;
 	bool getNegated() const { return negated; }
-
+	virtual std::string toString() const 
+	{ return typeid(*this).name(); }
 private:
 	const bool negated;
 };
