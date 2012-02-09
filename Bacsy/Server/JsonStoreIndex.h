@@ -61,6 +61,10 @@ public:
 			const std::string& hostIdentification,
 			const std::string& source) const;
 
+	std::string getLastRun(
+		const std::string& hostIdentification,
+		const std::string& source) const;
+
 	Poco::Timestamp getCorrespondingTime(
 			const std::string& hostIdentification,
 			const std::string& source,

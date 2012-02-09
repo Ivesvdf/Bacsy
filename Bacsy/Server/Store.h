@@ -73,6 +73,12 @@ public:
 			const std::string& ancestorDirectory,
 			const Poco::Timestamp& time);
 
+	Poco::Path getBaseOutputDirectoryForCompleteFile(
+				const RunType runType,
+				const std::string& host,
+				const std::string& source,
+				const Poco::Timestamp& time);
+
 	bool readyForStoring() const;
 
 	std::string toString() const;

@@ -23,6 +23,7 @@
 #include "Poco/File.h"
 #include "Poco/Ascii.h"
 #include "Poco/FileStream.h"
+#include "Poco/DirectoryIterator.h"
 #include "Poco/Net/SocketStream.h"
 #include "Poco/Environment.h"
 #include "Poco/StreamCopier.h"
@@ -30,6 +31,7 @@
 #include "woodcutter/woodcutter.h"
 #include "json/json.h"
 #include "Bacsy/Common/Functional.h"
+#include "Bacsy/Common/FileUtils.h"
 #include "Bacsy/Server/BacsyConnection.h"
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Streams/StreamUtils.h"
@@ -220,6 +222,9 @@ void BacsyConnection::storeNonDeltaInStores(
 	std::string size;
 	std::string changed;
 	std::string checksum;
+
+	bool wroteSomething = false;
+
 	while(true)
 	{
 		const bool b1 = ds.receiveMessage(file);
@@ -272,6 +277,8 @@ void BacsyConnection::storeNonDeltaInStores(
 							message.getHostIdentification(),
 							message.getSourceName(),
 							message.getTime());
+				LOGI("Preparing to write to " + sourceFile.path());
+
 				Poco::FileOutputStream* fileOutputStream
 					= new Poco::FileOutputStream(
 							sourceFile.path(),
@@ -300,6 +307,8 @@ void BacsyConnection::storeNonDeltaInStores(
 		}
 		LOGI("Bytes received = " + StringUtils::toString(received));
 
+		wroteSomething = true;
+
 		for(std::list<FileAssociations>::iterator it = pointers.begin();
 				it != pointers.end();
 				it++)
@@ -326,10 +335,10 @@ void BacsyConnection::storeNonDeltaInStores(
 					it != storeTo.end();
 					++it)
 		{
-			LOGI("Registering run for store " + (*it)->toString());
 
 			if(runType == RunType::full)
 			{
+				LOGI("Registering full run for store " + (*it)->toString());
 				(*it)->newCompleteRun(
 						message.getHostIdentification(),
 						message.getSourceName(),
@@ -337,6 +346,41 @@ void BacsyConnection::storeNonDeltaInStores(
 			}
 			else if(runType == RunType::fullfiles)
 			{
+				LOGI("Swapping files");
+				Poco::Path old((*it)->getLocation());
+				old.makeDirectory();
+				old.pushDirectory(ancestor);
+				Poco::File walkDir = Poco::File((*it)->getBaseOutputDirectoryForCompleteFile(
+							runType, 
+							message.getHostIdentification(),
+							message.getSourceName(),
+							message.getTime()));
+				Poco::File oldDir = Poco::File(old);
+
+				if(wroteSomething)
+				{
+					swapContents(walkDir, oldDir);
+				}
+				else
+				{
+					walkDir.createDirectories();
+				}
+
+				Poco::Path latestVersion = 
+					(*it)->getBaseOutputDirectoryForCompleteFile(
+							RunType::full, // need official path
+							message.getHostIdentification(),
+							message.getSourceName(),
+							message.getTime());
+				LOGI("Renaming directory " + oldDir.path() + " to " +
+						latestVersion.toString());
+				std::string oldOldDirPath = oldDir.path();
+				oldDir.renameTo(latestVersion.toString());
+
+				LOGI("Renaming " + walkDir.path() + " to " + oldOldDirPath);
+				walkDir.renameTo(oldOldDirPath);
+
+				LOGI("Registering fullfiles run for store " + (*it)->toString());
 				(*it)->newFullfilesRun(
 						message.getHostIdentification(),
 						message.getSourceName(),
@@ -351,6 +395,56 @@ void BacsyConnection::storeNonDeltaInStores(
 		LOGE("No EOF received. Not writing to store indexes.");
 	}
 
+}
+
+void BacsyConnection::swapContents(Poco::File walkPath, Poco::File otherPath)
+{
+	Poco::DirectoryIterator end;
+	for(Poco::DirectoryIterator it(walkPath); it != end; ++it)
+	{
+		Poco::Path newOtherPath(otherPath.path());
+		newOtherPath.append(Poco::Path(it->path())
+				.directory(Poco::Path(it->path()).depth()));
+
+		swap(*it, Poco::File(newOtherPath));
+	}
+}
+
+void BacsyConnection::swap(Poco::File walkPath, Poco::File otherPath)
+{
+	LOGI("Swapping " + walkPath.path() + " and " + otherPath.path());
+
+
+	if(walkPath.isDirectory())
+	{
+		LOGI("Path is a directory -- expanding.");
+
+		Poco::DirectoryIterator end;
+		for(Poco::DirectoryIterator it(walkPath); it != end; ++it)
+		{
+			Poco::Path newOtherPath(otherPath.path());
+			newOtherPath.append(Poco::Path(it->path())
+					.directory(Poco::Path(it->path()).depth()));
+
+			swap(*it, Poco::File(newOtherPath));
+		}
+	}
+	else if(!otherPath.exists())
+	{
+		Poco::Path targetDir(otherPath.path());
+		targetDir.makeFile();
+		targetDir.setFileName("");
+		targetDir.makeDirectory();
+		LOGI("Moving file " + walkPath.path() + " to " + targetDir.toString()
+				+ " because " + otherPath.path() + " does not exist.");
+		walkPath.moveTo(targetDir.toString());
+		return;
+	}
+	else // Is file that exists
+	{
+		FileUtils::swapContents(walkPath, otherPath);
+		LOGI("Files swapped");
+	}
 }
 
 

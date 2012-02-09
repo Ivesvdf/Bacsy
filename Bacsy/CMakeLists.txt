@@ -26,6 +26,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  Common/DatagramHelper
 				 Common/DummyFile
                  Common/Environment
+				 Common/FileUtils
 				 Common/IFile
                  Common/JsonHelper
 				 Common/PocoFile

@@ -50,6 +50,9 @@ public:
 			const std::string ancestor,
 			RunType& runType);
 
+	void swapContents(Poco::File walkPath, Poco::File otherPath);
+	void swap(Poco::File walkPath, Poco::File otherPath);
+
 	virtual void run();
 
 private:

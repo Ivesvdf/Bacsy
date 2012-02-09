@@ -183,6 +183,20 @@ std::string JsonStoreIndex::getLastFullRun(
 	return "";
 }
 
+std::string JsonStoreIndex::getLastRun(
+		const std::string& hostIdentification,
+		const std::string& source) const
+{
+	const Json::Value sourceValue = root[hostIdentification][source];
+
+	for(size_t i = 0; i < sourceValue.size(); i++)
+	{
+		const Json::Value& entry = sourceValue[sourceValue.size() - i - 1];
+		return entry["dir"].asString();
+	}
+	return "";
+}
+
 Poco::Timestamp JsonStoreIndex::getCorrespondingTime(
 		const std::string& hostIdentification,
 		const std::string& source,

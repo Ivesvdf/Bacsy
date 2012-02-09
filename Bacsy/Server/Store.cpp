@@ -62,7 +62,7 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 {
 	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
 
-	const std::string ancestor = storeIndex->getLastFullRun(host, source);
+	const std::string ancestor = storeIndex->getLastRun(host, source);
 
 	if(ancestor == "")
 	{
@@ -131,12 +131,11 @@ std::string Store::getIncompleteRunDirectory(
 	return getRunDirectory(host, source, time) + "_INCOMPLETE";
 }
 
-Poco::File Store::getOutputForCompleteFile(
-		const RunType runType,
-		const Poco::Path& originalPath,
-		const std::string& host,
-		const std::string& source,
-		const Poco::Timestamp& time)
+Poco::Path Store::getBaseOutputDirectoryForCompleteFile(
+			const RunType runType,
+			const std::string& host,
+			const std::string& source,
+			const Poco::Timestamp& time)
 {
 	Poco::Path newPath(location);
 	
@@ -145,6 +144,22 @@ Poco::File Store::getOutputForCompleteFile(
 	else
 		newPath.pushDirectory(getIncompleteRunDirectory(host, source, time));
 
+	return newPath;
+}
+
+Poco::File Store::getOutputForCompleteFile(
+		const RunType runType,
+		const Poco::Path& originalPath,
+		const std::string& host,
+		const std::string& source,
+		const Poco::Timestamp& time)
+{
+	Poco::Path newPath = getBaseOutputDirectoryForCompleteFile(
+			runType,
+			host,
+			source,
+			time);
+	
 	// Keep only alphabetic characters in the nodeID
 	std::string nodeIdentification(originalPath.getNode());
 	nodeIdentification.erase(
