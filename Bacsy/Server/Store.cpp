@@ -65,7 +65,8 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 	const unsigned int nonFullsSinceFull =
 		storeIndex->getNrOfNonFullRunsAfterLastFull(host, source);
 
-	if(nonFullsSinceFull == 0 || nonFullsSinceFull > maxRunsBetweenFullBackups)
+	const std::string ancestor = storeIndex->getLastRun(host, source);
+	if(ancestor == "" || nonFullsSinceFull >= maxRunsBetweenFullBackups)
 	{
 		NewRunSpecification specification(RunType::full);
 		return specification;
@@ -73,7 +74,6 @@ Store::NewRunSpecification Store::getNewRunSpecification(
 	else
 	{
 		NewRunSpecification specification(RunType::fullfiles);
-		const std::string ancestor = storeIndex->getLastRun(host, source);
 		specification.ancestorDirectory = ancestor;
 		specification.time = storeIndex->getLastRunTime(host, source);
 		return specification;
