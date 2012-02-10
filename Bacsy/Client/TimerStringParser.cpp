@@ -177,7 +177,7 @@ TimeSchedule TimerStringParser::parseDaily(const Poco::LocalDateTime& now, const
 
 	if(ifToday < now)
 	{
-		LOGI("It's to late to run " + timerString + " today; running next week.");
+		LOGI("It's too late to run " + timerString + " today; running tomorrow");
 		dayOffset = 1;
 	}
 
