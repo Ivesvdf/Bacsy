@@ -163,18 +163,18 @@ Poco::File Store::getOutputForCompleteFile(
 			time);
 	
 	// Keep only alphabetic characters in the nodeID
-	std::string nodeIdentification(originalPath.getNode());
-	nodeIdentification.erase(
+	std::string deviceIdentification(originalPath.getDevice());
+	deviceIdentification.erase(
 			std::remove_if(
-				nodeIdentification.begin(),
-				nodeIdentification.end(),
+				deviceIdentification.begin(),
+				deviceIdentification.end(),
 				std::not1(fun_ref(Poco::Ascii::isAlpha))),
-			nodeIdentification.end());
+			deviceIdentification.end());
 
-	if(nodeIdentification.empty())
-		nodeIdentification = "root";
+	if(deviceIdentification.empty())
+		deviceIdentification = "root";
 
-	newPath.pushDirectory(nodeIdentification);
+	newPath.pushDirectory(deviceIdentification);
 
 	for(int i = 0; i < originalPath.depth(); i++)
 	{
