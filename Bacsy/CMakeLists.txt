@@ -53,6 +53,7 @@ set(BACSY_COMMON_SOURCE_FILES
                  Server/MulticastResponder
                  Server/Store
                  Server/StoreManager
+				 Server/StoreTimeParser
                  Streams/LoadSignatureStream
                  Streams/NullStream
                  Streams/PerformDeltaStream

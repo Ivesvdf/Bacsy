@@ -41,6 +41,7 @@ Store::Store(const IStoreConfiguration& configuration):
 	alwaysPresent(configuration.getAlwaysPresent()),
 	minPriorityForStoring(configuration.getMinPriorityForStoring()),
 	maxRunsBetweenFullBackups(configuration.getMaxRunsBetweenFullBackups()),
+	storeTime(configuration.getStoreTime()),
 	enabled(configuration.getEnabled()),
 	baseLocation(location)
 
@@ -220,6 +221,11 @@ unsigned int Store::getMinPriorityForStoring() const
 unsigned int Store::getMaxRunsBetweenFullBackups() const
 {
 	return maxRunsBetweenFullBackups;
+}
+
+unsigned int Store::getStoreTime() const
+{
+	return storeTime;
 }
 
 std::string Store::getLocation() const

@@ -22,6 +22,7 @@
 #include "Poco/Environment.h"
 #include <Poco/String.h>
 #include "Bacsy/Common/StringUtils.h"
+#include "Bacsy/Server/StoreTimeParser.h"
 #include "Bacsy/Server/CascadingStoreConfiguration.h"
 #include "Bacsy/Rules/StringExclusionRuleBuilder.h"
 
@@ -47,6 +48,7 @@ std::set<std::string> CascadingStoreConfiguration::getValidKeys() const
 	validKeys.insert("MinPriorityForStoring");
 	validKeys.insert("MaxRunsBetweenFullBackups");
 	validKeys.insert("Location");
+	validKeys.insert("StoreTime");
 
 	return validKeys;
 }
@@ -120,6 +122,18 @@ unsigned int CascadingStoreConfiguration::Section::getMaxRunsBetweenFullBackups(
 			name,
 			"MaxRunsBetweenFullBackups",
 			2);
+}
+
+
+unsigned int CascadingStoreConfiguration::Section::getStoreTime() const
+{
+	const std::string duration = storeConfig.getCascadingValue<std::string>(
+			name,
+			"StoreTime",
+			"1 month");
+
+	StoreTimeParser parser;
+	return parser.parse(duration);
 }
 
 

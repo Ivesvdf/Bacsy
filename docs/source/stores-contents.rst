@@ -37,6 +37,18 @@ MaxRunsBetweenFullBackups
   before forcing a full run.
 
 
+StoreTime
+  **Default Value:** 1 year
+
+  **Domain:** <number> <unit> where number must be an integer and <unit> can
+  be either day, days, month, months, year, years.
+
+  **Semantics:** The Server is free to erase backup runs that are older than
+  this. Note that a month is defined as 31 days and a year as 366 days
+  (maximal values were chosen to ensure users aren't surprised their data is
+  gone). 
+
+
 AlwaysPresent
   **Default Value:** True
 
