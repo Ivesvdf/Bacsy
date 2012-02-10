@@ -42,7 +42,7 @@ find_package(Poco REQUIRED COMPONENTS Net Util)
 find_package(rsync REQUIRED)
 
 if(WIN32)
-	set(PLATFORM_DEPENDENT_LIBS wsock32 iphlpapi)
+	set(PLATFORM_DEPENDENT_LIBS ws2_32 wsock32 iphlpapi)
 elseif(UNIX)
 	set(PLATFORM_DEPENDENT_LIBS pthread)
 else()
