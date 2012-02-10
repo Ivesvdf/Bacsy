@@ -240,11 +240,18 @@ void BacsyConnection::storeNonDeltaInStores(
 		const bool b3 = ds.receiveMessage(size);
 
 
-		if(!b1 || file.empty())
+		if(!b1)
 		{
-			LOGE("Problem receiving filename");
+			LOGE("receiveMessage returned false when receiving filename");
 			break;
 		}
+
+		if(file.empty())
+		{
+			LOGE("Received empty filename");
+			break;
+		}
+
 		if(!b2 || changed.empty())
 		{
 			LOGE("Problem receiving changed date");
