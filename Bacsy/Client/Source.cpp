@@ -146,59 +146,74 @@ public:
 
 void Source::run(Poco::Timer& timer)
 {
-	LOGI("Starting source "
-			+ name
-			+ " because of Timer("
-			+ StringUtils::toString(timer.getStartInterval())
-			+ ","
-			+ StringUtils::toString(timer.getPeriodicInterval())
-			+ ")");
-
-	if(maxBackups == 0)
+	try
 	{
-		LOGI("Not executing source " 
-				+ name 
-				+ " after all, because maxBackups equals 0.");
-		return;
-	}
+		LOGI("Starting source "
+				+ name
+				+ " because of Timer("
+				+ StringUtils::toString(timer.getStartInterval())
+				+ ","
+				+ StringUtils::toString(timer.getPeriodicInterval())
+				+ ")");
 
-	if(!enabled)
-	{
-		LOGI("Not executing source " + name + ", because it's disabled.");
-		return;
-	}
-
-	if(!mutex.tryLock())
-	{
-		LOGW("Source is already running -- not executing again.");
-		return;
-	}
-
-	if(dryPrintRun)
-	{
-		LOGI("Executing Dry Print Run");
-		PrintFileSender sender;
-		ExclusionRule rule;
-		sendAll(sender, rule);
-	}
-	else
-	{
-		std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
-
-		for(std::vector<Poco::Net::SocketAddress>::const_iterator it = peopleToContact.begin();
-				it != peopleToContact.end();
-				it++)
+		if(maxBackups == 0)
 		{
-			Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
-			LOGI("Contacting " + contact.toString());
-
-			sendTo(contact);
+			LOGI("Not executing source " 
+					+ name 
+					+ " after all, because maxBackups equals 0.");
+			return;
 		}
+
+		if(!enabled)
+		{
+			LOGI("Not executing source " + name + ", because it's disabled.");
+			return;
+		}
+
+		if(!mutex.tryLock())
+		{
+			LOGW("Source is already running -- not executing again.");
+			return;
+		}
+
+		if(dryPrintRun)
+		{
+			LOGI("Executing Dry Print Run");
+			PrintFileSender sender;
+			ExclusionRule rule;
+			sendAll(sender, rule);
+		}
+		else
+		{
+			std::vector<Poco::Net::SocketAddress> peopleToContact = findOutWhoToContact();
+
+			for(std::vector<Poco::Net::SocketAddress>::const_iterator it = peopleToContact.begin();
+					it != peopleToContact.end();
+					it++)
+			{
+				Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
+				LOGI("Contacting " + contact.toString());
+
+				sendTo(contact);
+			}
+		}
+
+		mutex.unlock();
+
+		LOGI("Source " + name + " is finished.");
 	}
-
-	mutex.unlock();
-
-	LOGI("Source " + name + " is finished.");
+	catch(Poco::Exception& e)
+	{
+		LOGE(std::string("Terminal Poco exception: ") + e.displayText());
+	}
+	catch(std::exception& e)
+	{
+		LOGE(std::string("Terminal exception: ") + e.what());
+	}
+	catch(...)
+	{
+		LOGE("Terminal unknown exception (not an std::exception&).");
+	}
 }
 
 
@@ -277,7 +292,7 @@ public:
 		Poco::FileInputStream input(file.path());
 		Poco::Net::SocketStream output(socket);
 
-		socket.sendMessage(file.path());
+		socket.sendMessage(Poco::Path::transcode(file.path()));
 		socket.sendMessage(StringUtils::toString(file.getLastModified().utcTime()/10000000));
 		socket.sendMessage(StringUtils::toString(file.getSize()));
 
