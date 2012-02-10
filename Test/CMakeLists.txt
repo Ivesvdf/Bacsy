@@ -3,6 +3,7 @@ add_executable(test
                    ConfigurationTests
                    StringUtilsTests
                    TimerStringParserTests
+				   StoreTimeParserTests
                    StoreIndexTests
                    ConcurrentMapTests
                    RsyncStreamTests

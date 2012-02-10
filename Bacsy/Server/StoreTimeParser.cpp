@@ -29,11 +29,6 @@ namespace Server
 
 using namespace Common;
 
-StoreTimeParser::StoreTimeParser()
-{
-
-}
-
 unsigned int StoreTimeParser::parse(std::string timerString)
 {
 	Poco::RegularExpression validator("[0-9]+ (day|month|year)s?");

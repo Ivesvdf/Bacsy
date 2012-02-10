@@ -31,12 +31,11 @@ namespace Server
 class StoreTimeParser
 {
 public:
-	StoreTimeParser();
 
 	/**
 	 * Parses StoreTime strings and returns seconds
 	 */
-	unsigned int parse(std::string storeTimeString);
+	static unsigned int parse(std::string storeTimeString);
 };
 
 }

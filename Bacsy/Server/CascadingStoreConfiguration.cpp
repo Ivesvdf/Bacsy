@@ -132,8 +132,7 @@ unsigned int CascadingStoreConfiguration::Section::getStoreTime() const
 			"StoreTime",
 			"1 month");
 
-	StoreTimeParser parser;
-	return parser.parse(duration);
+	return StoreTimeParser::parse(duration);
 }
 
 
