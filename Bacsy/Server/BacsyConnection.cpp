@@ -435,6 +435,8 @@ void BacsyConnection::swap(Poco::File walkPath, Poco::File otherPath)
 		targetDir.makeFile();
 		targetDir.setFileName("");
 		targetDir.makeDirectory();
+		Poco::File targetDirFile(targetDir);
+		targetDirFile.createDirectories();
 		LOGI("Moving file " + walkPath.path() + " to " + targetDir.toString()
 				+ " because " + otherPath.path() + " does not exist.");
 		walkPath.moveTo(targetDir.toString());
