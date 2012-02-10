@@ -362,6 +362,8 @@ class CanStoreResponseAccepter
 			try
 			{
 				const Json::Value root = JsonHelper::read(parts[1]);
+				LOGI(std::string("Multicast message is of type ") +
+						root["type"].asString());
 				if(root["type"] == "readyToStore")
 				{
 					if(ReadyToStoreMessage(root).getSource() != sourceName)
@@ -399,9 +401,9 @@ std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 {
 	Poco::Net::SocketAddress address(MULTICASTGROUP, MULTICASTPORT);
 
-	Poco::Net::MulticastSocket mcSocket(
-			Poco::Net::SocketAddress(
-				Poco::Net::IPAddress(), address.port()),
+	Poco::Net::SocketAddress mcSocketAddress(
+			Poco::Net::IPAddress(), address.port());
+	Poco::Net::MulticastSocket mcSocket(mcSocketAddress,
 			true // reuse address
 			);
 
@@ -410,11 +412,18 @@ std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 	mcSocket.joinGroup(address.host());
 	LOGI("Joined multicast group.");
 	
+
+	Poco::Net::SocketAddress responseAcceptorAddress(Poco::Net::IPAddress(),
+			MULTICASTRESPONSEACCEPTORPORT);
+	Poco::Net::DatagramSocket responseSocket(responseAcceptorAddress, true);
+
+	LOGI("Sending canStore");
 	sendCanStore(mcSocket, address);
 	
 	CanStoreResponseAccepter accepter(name);
 
-	DatagramHelper::receiveMessages<512>(mcSocket, 1000, accepter);
+	LOGI("Listening on " + responseAcceptorAddress.toString());
+	DatagramHelper::receiveMessages<512>(responseSocket, 2000, accepter);
 
 	return accepter.getPeopleToContact();
 }

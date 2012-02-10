@@ -59,19 +59,24 @@ void MulticastResponder::respondToMulticast(Poco::Net::SocketAddress address, co
 		return;
 	}	
 
-	Poco::Net::DatagramSocket responseSocket(Poco::Net::SocketAddress(Poco::Net::IPAddress(), MULTICASTRESPONSEPORT), true);
+	Poco::Net::SocketAddress sourceAddress(Poco::Net::IPAddress(),
+			MULTICASTRESPONSEPORT);
+	Poco::Net::DatagramSocket responseSocket(sourceAddress, true);
 
 	if(root["type"] == "canStore")
 	{
 		LOGI("Received canStore message -- checking if we can store.");
 		Bacsy::Messages::CanStoreMessage message(root);
 		
+		Poco::Net::SocketAddress recvr = Poco::Net::SocketAddress(
+					address.host(),
+					MULTICASTRESPONSEACCEPTORPORT);
+		LOGI("Sending reply from " + sourceAddress.toString() + " to " +
+				recvr.toString());
 		Bacsy::Messages::ReadyToStoreMessage(
 				message.getSource()).send(
 				responseSocket,
-				Poco::Net::SocketAddress(
-					address.host(),
-					MULTICASTPORT));
+				recvr);
 	}
 }
 

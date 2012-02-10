@@ -26,6 +26,7 @@ const std::string bacsyProtocolString = "BACSY " + bacsyVersion;
 
 const unsigned int MULTICASTPORT = 2155;
 const unsigned int MULTICASTRESPONSEPORT = MULTICASTPORT+1;
+const unsigned int MULTICASTRESPONSEACCEPTORPORT = MULTICASTRESPONSEPORT+1;
 const std::string MULTICASTGROUP = "239.255.255.249";
 
 const int BACSYSERVERPORT = 26951;
