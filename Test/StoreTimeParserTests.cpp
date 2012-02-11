@@ -45,5 +45,5 @@ TEST( StoreTimeParserTest, Basic8months )
 TEST( StoreTimeParserTest, Basic42years )
 {
 	ASSERT_EQ(42*366*24*60*60u, StoreTimeParser::parse("42 year"));
-	ASSERT_EQ(42*366*24*60*60u, StoreTimeParser::parse("42 year"));
+	ASSERT_EQ(42*366*24*60*60u, StoreTimeParser::parse("42 years"));
 }
