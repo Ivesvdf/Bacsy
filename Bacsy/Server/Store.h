@@ -79,6 +79,8 @@ public:
 				const std::string& source,
 				const Poco::Timestamp& time);
 
+	void purgeOldRuns(const std::string& host, const std::string& source);
+
 	bool readyForStoring() const;
 
 	std::string toString() const;

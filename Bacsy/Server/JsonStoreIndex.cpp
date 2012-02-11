@@ -18,8 +18,11 @@
 #include <fstream>
 #include <stdexcept>
 #include "woodcutter/woodcutter.h"
-#include "Bacsy/Server/JsonStoreIndex.h"
+#include "Poco/DateTimeFormat.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Bacsy/Common/RunType.h"
+#include "Bacsy/Common/StringUtils.h"
+#include "Bacsy/Server/JsonStoreIndex.h"
 
 namespace Bacsy
 {
@@ -27,6 +30,7 @@ namespace Server
 {
 
 using Bacsy::Common::RunType;
+using Bacsy::Common::StringUtils;
 
 JsonStoreIndex::JsonStoreIndex(const std::string inputPath):
 	path(inputPath)
@@ -67,11 +71,73 @@ void JsonStoreIndex::addNewRun(
 		insert["builtFromDir"] = builtFromDir;
 	}
 
+
 	insert["time"] = Json::Int64(time.utcTime());
 
 	root[hostIdentification][source].append(insert);
 
 	store();
+}
+
+void JsonStoreIndex::deleteDirectories(
+		const std::string& hostIdentification,
+		const std::string& source,
+		const std::set<std::string>& directories)
+{
+	Json::Value sourceValue = root[hostIdentification][source];
+
+	// No remove for array elements? I guess I'll do it the hard way
+	Json::Value copy = sourceValue;
+	sourceValue.clear();
+
+
+	for(Json::Value::ArrayIndex i = 0; i < copy.size(); i++)
+	{
+		const Json::Value& entry = copy[i];
+
+		if(directories.count(entry["dir"].asString()) == 0)
+		{
+			sourceValue.append(entry);
+		}
+	}
+
+	// Now erase all references to the deleted runs
+	for(Json::Value::ArrayIndex i = 0; i < sourceValue.size(); i++)
+	{
+		Json::Value& entry = sourceValue[i];
+
+		if(directories.count(entry["builtFromDir"].asString()) != 0)
+		{
+			entry.removeMember("builtFromDir");
+		}
+	}
+	
+
+	root[hostIdentification][source] = sourceValue;
+	store();
+}
+
+std::vector<std::string> JsonStoreIndex::getRunsOlderThan(
+	const std::string& hostIdentification,
+	const std::string& source,
+	const Poco::Timestamp& time)
+{
+	const Json::Value sourceValue = root[hostIdentification][source];
+	std::vector<std::string> rv;
+
+	// Initialise at 1 to skip the last backup. Never delete the last backup.
+	for(size_t i = 1; i < sourceValue.size(); i++)
+	{
+		const Json::Value& entry =
+			sourceValue[(Json::Value::ArrayIndex)
+				(sourceValue.size() - i - 1)];
+		if(entry["time"].asInt64() < time.utcTime())
+		{
+			rv.push_back(entry["dir"].asString());
+		}
+	}
+	return rv;
+
 }
 
 

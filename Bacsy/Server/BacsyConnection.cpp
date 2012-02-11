@@ -188,9 +188,18 @@ void BacsyConnection::storeBackup(Poco::Net::DialogSocket& ds,
 				it != sendTo.end();
 				it++)
 		{
+			(*it)->purgeOldRuns(
+					message.getHostIdentification(),
+					message.getSourceName());
 			storesToTry.remove(*it);
 		}
 	}
+
+	
+}
+
+void BacsyConnection::purgeOldRuns(const std::string& host)
+{
 	
 }
 
