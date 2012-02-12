@@ -94,14 +94,14 @@ ExecuteAt
 
     ExecuteAt = every 3 hours
 
-  Execute the source every three hours, the first time being 1 second after
-  starting Bacsy. 
+  Execute the source every three hours, the first time being immediately after
+  Bacsy starts.
 
   **Example 3:** ::
 
     ExecuteAt = on start and every 1 minute and every day at 07:00h
 
-  Execute the source every minute, when Bacsy start, and also every day at 7
+  Execute the source every minute, when Bacsy starts, and also every day at 7
   a.m. 
 
 

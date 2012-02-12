@@ -99,7 +99,6 @@ std::list<Poco::Timer*> Source::createTimers()
 			it != timeTable.end();
 			it++)
 	{
-		// Execute all timers that normally fire immediately after 1 second
 		const long delayInMilliSeconds = it->delay.totalMilliseconds();
 		Poco::Timer* const timer = new Poco::Timer(
 				delayInMilliSeconds,
