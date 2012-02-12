@@ -44,7 +44,7 @@ using namespace Rules;
 class Source : public ISourceConfiguration
 {
 public:
-	Source(const ISourceConfiguration& config);
+	Source(const ISourceConfiguration& config, Poco::ThreadPool& threadpool);
 	~Source();
 
 	void start();
@@ -79,6 +79,8 @@ private:
 
 	std::list<ExclusionRule> exclusionRules;
 	std::list<Poco::Timer*> timers;
+
+	Poco::ThreadPool& threadPool;
 
 	Poco::Mutex mutex;
 
