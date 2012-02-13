@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011  Nathan Samson
+ * Copyright (C) 2012  Ives van der Flaas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,35 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSY_ISTORECONFIGURATION_H
-#define BACSY_ISTORECONFIGURATION_H
+#ifndef BACSY_STORETIMEPARSER_H
+#define BACSY_STORETIMEPARSER_H
 
-#include <vector>
+#include <string>
 #include <list>
+#include "Poco/LocalDateTime.h"
+#include "Bacsy/Client/TimeSchedule.h"
 
 namespace Bacsy
 {
 namespace Server
 {
 
-using namespace Common;
-
-class IStoreConfiguration
+class StoreTimeParser
 {
 public:
-	virtual ~IStoreConfiguration() {
-	}
 
-	virtual std::string getName() const = 0;
-	virtual unsigned int getMinPriorityForStoring() const = 0;
-	virtual unsigned int getMaxRunsBetweenFullBackups() const = 0;
-	virtual std::string getLocation() const = 0;
-	virtual bool getAlwaysPresent() const = 0;
-	virtual bool getEnabled() const = 0;
-	virtual unsigned int getStoreTime() const = 0;
+	/**
+	 * Parses StoreTime strings and returns seconds
+	 */
+	static unsigned int parse(std::string storeTimeString);
 };
 
 }
 }
-
 #endif

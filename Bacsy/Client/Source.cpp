@@ -60,7 +60,7 @@ bool Source::isPath(std::string s) const
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Source::Source(const ISourceConfiguration& config):
+Source::Source(const ISourceConfiguration& config, Poco::ThreadPool& threadPool):
 	name(config.getName()),
 	includes(config.getIncludes()),
 	priority(config.getPriority()),
@@ -73,7 +73,8 @@ Source::Source(const ISourceConfiguration& config):
 	dryPrintRun(config.getDryPrintRun()),
 	enabled(config.getEnabled()),
 	exclusionRules(config.getExcludes()),
-	timers(createTimers())
+	timers(createTimers()),
+	threadPool(threadPool)
 {
 }
 
@@ -88,7 +89,7 @@ void Source::startTimers()
 		Poco::TimerCallback<Source> callback(*this, &Source::run);
 		// And run it on the the item that was added last (the one we just
 		// added)
-		(*it)->start(callback);
+		(*it)->start(callback, threadPool);
 	}
 }
 
@@ -99,10 +100,7 @@ std::list<Poco::Timer*> Source::createTimers()
 			it != timeTable.end();
 			it++)
 	{
-		// Execute all timers that normally fire immediately after 1 second
-		const long delayInMilliSeconds = (it->delay.totalMilliseconds() == 0)
-			?  1000
-			: it->delay.totalMilliseconds();
+		const long delayInMilliSeconds = it->delay.totalMilliseconds();
 		Poco::Timer* const timer = new Poco::Timer(
 				delayInMilliSeconds,
 				it->repeat.totalMilliseconds());

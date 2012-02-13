@@ -33,25 +33,34 @@ using namespace Rules;
 class SourceNameToSourcer
 {
 public:
-	SourceNameToSourcer(const CascadingSourceConfiguration& configuration): configuration(configuration) {}
+	SourceNameToSourcer(
+			const CascadingSourceConfiguration& configuration,
+			Poco::ThreadPool& threadPool): 
+		configuration(configuration),
+		threadPool(threadPool)
+	{
+	}
+
 	Source* operator()(const std::string& sourceName)
 	{
-		return new Source(configuration.getSource(sourceName));
+		return new Source(configuration.getSource(sourceName), threadPool);
 	}
 
 private:
 	const CascadingSourceConfiguration& configuration;
+	Poco::ThreadPool& threadPool;
 };
 
 std::vector<Source*> sourceNamesToSources(
 		const std::list<std::string>& sourceStrings,
-		const CascadingSourceConfiguration& configuration)
+		const CascadingSourceConfiguration& configuration,
+		Poco::ThreadPool&  threadPool)
 {
 	std::vector<Source*> sources;
 	sources.resize(sourceStrings.size());
 
 
-	SourceNameToSourcer sourceNameToSource(configuration);
+	SourceNameToSourcer sourceNameToSource(configuration, threadPool);
 
 	std::transform(
 			sourceStrings.begin(),
@@ -65,7 +74,10 @@ std::vector<Source*> sourceNamesToSources(
 
 BackupEngine::BackupEngine(const CascadingSourceConfiguration& configuration):
 	configuration(configuration),
-	sources(sourceNamesToSources(configuration.getSources(), configuration))
+	sources(sourceNamesToSources(
+				configuration.getSources(),
+				configuration,
+				threadPool))
 {
 }
 
@@ -87,6 +99,11 @@ void BackupEngine::start()
 	{
 		(*it)->start();
 	}
+}
+
+void BackupEngine::joinAll()
+{
+	threadPool.joinAll();
 }
 
 }

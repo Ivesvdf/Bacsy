@@ -70,9 +70,7 @@ int main(int argc, char **argv)
 
 		BackupEngine backupEngine(configuration);
 		backupEngine.start();
-
-		while(true)
-			Poco::Thread::sleep(10000);
+		backupEngine.joinAll();
 	}
 	catch (TCLAP::ArgException &e)  // catch any exceptions
 	{

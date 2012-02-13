@@ -60,6 +60,7 @@ class CascadingStoreConfiguration : public CascadingFileConfiguration
 			std::string getName() const;
 			unsigned int getMinPriorityForStoring() const;
 			unsigned int getMaxRunsBetweenFullBackups() const;
+			unsigned int getStoreTime() const;
 			std::string getLocation() const;
 			bool getAlwaysPresent() const;
 			bool getEnabled() const;

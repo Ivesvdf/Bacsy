@@ -52,6 +52,7 @@ public:
 
 	void swapContents(Poco::File walkPath, Poco::File otherPath);
 	void swap(Poco::File walkPath, Poco::File otherPath);
+	void purgeOldRuns(const std::string& host);
 
 	virtual void run();
 

@@ -19,6 +19,7 @@
 #define BACSY_BACKUP_ENGINE_H
 
 #include <vector>
+#include "Poco/ThreadPool.h"
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 
@@ -35,14 +36,14 @@ class BackupEngine
 	private:
 		const CascadingSourceConfiguration& configuration;
 		std::vector<Source*> sources;
+		Poco::ThreadPool threadPool;
 
 	public:
 		BackupEngine(const CascadingSourceConfiguration& configuration);
 		~BackupEngine();
 
 		void start();
-
-
+		void joinAll();
 };
 
 }

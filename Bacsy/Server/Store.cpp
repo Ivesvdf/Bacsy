@@ -19,8 +19,10 @@
 #include <algorithm>
 #include <utility>
 #include <functional>
+#include "woodcutter/woodcutter.h"
 #include "Poco/File.h"
 #include "Poco/Timestamp.h"
+#include "Poco/DateTimeFormat.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/ScopedLock.h"
 #include "Poco/Ascii.h"
@@ -41,6 +43,7 @@ Store::Store(const IStoreConfiguration& configuration):
 	alwaysPresent(configuration.getAlwaysPresent()),
 	minPriorityForStoring(configuration.getMinPriorityForStoring()),
 	maxRunsBetweenFullBackups(configuration.getMaxRunsBetweenFullBackups()),
+	storeTime(configuration.getStoreTime()),
 	enabled(configuration.getEnabled()),
 	baseLocation(location)
 
@@ -190,6 +193,57 @@ Poco::File Store::getOutputForCompleteFile(
 	return Poco::File(newPath);
 }
 
+void Store::purgeOldRuns(const std::string& host, const std::string& source)
+{
+	Poco::ScopedLock<Poco::FastMutex> lock(storeIndexMutex);
+	LOGI("Checking for " + storeName + " if old runs for host " + host + " and source " + source +
+			" can be purged");
+
+	const Poco::Timespan
+		storeDuration(getStoreTime()*Poco::Timespan::SECONDS);
+	const Poco::DateTime now;
+	const Poco::DateTime oldTime = now - storeDuration;
+
+	LOGI("Deleting runs older than " +
+			Poco::DateTimeFormatter::format(oldTime,
+				Poco::DateTimeFormat::ISO8601_FORMAT)); 
+
+	std::vector<std::string> directories = storeIndex->getRunsOlderThan(
+			host,
+			source,
+			oldTime.timestamp());
+
+	for(std::vector<std::string>::const_iterator it = directories.begin();
+			it != directories.end();
+			it++)
+	{
+		LOGI("Deleting directory " + *it + " in purge");
+
+		Poco::Path deletePath = baseLocation.path();
+		deletePath.makeDirectory();
+		deletePath.pushDirectory(*it);
+
+		Poco::File deleteFile(deletePath);
+		if(deleteFile.exists())
+		{
+			deleteFile.remove(true); // Delete recursively
+		}
+		else
+		{
+			LOGW("Directory did not exist in the first place.");
+		}
+	}
+	
+	if(directories.size() > 0)
+	{
+		LOGI("Updating index");
+		storeIndex->deleteDirectories(host, source,
+				std::set<std::string>(
+					directories.begin(),
+					directories.end()));
+	}
+}
+
 bool Store::readyForStoring() const
 {
 	// If the location was AlwaysPresent but did not exist,
@@ -220,6 +274,11 @@ unsigned int Store::getMinPriorityForStoring() const
 unsigned int Store::getMaxRunsBetweenFullBackups() const
 {
 	return maxRunsBetweenFullBackups;
+}
+
+unsigned int Store::getStoreTime() const
+{
+	return storeTime;
 }
 
 std::string Store::getLocation() const

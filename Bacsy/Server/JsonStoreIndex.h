@@ -18,6 +18,7 @@
 #ifndef BACSY_JSON_STORE_INDEX
 #define BACSY_JSON_STORE_INDEX
 
+#include <set>
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "json/json.h"
@@ -51,6 +52,20 @@ public:
 			const std::string& directory,
 			const std::string& builtFromDir,
 			const Poco::Timestamp& time);
+
+	std::vector<std::string> getRunsOlderThan(
+			const std::string& hostIdentification,
+			const std::string& source,
+			const Poco::Timestamp& time);
+
+	/**
+	 * Deletes directories for that host and source. Directories need to be
+	 * given in *reverse* order (so the newest first and the oldest last.
+	 */
+	void deleteDirectories(
+		const std::string& hostIdentification,
+		const std::string& source,
+		const std::set<std::string>& directories);
 
 	std::string getCorrespondingFullRun(
 			const std::string& hostIdentification,
