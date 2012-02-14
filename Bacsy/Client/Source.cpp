@@ -96,6 +96,10 @@ void Source::startTimers()
 std::list<Poco::Timer*> Source::createTimers()
 {
 	std::list<Poco::Timer*> theTimers;
+
+	if(!enabled)
+		return theTimers;
+
 	for(ISourceConfiguration::TimeTable::const_iterator it = timeTable.begin();
 			it != timeTable.end();
 			it++)
