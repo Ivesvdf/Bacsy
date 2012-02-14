@@ -66,8 +66,8 @@ set(BACSY_COMMON_SOURCE_FILES
 add_library(bacsy ${BACSY_BUILD_TYPE} ${BACSY_COMMON_SOURCE_FILES})
 
 # add_executable(bacsyd bacsyd/Main.cpp)
-add_executable(bacsy-server Server/BacsyServerMain.cpp)
-add_executable(bacsy-client Client/BacsyClientMain.cpp)
+add_executable(bacsy-server CLI/BacsyServerMain.cpp)
+add_executable(bacsy-client CLI/BacsyClientMain.cpp)
 if(${BACSY_BUILD_TYPE} STREQUAL "SHARED")
 	target_link_libraries(bacsy json)
 endif()
