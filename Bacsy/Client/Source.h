@@ -121,46 +121,58 @@ void Source::backupPath(
 		ExclusionRule extraRule) const
 {
 	std::string pathString = path.path();
-	LOGI("Filename = " + pathString);
 
-	if(!path.exists())
+	// Encapsulate all non-terminal stuff in a try-catch. If it fails that's
+	// very unfortunate and an error can be displayed, but life (and the
+	// backup) keeps going on. This tends to happen when files are locked in
+	// unexpected ways or other strange things are going on. 
+	try
 	{
-		LOGE("Could not backup file " + pathString +
-				" because it does not exist.");
-		return;
-	}
+		LOGI("Filename = " + pathString);
 
-	if(!path.canRead())
-	{
-		LOGE("Could not backup file " + pathString +
-				" because this user does not have read permissions.");
-		return;
-	}
-
-	if(isExcluded(extraRule, path))
-	{
-		LOGI("Exclude rule matched.");
-		return;
-	}
-
-	if(path.isDirectory())
-	{
-		LOGI("Path is a directory -- expanding.");
-
-		Poco::DirectoryIterator end;
-		for(Poco::DirectoryIterator it(path); it != end; ++it)
+		if(!path.exists())
 		{
-			backupPath(*it, function, extraRule);
+			LOGE("Could not backup file " + pathString +
+					" because it does not exist.");
+			return;
+		}
+
+		if(!path.canRead())
+		{
+			LOGE("Could not backup file " + pathString +
+					" because this user does not have read permissions.");
+			return;
+		}
+
+		if(isExcluded(extraRule, path))
+		{
+			LOGI("Exclude rule matched.");
+			return;
+		}
+
+		if(path.isDirectory())
+		{
+			LOGI("Path is a directory -- expanding.");
+
+			Poco::DirectoryIterator end;
+			for(Poco::DirectoryIterator it(path); it != end; ++it)
+			{
+				backupPath(*it, function, extraRule);
+			}
+			return;
 		}
 	}
-	else // Is file
+	catch(std::exception e)
 	{
-		LOGI("Path is a file -- not expanding.");
-		LOGI("Modified date = " + StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
-		function(path);
+		LOGE("File " + pathString + " could not be backed up due to error " +
+				e.what());
+		return;
 	}
 
-
+	LOGI("Path is a file -- not expanding.");
+	LOGI("Modified date = " +
+			StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
+	function(path);
 }
 
 }
