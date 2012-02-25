@@ -51,5 +51,30 @@ std::string Environment::getDefaultConfigurationDirectory()
 	return prefix;
 }
 
+std::string Environment::getDefaultUserDataDirectory()
+{
+	std::string prefix;
+#if defined(POCO_OS_FAMILY_WINDOWS)
+	if(Poco::Environment::has("APPDATA"))
+	{
+		prefix = StringUtils::rstrip(Poco::Environment::get("APPDATA") , "\\/") + "/Bacsy/";
+	}
+	else // No idea why APPDATA wouldn't be defined
+	{
+		LOGE("%APPDATA% is not defined -- falling back to C:/Bacsy");
+		prefix = "C:/Bacsy/";
+	}
+#elif defined(POCO_OS_FAMILY_UNIX)
+	const std::string homeConfig =
+		Poco::Environment::has("XDG_DATA_HOME")
+			? Poco::Environment::get("XDG_DATA_HOME")
+			: StringUtils::rstrip(Poco::Environment::get("HOME"), "/") + "/.local/share";
+
+	prefix = StringUtils::rstrip(homeConfig, "/") + "/bacsy/";
+#endif
+
+	return prefix;
+}
+
 }
 }

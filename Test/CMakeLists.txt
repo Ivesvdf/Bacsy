@@ -9,6 +9,7 @@ add_executable(test
                    RsyncStreamTests
                    ExclusionStringParserTests
                    StringExclusionRuleBuilderTests
+				   PlainTextPreviousRunRecordTests
 				   RunTypeTests
 )
 

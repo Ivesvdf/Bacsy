@@ -29,7 +29,11 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Common/FileUtils
 				 Common/IFile
                  Common/JsonHelper
+				 Common/OPlainTextPreviousRunRecord
+				 Common/IPlainTextPreviousRunRecord
+				 Common/PlainTextPreviousRunRecord
 				 Common/PocoFile
+				 Common/PreviousRunRecord
 				 Common/RunType
                  Common/StringUtils
 				 Messages/AMessage

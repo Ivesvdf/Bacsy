@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011  Ives van der Flaas
+ * Copyright (C) 2012  Ives van der Flaas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
+#ifndef BACSY_IPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+#define BACSY_IPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
 
-#ifndef BACSY_ENVIRONMENT_H
-#define BACSY_ENVIRONMENT_H
+#include <string>
+#include <set>
+#include "Bacsy/Common/PlainTextPreviousRunRecord.h"
 
 namespace Bacsy
 {
 namespace Common
 {
 
-class Environment
+class IPlainTextPreviousRunRecord : public PlainTextPreviousRunRecord
 {
-public:
-	static std::string getDefaultConfigurationDirectory();
-	static std::string getDefaultUserDataDirectory();
+	public:
+		IPlainTextPreviousRunRecord(const std::string& recordfile);
+		IPlainTextPreviousRunRecord();
+		virtual bool wasFileBackedUp(const std::string& filename) const;
+
+		virtual void setFileBackedUp(const std::string& filename);
+		virtual void backupCompleted();
 };
 
 }
 }
+
 #endif
