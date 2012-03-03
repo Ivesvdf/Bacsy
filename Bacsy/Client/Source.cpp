@@ -487,12 +487,20 @@ std::vector<Poco::Net::SocketAddress> Source::findOutWhoToContact()
 
 bool Source::isExcluded(
 		const ExclusionRule& exclusionRule,
-		const Poco::File& path) const
+		const Poco::File& path,
+		PreviousRunRecord* prrData) const
 {
 	if(exclusionRule.match(PocoFile(path)))
 	{
 		LOGI("Extra rule matched:" + path.path() + " was matched because of"
 				" rule " + exclusionRule.toString());
+
+
+		if(prrData != 0)
+		{
+			prrData->setFileBackedUp(path.path());
+		}
+
 		return true;
 	}
 

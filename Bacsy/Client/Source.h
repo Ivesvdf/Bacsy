@@ -116,7 +116,8 @@ private:
 
 	bool isExcluded(
 			const ExclusionRule& exclusionRule,
-			const Poco::File& path) const;
+			const Poco::File& path,
+			PreviousRunRecord* prrData) const;
 };
 
 template<typename FUNCTION>
@@ -165,15 +166,9 @@ void Source::backupPath(
 			return;
 		}
 
-		if(isExcluded(extraRule, path))
+		if(isExcluded(extraRule, path, prrData))
 		{
 			LOGI("Exclude rule matched.");
-
-			if(prrData != 0)
-			{
-				prrData->setFileBackedUp(pathString);
-			}
-
 			return;
 		}
 
