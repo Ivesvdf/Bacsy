@@ -21,6 +21,7 @@
 #include "Bacsy/Client/BackupEngine.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
 #include "Bacsy/Client/Source.h"
+#include "Bacsy/Client/PlainTextPreviousRunRecordFactory.h"
 #include "Bacsy/Common/ConfigurationFile.h"
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/ArgParsingUtils.h"
@@ -68,7 +69,8 @@ int main(int argc, char **argv)
 			LOGF("No " + configdir + "/sources.config file found.");
 		}
 
-		BackupEngine backupEngine(configuration);
+		PlainTextPreviousRunRecordFactory fac(Environment::getDefaultConfigurationDirectory());
+		BackupEngine backupEngine(configuration, fac);
 		backupEngine.start();
 		backupEngine.joinAll();
 	}

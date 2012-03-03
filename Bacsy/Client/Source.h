@@ -30,6 +30,7 @@
 #include "Poco/DirectoryIterator.h"
 #include "woodcutter/woodcutter.h"
 #include "Bacsy/Client/ISourceConfiguration.h"
+#include "Bacsy/Client/PreviousRunRecordFactory.h"
 #include "Bacsy/Common/StringUtils.h"
 #include "Bacsy/Common/PocoFile.h"
 
@@ -44,7 +45,10 @@ using namespace Rules;
 class Source : public ISourceConfiguration
 {
 public:
-	Source(const ISourceConfiguration& config, Poco::ThreadPool& threadpool);
+	Source(
+			const ISourceConfiguration& config,
+			Poco::ThreadPool& threadpool,
+			PreviousRunRecordFactory& previousRunRecordFactory);
 	~Source();
 
 	void start();

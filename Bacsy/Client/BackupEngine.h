@@ -22,6 +22,7 @@
 #include "Poco/ThreadPool.h"
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Client/CascadingSourceConfiguration.h"
+#include "Bacsy/Client/PreviousRunRecordFactory.h"
 
 namespace Bacsy
 {
@@ -37,9 +38,11 @@ class BackupEngine
 		const CascadingSourceConfiguration& configuration;
 		std::vector<Source*> sources;
 		Poco::ThreadPool threadPool;
+		PreviousRunRecordFactory& previousRunRecordFactory;
 
 	public:
-		BackupEngine(const CascadingSourceConfiguration& configuration);
+		BackupEngine(const CascadingSourceConfiguration& configuration,
+				PreviousRunRecordFactory& previousRunRecordFactory);
 		~BackupEngine();
 
 		void start();

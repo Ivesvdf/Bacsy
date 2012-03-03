@@ -35,32 +35,42 @@ class SourceNameToSourcer
 public:
 	SourceNameToSourcer(
 			const CascadingSourceConfiguration& configuration,
-			Poco::ThreadPool& threadPool): 
+			Poco::ThreadPool& threadPool,
+			PreviousRunRecordFactory& prrf): 
 		configuration(configuration),
-		threadPool(threadPool)
+		threadPool(threadPool),
+		prrf(prrf)
 	{
 	}
 
 	Source* operator()(const std::string& sourceName)
 	{
-		return new Source(configuration.getSource(sourceName), threadPool);
+		return new Source(
+				configuration.getSource(sourceName),
+				threadPool,
+				prrf);
 	}
 
 private:
 	const CascadingSourceConfiguration& configuration;
 	Poco::ThreadPool& threadPool;
+	PreviousRunRecordFactory& prrf;
 };
 
 std::vector<Source*> sourceNamesToSources(
 		const std::list<std::string>& sourceStrings,
 		const CascadingSourceConfiguration& configuration,
-		Poco::ThreadPool&  threadPool)
+		Poco::ThreadPool&  threadPool,
+		PreviousRunRecordFactory& previousRunRecordFactory)
 {
 	std::vector<Source*> sources;
 	sources.resize(sourceStrings.size());
 
 
-	SourceNameToSourcer sourceNameToSource(configuration, threadPool);
+	SourceNameToSourcer sourceNameToSource(
+			configuration,
+			threadPool,
+			previousRunRecordFactory);
 
 	std::transform(
 			sourceStrings.begin(),
@@ -72,12 +82,16 @@ std::vector<Source*> sourceNamesToSources(
 	return sources;
 }
 
-BackupEngine::BackupEngine(const CascadingSourceConfiguration& configuration):
+BackupEngine::BackupEngine(
+		const CascadingSourceConfiguration& configuration,
+		PreviousRunRecordFactory& previousRunRecordFactory):
 	configuration(configuration),
 	sources(sourceNamesToSources(
 				configuration.getSources(),
 				configuration,
-				threadPool))
+				threadPool,
+				previousRunRecordFactory)),
+	previousRunRecordFactory(previousRunRecordFactory)
 {
 }
 

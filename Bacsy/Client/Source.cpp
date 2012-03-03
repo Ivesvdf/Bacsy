@@ -60,7 +60,10 @@ bool Source::isPath(std::string s) const
 	return s.find_first_of("/\\") != std::string::npos;
 }
 
-Source::Source(const ISourceConfiguration& config, Poco::ThreadPool& threadPool):
+Source::Source(
+		const ISourceConfiguration& config,
+		Poco::ThreadPool& threadPool,
+		PreviousRunRecordFactory& previousRunRecordFactory):
 	name(config.getName()),
 	includes(config.getIncludes()),
 	priority(config.getPriority()),
