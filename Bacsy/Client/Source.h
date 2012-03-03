@@ -88,32 +88,48 @@ private:
 
 	Poco::Mutex mutex;
 
+	PreviousRunRecordFactory& previousRunRecordFactory;
+
 	bool isPath(std::string s) const;
 
 	std::list<Poco::Timer*> createTimers();
 	void startTimers();
 
 	std::vector<Poco::Net::SocketAddress> findOutWhoToContact();
-	void sendCanStore(Poco::Net::DatagramSocket& sendFrom, Poco::Net::SocketAddress to) const;
-	void sendTo(const Poco::Net::SocketAddress& to);
+	void sendCanStore(
+			Poco::Net::DatagramSocket& sendFrom,
+			Poco::Net::SocketAddress to) const;
+	void sendTo(const Poco::Net::SocketAddress& to, const bool saveRunData);
 
 	template<typename FUNCTION>
-	void sendAll(FUNCTION fun, ExclusionRule extraRule);
+	void sendAll(
+			FUNCTION fun,
+			ExclusionRule extraRule,
+			PreviousRunRecord* prrData);
 
 	template<typename FUNCTION>
-	void backupPath(const Poco::File& path, FUNCTION& function, ExclusionRule extraRule) const;
+	void backupPath(
+			const Poco::File& path,
+			FUNCTION& function,
+			ExclusionRule extraRule,
+			PreviousRunRecord* prrData) const;
 
-	bool isExcluded(const ExclusionRule& exclusionRule, const Poco::File& path) const;
+	bool isExcluded(
+			const ExclusionRule& exclusionRule,
+			const Poco::File& path) const;
 };
 
 template<typename FUNCTION>
-void Source::sendAll(FUNCTION fun, ExclusionRule extraRule)
+void Source::sendAll(
+		FUNCTION fun,
+		ExclusionRule extraRule,
+		PreviousRunRecord* prrData)
 {
 	for( std::vector<std::string>::const_iterator it = includes.begin();
 			it != includes.end();
 			it++)
 	{
-		backupPath(Poco::File(*it), fun, extraRule);
+		backupPath(Poco::File(*it), fun, extraRule, prrData);
 	}
 }
 
@@ -122,7 +138,8 @@ template<typename FUNCTION>
 void Source::backupPath(
 		const Poco::File& path,
 		FUNCTION& function,
-		ExclusionRule extraRule) const
+		ExclusionRule extraRule,
+		PreviousRunRecord* prrData) const
 {
 	std::string pathString = path.path();
 
@@ -161,7 +178,7 @@ void Source::backupPath(
 			Poco::DirectoryIterator end;
 			for(Poco::DirectoryIterator it(path); it != end; ++it)
 			{
-				backupPath(*it, function, extraRule);
+				backupPath(*it, function, extraRule, prrData);
 			}
 			return;
 		}
@@ -175,8 +192,15 @@ void Source::backupPath(
 
 	LOGI("Path is a file -- not expanding.");
 	LOGI("Modified date = " +
-			StringUtils::toString<Poco::Timestamp::UtcTimeVal>(path.getLastModified().utcTime()/10000000));
+			StringUtils::toString<Poco::Timestamp::UtcTimeVal>(
+				path.getLastModified().utcTime()/10000000));
+
 	function(path);
+
+	if(prrData != 0)
+	{
+		prrData->setFileBackedUp(pathString);
+	}
 }
 
 }

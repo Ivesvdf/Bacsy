@@ -33,5 +33,10 @@ PlainTextPreviousRunRecord::PlainTextPreviousRunRecord()
 {
 }
 
+
+PlainTextPreviousRunRecord::~PlainTextPreviousRunRecord()
+{
+}
+
 }
 }

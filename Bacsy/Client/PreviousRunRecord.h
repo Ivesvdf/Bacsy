@@ -32,6 +32,8 @@ namespace Client
 class PreviousRunRecord
 {
 	public:
+		virtual ~PreviousRunRecord(){};
+
 		// Read methods
 		virtual bool wasFileBackedUp(const std::string& filename) const=0;
 

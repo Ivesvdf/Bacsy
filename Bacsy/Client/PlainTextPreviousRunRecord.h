@@ -36,6 +36,7 @@ class PlainTextPreviousRunRecord : public PreviousRunRecord
 	public:
 		PlainTextPreviousRunRecord(const std::string& recordfile);
 		PlainTextPreviousRunRecord();
+		virtual ~PlainTextPreviousRunRecord();
 		virtual bool wasFileBackedUp(const std::string& filename) const = 0;
 
 		virtual void setFileBackedUp(const std::string& filename) = 0;

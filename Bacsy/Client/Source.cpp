@@ -77,7 +77,8 @@ Source::Source(
 	enabled(config.getEnabled()),
 	exclusionRules(config.getExcludes()),
 	timers(createTimers()),
-	threadPool(threadPool)
+	threadPool(threadPool),
+	previousRunRecordFactory(previousRunRecordFactory)
 {
 }
 
@@ -186,7 +187,7 @@ void Source::run(Poco::Timer& timer)
 			LOGI("Executing Dry Print Run");
 			PrintFileSender sender;
 			ExclusionRule rule;
-			sendAll(sender, rule);
+			sendAll(sender, rule, 0);
 		}
 		else
 		{
@@ -199,7 +200,8 @@ void Source::run(Poco::Timer& timer)
 				Poco::Net::SocketAddress contact(it->host(), BACSYSERVERPORT);
 				LOGI("Contacting " + contact.toString());
 
-				sendTo(contact);
+				bool saveRunData = (it+1) == peopleToContact.end();
+				sendTo(contact, saveRunData);
 			}
 		}
 
@@ -308,7 +310,7 @@ private:
 	Poco::Net::DialogSocket& socket;
 };
 
-void Source::sendTo(const Poco::Net::SocketAddress& who)
+void Source::sendTo(const Poco::Net::SocketAddress& who, const bool saveRunData)
 {
 	Poco::Net::DialogSocket socket(who);
 	socket.sendMessage(bacsyProtocolString);
@@ -321,12 +323,19 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 
 	StoreResponseMessage response = StoreResponseMessage::receive(socket);
 
+	PreviousRunRecord* prrData = 0;
+	if(saveRunData)
+	{
+		prrData =
+			previousRunRecordFactory.newPreviousRunRecord(name);
+	}
+
 	if(response.getRunType() == RunType::full)
 	{
 		LOGI("Sending a full run");
 		FileSender sender(socket);
 		ExclusionRule rule; // use empty extra rule
-		sendAll(sender, rule);
+		sendAll(sender, rule, prrData);
 		socket.sendMessage("");
 		socket.sendMessage("EOF");
 	}
@@ -341,13 +350,21 @@ void Source::sendTo(const Poco::Net::SocketAddress& who)
 					ModifiedDateExclusionSubRule::OLDER_THAN,
 					false));
 
-		sendAll(sender, rule);
+		sendAll(sender, rule, prrData);
 		socket.sendMessage("");
 		socket.sendMessage("EOF");
 	}
 	else
 	{
 		LOGE("Unsupported run type.");
+	}
+
+	LOGI("All files sent to " + who.toString());
+
+	if(saveRunData)
+	{
+		prrData->backupCompleted();
+		delete prrData;
 	}
 }
 

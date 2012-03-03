@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 			LOGF("No " + configdir + "/sources.config file found.");
 		}
 
-		PlainTextPreviousRunRecordFactory fac(Environment::getDefaultConfigurationDirectory());
+		PlainTextPreviousRunRecordFactory fac(configdir);
 		BackupEngine backupEngine(configuration, fac);
 		backupEngine.start();
 		backupEngine.joinAll();
