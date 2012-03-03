@@ -168,6 +168,12 @@ void Source::backupPath(
 		if(isExcluded(extraRule, path))
 		{
 			LOGI("Exclude rule matched.");
+
+			if(prrData != 0)
+			{
+				prrData->setFileBackedUp(pathString);
+			}
+
 			return;
 		}
 

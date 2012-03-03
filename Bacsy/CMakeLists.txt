@@ -24,6 +24,7 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Client/IPlainTextPreviousRunRecord
 				 Client/PlainTextPreviousRunRecord
 				 Client/PreviousRunRecord
+				 Client/PreviousRunRecordExclusionSubRule
 				 Common/PocoFile
                  Common/ArgParsingUtils
                  Common/CascadingFileConfiguration

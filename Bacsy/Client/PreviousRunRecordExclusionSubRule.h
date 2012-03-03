@@ -15,29 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <fstream>
-#include "woodcutter/woodcutter.h"
-#include "Bacsy/Client/PlainTextPreviousRunRecord.h"
+#ifndef BACSY_PREVIOUS_RUN_RECORD_EXCLUSION_SUB_RULE_H
+#define BACSY_PREVIOUS_RUN_RECORD_EXCLUSION_SUB_RULE_H
+
+#include <string>
+#include "Poco/File.h"
+#include "Bacsy/Rules/ExclusionSubRule.h"
+#include "Bacsy/Client/PreviousRunRecord.h"
 
 namespace Bacsy
 {
 namespace Client
 {
 
-PlainTextPreviousRunRecord::PlainTextPreviousRunRecord(
-		const std::string& recordfile):
-	recordfile(recordfile)
+using namespace Common;
+
+
+class PreviousRunRecordExclusionSubRule : public Bacsy::Rules::ExclusionSubRule
 {
-}
+public:
 
-PlainTextPreviousRunRecord::PlainTextPreviousRunRecord()
-{
-}
+	PreviousRunRecordExclusionSubRule(
+			PreviousRunRecord& prr,
+			bool negated);
+	PreviousRunRecordExclusionSubRule(
+			const PreviousRunRecordExclusionSubRule& copy);
+	bool matchWithoutNegate(const IFile& inputFile);
+	virtual ExclusionSubRule* clone() const;
 
 
-PlainTextPreviousRunRecord::~PlainTextPreviousRunRecord()
-{
-}
+	virtual std::string toString() const 
+	{ return "PreviousRunRecordExclusionSubRule"; }
+private:
+	PreviousRunRecord& prr;
+};
 
 }
 }
+#endif

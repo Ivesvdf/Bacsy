@@ -35,6 +35,7 @@
 #include "json/json.h"
 #include "Bacsy/Client/Source.h"
 #include "Bacsy/Client/TimerStringParser.h"
+#include "Bacsy/Client/PreviousRunRecordExclusionSubRule.h"
 #include "Bacsy/Common/Info.h"
 #include "Bacsy/Common/DatagramHelper.h"
 #include "Bacsy/Common/JsonHelper.h"
@@ -310,7 +311,9 @@ private:
 	Poco::Net::DialogSocket& socket;
 };
 
-void Source::sendTo(const Poco::Net::SocketAddress& who, const bool saveRunData)
+void Source::sendTo(
+		const Poco::Net::SocketAddress& who,
+		const bool saveRunData)
 {
 	Poco::Net::DialogSocket socket(who);
 	socket.sendMessage(bacsyProtocolString);
@@ -343,16 +346,33 @@ void Source::sendTo(const Poco::Net::SocketAddress& who, const bool saveRunData)
 	{
 		LOGI("Sending a full files run.");
 		FileSender sender(socket);
+		PreviousRunRecord* newData = 
+			previousRunRecordFactory.readPreviousRunRecord(name);
+
 		ExclusionRule rule;
-		rule.addSubRule(
-				new ModifiedDateExclusionSubRule(
-					response.getTimestamp(),
-					ModifiedDateExclusionSubRule::OLDER_THAN,
-					false));
+
+		if(newData) // If no data is available, do effectively full run
+		{
+			rule.addSubRule(
+					new PreviousRunRecordExclusionSubRule(
+						*newData, 
+						false));
+			rule.addSubRule(
+					new ModifiedDateExclusionSubRule(
+						response.getTimestamp(),
+						ModifiedDateExclusionSubRule::OLDER_THAN,
+						false));
+		}
+		else
+		{
+			LOGE("Could not get data from previous run");
+		}
 
 		sendAll(sender, rule, prrData);
 		socket.sendMessage("");
 		socket.sendMessage("EOF");
+
+		delete newData;
 	}
 	else
 	{

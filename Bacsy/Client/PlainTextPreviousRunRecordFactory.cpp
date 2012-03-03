@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Poco/File.h"
 #include "Bacsy/Client/PlainTextPreviousRunRecordFactory.h"
 #include "Bacsy/Client/IPlainTextPreviousRunRecord.h"
 #include "Bacsy/Client/OPlainTextPreviousRunRecord.h"
@@ -33,8 +34,21 @@ PlainTextPreviousRunRecordFactory::PlainTextPreviousRunRecordFactory(
 PreviousRunRecord* PlainTextPreviousRunRecordFactory::readPreviousRunRecord(
 				const std::string& sourceName)
 {
-	return new Bacsy::Client::IPlainTextPreviousRunRecord(
-			basepath + "/" + sourceName + ".dat");
+	try
+	{
+		std::string path = basepath + "/" + sourceName + ".dat";
+		Poco::File testFile(path);
+
+		if(testFile.exists() && testFile.canRead())
+		{
+			return new Bacsy::Client::IPlainTextPreviousRunRecord(path);
+		}
+	}
+	catch(...)
+	{
+	}
+
+	return 0;
 }
 
 PreviousRunRecord* PlainTextPreviousRunRecordFactory::newPreviousRunRecord(

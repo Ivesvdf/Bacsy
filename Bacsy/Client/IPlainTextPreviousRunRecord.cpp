@@ -24,7 +24,8 @@ namespace Bacsy
 namespace Client
 {
 
-IPlainTextPreviousRunRecord::IPlainTextPreviousRunRecord(const std::string& recordfile)
+IPlainTextPreviousRunRecord::IPlainTextPreviousRunRecord(const std::string&
+		recordfile)
 {
 	std::ifstream readstream(recordfile.c_str(), std::ifstream::in);
 
@@ -43,7 +44,8 @@ IPlainTextPreviousRunRecord::IPlainTextPreviousRunRecord(const std::string& reco
 	}
 }
 
-bool IPlainTextPreviousRunRecord::wasFileBackedUp(const std::string& filename) const
+bool IPlainTextPreviousRunRecord::wasFileBackedUp(const std::string& filename)
+	const
 {
 	return records.count(filename) > 0;
 }
