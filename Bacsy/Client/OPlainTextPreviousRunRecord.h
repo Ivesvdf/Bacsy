@@ -15,23 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <fstream>
-#include "woodcutter/woodcutter.h"
-#include "Bacsy/Common/PlainTextPreviousRunRecord.h"
+#ifndef BACSY_OPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+#define BACSY_OPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+
+#include <string>
+#include <set>
+#include "Bacsy/Client/PlainTextPreviousRunRecord.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
-PlainTextPreviousRunRecord::PlainTextPreviousRunRecord(const std::string& recordfile):
-	recordfile(recordfile)
+class OPlainTextPreviousRunRecord : public PlainTextPreviousRunRecord
 {
+	public:
+		OPlainTextPreviousRunRecord(const std::string& recordfile);
+		virtual bool wasFileBackedUp(const std::string& filename) const;
+
+		virtual void setFileBackedUp(const std::string& filename);
+		virtual void backupCompleted();
+};
+
+}
 }
 
-PlainTextPreviousRunRecord::PlainTextPreviousRunRecord()
-{
-}
-
-}
-}
+#endif

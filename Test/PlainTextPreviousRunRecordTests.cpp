@@ -17,10 +17,10 @@
 
 #include <gtest/gtest.h>
 #include "Poco/TemporaryFile.h"
-#include "Bacsy/Common/IPlainTextPreviousRunRecord.h"
-#include "Bacsy/Common/OPlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/IPlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/OPlainTextPreviousRunRecord.h"
 
-using namespace Bacsy::Common;
+using namespace Bacsy::Client;
 
 TEST( PlainTextPreviousRunRecordTest, FirstReadNothingInIt )
 {

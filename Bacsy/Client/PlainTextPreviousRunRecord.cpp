@@ -17,44 +17,20 @@
 
 #include <fstream>
 #include "woodcutter/woodcutter.h"
-#include "Bacsy/Common/OPlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/PlainTextPreviousRunRecord.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
-OPlainTextPreviousRunRecord::OPlainTextPreviousRunRecord(const std::string& recordfile):
-	PlainTextPreviousRunRecord(recordfile)
+PlainTextPreviousRunRecord::PlainTextPreviousRunRecord(const std::string& recordfile):
+	recordfile(recordfile)
 {
-
 }
 
-bool OPlainTextPreviousRunRecord::wasFileBackedUp(const std::string& filename) const
+PlainTextPreviousRunRecord::PlainTextPreviousRunRecord()
 {
-	return records.count(filename) > 0;
-}
-
-void OPlainTextPreviousRunRecord::setFileBackedUp(const std::string& filename)
-{
-	records.insert(filename);
-}
-
-void OPlainTextPreviousRunRecord::backupCompleted()
-{
-	std::ofstream readstream(recordfile.c_str());
-
-	char newline = '\n';
-
-	for(std::set<std::string>::const_iterator it = records.begin();
-			it != records.end();
-			++it)
-	{
-		readstream.write(it->c_str(), it->length());
-		readstream.write(&newline, 1);
-	}
-
-	readstream.close();
 }
 
 }

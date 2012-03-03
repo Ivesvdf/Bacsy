@@ -19,6 +19,12 @@ set(BACSY_COMMON_SOURCE_FILES
                  Client/Source
                  Client/TimeSchedule
                  Client/TimerStringParser
+				 Client/PlainTextPreviousRunRecordFactory
+				 Client/OPlainTextPreviousRunRecord
+				 Client/IPlainTextPreviousRunRecord
+				 Client/PlainTextPreviousRunRecord
+				 Client/PreviousRunRecord
+				 Common/PocoFile
                  Common/ArgParsingUtils
                  Common/CascadingFileConfiguration
                  Common/ConcurrentMap
@@ -29,11 +35,6 @@ set(BACSY_COMMON_SOURCE_FILES
 				 Common/FileUtils
 				 Common/IFile
                  Common/JsonHelper
-				 Common/OPlainTextPreviousRunRecord
-				 Common/IPlainTextPreviousRunRecord
-				 Common/PlainTextPreviousRunRecord
-				 Common/PocoFile
-				 Common/PreviousRunRecord
 				 Common/RunType
                  Common/StringUtils
 				 Messages/AMessage

@@ -22,7 +22,7 @@
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
 /**

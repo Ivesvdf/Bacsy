@@ -17,11 +17,11 @@
 
 #include <fstream>
 #include "woodcutter/woodcutter.h"
-#include "Bacsy/Common/IPlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/IPlainTextPreviousRunRecord.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
 IPlainTextPreviousRunRecord::IPlainTextPreviousRunRecord(const std::string& recordfile)

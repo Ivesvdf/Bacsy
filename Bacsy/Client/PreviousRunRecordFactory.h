@@ -15,27 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSY_IPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
-#define BACSY_IPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+#ifndef BACSY_PREVIOUS_RUN_RECORD_FACTORY_H
+#define BACSY_PREVIOUS_RUN_RECORD_FACTORY_H
 
 #include <string>
-#include <set>
-#include "Bacsy/Common/PlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/PreviousRunRecord.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
-class IPlainTextPreviousRunRecord : public PlainTextPreviousRunRecord
+/**
+ * Interface class that makes new PreviousRunRecords
+ */
+class PreviousRunRecordFactory
 {
 	public:
-		IPlainTextPreviousRunRecord(const std::string& recordfile);
-		IPlainTextPreviousRunRecord();
-		virtual bool wasFileBackedUp(const std::string& filename) const;
+		/**
+		 * Creates a new PreviousRunRecord that contains data on a previous
+		 * run. This object will be deleted when no longer needed by the
+		 * Client.
+		 */
+		virtual PreviousRunRecord* readPreviousRunRecord(
+				const std::string& sourceName)=0;
 
-		virtual void setFileBackedUp(const std::string& filename);
-		virtual void backupCompleted();
+		/**
+		 * Creates a new PreviousRunRecord that will be written to so later
+		 * runs will know something about what was backed up this run. 
+		 */
+		virtual PreviousRunRecord* newPreviousRunRecord(
+				const std::string& sourceName)=0;
 };
 
 }

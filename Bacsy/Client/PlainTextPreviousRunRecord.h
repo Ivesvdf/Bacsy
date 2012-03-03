@@ -15,26 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACSY_OPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
-#define BACSY_OPLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+#ifndef BACSY_PLAIN_TEXT_PREVIOUS_RUN_RECORD_H
+#define BACSY_PLAIN_TEXT_PREVIOUS_RUN_RECORD_H
 
 #include <string>
 #include <set>
-#include "Bacsy/Common/PlainTextPreviousRunRecord.h"
+#include "Bacsy/Client/PreviousRunRecord.h"
 
 namespace Bacsy
 {
-namespace Common
+namespace Client
 {
 
-class OPlainTextPreviousRunRecord : public PlainTextPreviousRunRecord
+/**
+ * See IPlainTextPreviousRunRecord and OPlainTextPreviousRunRecord to
+ * respectively read and write PlainTextPreviousRunRecords.
+ */
+class PlainTextPreviousRunRecord : public PreviousRunRecord
 {
 	public:
-		OPlainTextPreviousRunRecord(const std::string& recordfile);
-		virtual bool wasFileBackedUp(const std::string& filename) const;
+		PlainTextPreviousRunRecord(const std::string& recordfile);
+		PlainTextPreviousRunRecord();
+		virtual bool wasFileBackedUp(const std::string& filename) const = 0;
 
-		virtual void setFileBackedUp(const std::string& filename);
-		virtual void backupCompleted();
+		virtual void setFileBackedUp(const std::string& filename) = 0;
+		virtual void backupCompleted() = 0;
+
+	protected:
+		std::set<std::string> records;
+		std::string recordfile;
 };
 
 }
